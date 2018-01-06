@@ -23,6 +23,9 @@ def exercise_suggestion(seeker, mode):
     dictance_dict = dict()
 
     exercise_list = Exercise.objects.all()
+
+    complete_count = exercise.complete_student.count()
+    print("Complete:", complete_count)
     for exercise in exercise_list:
         print(exercise.complete_student.all())
         if seeker in exercise.complete_student.all():
@@ -32,6 +35,7 @@ def exercise_suggestion(seeker, mode):
             exercise_problem_json_flatten = flatten(exercise_problem_json)
             exercise_problem_dict = jsontocompare(exercise_problem_json_flatten, thingtocompare)
             exercise_problem_list = list(exercise_problem_dict.values())
+            exercise_problem_list = [x / complete_count for x in exercise_problem_list]
             distance = diff(seeker_ability_list, exercise_problem_list)
             dictance_dict[exercise.id] = distance
     if len(dictance_dict) == 0:

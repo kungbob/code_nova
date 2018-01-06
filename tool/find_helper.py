@@ -2,7 +2,6 @@
 #
 # Question need to have the average ability point required in the question
 #
-
 from scipy.spatial.distance import *
 import operator
 # from generate_user_database import generate_user_database
