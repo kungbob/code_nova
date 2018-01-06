@@ -42,7 +42,6 @@ def analyser(prog):
                 vtree['function']['Recursion']['function']['value'] += 1
             functionName = None
 
-
         elif tree['_type'] == 'AsyncFunctionDef':
             if (tree['name'] == '__init__'):
                 classList[0] = True
@@ -58,11 +57,11 @@ def analyser(prog):
             if funList == [False, False]:
                 vtree['function']['notRecursion']['procedure']['value'] += 1
             elif funList == [False, True]:
-                vtree['function']['Recursion']['procedure']['value'] += 1
+                vtree['function']['recursion']['procedure']['value'] += 1
             elif funList == [True, False]:
                 vtree['function']['notRecursion']['function']['value'] += 1
             else:
-                vtree['function']['Recursion']['function']['value'] += 1
+                vtree['function']['recursion']['function']['value'] += 1
             funList = [False, False]
             functionName = None
 
