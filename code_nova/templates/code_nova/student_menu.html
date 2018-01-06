@@ -1,0 +1,10 @@
+<!-- Student Menu -->
+<ul>
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'list_exercise' %}">Exercise</a></li>
+  <li><a href="{% url 'list_room' %}">List room</a></li>
+
+  <li style="float:right"><a class="active" href="{% url 'logout' %}">Logout</a></li>
+  <li style="float:right"><a>{{request.user.email }}</a></li>
+
+</ul>

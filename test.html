@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ACE in Action</title>
+
+
+<style type="text/css" media="screen">
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html{
+      height: 100%;
+    }
+
+    body {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    /* Create three equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 33.33%;
+        height: 100%;
+        padding: 10px;
+        /* height: 300px; /* Should be removed. Only for demonstration */ */
+    }
+
+    /* Clear floats after the columns */
+
+    .row{
+
+      height: 100%
+
+    }
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+    /* @media (max-width: 600px) {
+        .column {
+            width: 100%;
+        }
+    } */
+
+
+
+</style>
+
+</head>
+<body>
+  <div class="row">
+    <div class="column" id="material" style="background-color:#aaa;">
+      <h2>Column 1</h2>
+      <p>Some text..</p>
+    </div>
+    <div id="editor" class="column">function foo(items) {
+        var x = "All this is syntax highlighted";
+        return x;
+    }</div>
+    <div class="column" id="" style="background-color:#ccc;">
+      <h2>Column 3</h2>
+      <p>Some text..</p>
+    </div>
+  </div>
+
+
+<script src="static_root/ace-builds-master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/javascript");
+</script>
+</body>
+</html>

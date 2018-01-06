@@ -1,0 +1,475 @@
+{% extends "code_nova/base.html" %}
+
+{% block title %}Room{% endblock %}
+
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/room.css' %}">
+{% endblock%}
+
+{% block content %}
+
+<div class="row">
+  <div class="column" id="material_column" style="background-color:#aaa;">
+
+    {{room.exercise.material | safe }}
+
+  </div>
+  <div id="editor" class="column">{{room.code}}</div>
+  <div class="column" id="control_column" style="background-color:#ccc;">
+    <h1>Room ID:{{room.id}}</h1>
+
+
+  <div class="chat_panel">
+    <div class="chat_history_panel">
+      <div class="chat_message">
+        <div class="sender">
+          sender A
+        </div>
+        <div class="message">
+          this message is sent by A ar
+
+        </div>
+      </div>
+      <div class="chat_message">
+        <div class="sender">
+
+          sender B
+        </div>
+        <div class="message">
+          this message is sent by B ar
+
+        </div>
+      </div>
+    </div>
+    <div class="chat_control_panel">
+
+      <textarea id="chat_field" name="chat_field" rows="8" cols="80"></textarea>
+      <button id="chat_send_button" type="button" name="button">chat</button>
+
+    </div>
+  </div>
+
+  <div class="control_panel">
+
+    <button id="join_room_button" type="button" name="button" >join room</button>
+    <button id="leave_room_button" type="button" name="button" >leave room</button>
+
+    <button id="editor_save_button" type="button" name="button" >save</button>
+
+    <button class="editor_save_run_button" type="button" name="button" >Save & Run</button>
+
+    <button class="search_helper_button" type="button" name="button">search_helper</button>
+    <button class="ask_advice_button" type="button" name="button">ask advice</button>
+
+
+  </div>
+
+
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% load static %}
+{% block extra_js %}
+<script src="{% static 'ace-builds-master/src-noconflict/ace.js' %}"></script>
+<script src="{% static 'reconnecting-websocket.min.js' %}"></script>
+
+<!-- <script type="text/javascript">
+
+</script> -->
+
+
+<script type="text/javascript">
+
+const chat_template = ({ email, chat}) => `
+  <div class="chat_message">
+    <div class="sender">
+      ${email}
+    </div>
+    <div class="chat">
+      ${chat}
+
+    </div>
+  </div>
+`;
+
+
+const help_template = ({ room_id,help_seeker,exercise_title }) => `
+  User ${help_seeker} ask you for help on exercise (${exercise_title}). Do you want to help?`;
+
+
+  $(function () {
+
+    // $(window).on("unload", function(e) {
+    //     // Do Something
+    //     e = e || window.event;
+    //
+    //     // For IE and Firefox prior to version 4
+    //     if (e) {
+    //         e.returnValue = 'Sure?';
+    //     }
+    //
+    //     // For Safari
+    //     return 'Sure?';
+    //
+    // });
+    //
+    // window.onbeforeunload = function (e) {
+    //     e = e || window.event;
+    //
+    //     // For IE and Firefox prior to version 4
+    //     if (e) {
+    //         e.returnValue = 'Sure?';
+    //     }
+    //
+    //     // For Safari
+    //     return 'Sure?';
+    // };
+
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/python");
+
+    var silent = false;
+
+    var changes_list = [];
+
+    time = setInterval(function(){
+      // console.log("time's up");
+      apply_changes();
+    },50);
+
+    // Correctly decide between ws:// and wss://
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var ws_path = ws_scheme + '://' + window.location.host + "/room/stream/";
+    console.log("Connecting to " + ws_path);
+    var socket = new ReconnectingWebSocket(ws_path);
+
+
+    editor.on("change", function( e ) {
+
+      // console.log("apply delta",e)
+                    // TODO, we could make things more efficient and not likely to conflict by keeping track of change IDs
+                    // if( last_applied_change!=e && !just_cleared_buffer ) {
+                    //     collaborator.change( JSON.stringify(e) ) ;
+                    //
+                    //
+                    // }
+                    // just_cleared_buffer = false ;
+                    if (silent)
+                    {
+                      console.log("silent")
+
+                    }
+                    else {
+                      e.user_id = {{request.user.id}};
+                      e.time = Date.now();
+                      console.log("after",e);
+                      socket.send(JSON.stringify({
+                          "command": "editor_send",  // determines which handler will be used (see chat/routing.py)
+                          "room": {{room.id}},
+                          "change" : e,
+                          // "change" : JSON.stringify(e)
+                      }));
+
+                    }
+
+                }, false );
+
+
+
+    // Helpful debugging
+    socket.onopen = function () {
+        console.log("Connected to websocket");
+        join_room()
+    };
+
+
+    socket.onclose = function () {
+        console.log("Disconnected from websocket");
+    };
+
+    socket.onmessage = function (message) {
+        // Decode the JSON
+        var data = JSON.parse(message.data);
+
+        console.log("recieve",data);
+        // Handle errors
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+
+
+        if (data.help_seeker)
+        {
+          console.log("receive a help request");
+
+          var text = [data].map(help_template);
+
+          if (confirm(text) == true){
+            window.location.replace(data.url);
+
+          }
+
+
+        }
+
+
+        if (data.join)
+        {
+          if (data.user_id == {{ request.user.id }})
+          {
+
+            console.log("joined room");
+            chat_load()
+            editor_load()
+
+          }
+
+            console.log("someone joined")
+            console.log("email",data.email)
+
+        }
+
+        else if(data.change)
+        {
+          // var delta = JSON.parse(data.message) ;
+          var delta = data.change ;
+          console.log("recieve delta",delta);
+
+          if (data.user_id == "{{request.user.id}}")
+          {
+            console.log("my own change");
+          }
+          else {
+
+            changes_list.push(delta);
+            // silent = true;
+            // editor.getSession().getDocument().applyDeltas([delta]) ;
+            // silent = false;
+          }
+        }
+
+        else if (data.chat) {
+
+          console.log("chat recieved",data.chat)
+
+          $(".chat_history_panel").append([data].map(chat_template));
+ //   { sender: 'sender1', message: 'message1' },
+ //   { sender: 'sender2', message: 'message2' },
+ // ].map(chat_template).join(''))
+
+        }
+
+        else if (data.chat_history) {
+
+
+          $(".chat_history_panel").empty();
+          $(".chat_history_panel").append(data.chat_history.map(chat_template).join(""));
+
+          console.log("chat chat_history",data.chat_history)
+
+        }
+
+        else if (data.code){
+          silent = true;
+          editor.setValue(data.code)
+          silent = false;
+
+        }
+        // Handle joining
+
+
+        // result from save_run
+        else if (data.result){
+
+
+
+        }
+
+        else if (data.advice)
+        {
+
+        }
+
+    };
+
+
+
+    $('#join_room_button').on('click', function() {
+         /* your code here */
+
+      join_room()
+    });
+
+    $('#leave_room_button').on('click', function() {
+         /* your code here */
+
+         socket.send(JSON.stringify({
+             "command": "leave_room",  // determines which handler will be used (see chat/routing.py)
+             "room": {{room.id}}
+         }));
+    });
+
+
+    $('#editor_save_button').on('click', function() {
+         /* your code here */
+        editor_save();
+    });
+
+
+    $('#editor_load_button').on('click', function() {
+         /* your code here */
+        editor_load();
+    });
+
+
+    $('#chat_send_button').on('click', function() {
+         /* your code here */
+        chat_send();
+    });
+
+    $('.search_helper_button').on('click', function() {
+         /* your code here */
+        search_helper();
+    });
+
+    $('.editor_save_run_button').on('click', function() {
+         /* your code here */
+        editor_save_run();
+    });
+
+    $('.ask_advice_button').on('click', function() {
+         /* your code here */
+        ask_advice();
+    });
+
+
+    // function insert_changes(delta)
+    // {
+    //   if (changes_list.size == 0)
+    //   {
+    //     changes_list.
+    //   }
+    //
+    //
+    // }
+
+
+    function join_room()
+    {
+      socket.send(JSON.stringify({
+          "command": "join_room",  // determines which handler will be used (see chat/routing.py)
+          "room": {{room.id}}
+      }));
+    }
+    function chat_load()
+    {
+
+      socket.send(JSON.stringify({
+          "command": "chat_load",  // determines which handler will be used (see chat/routing.py)
+          "room": {{room.id}},
+      }));
+
+    }
+
+    function chat_send()
+    {
+
+      chat_message = $("#chat_field").val();
+      $("#chat_field").val("");
+
+      socket.send(JSON.stringify({
+          "command": "chat_send",  // determines which handler will be used (see chat/routing.py)
+          "room": {{room.id}},
+          "chat": chat_message
+      }));
+
+
+    }
+
+
+    function apply_changes()
+    {
+      changes_list.sort(function(a, b){return a.time - b.time});
+      // console.log(changes_list);
+
+      silent = true;
+      editor.getSession().getDocument().applyDeltas(changes_list) ;
+      silent = false;
+
+      changes_list = [];
+
+    }
+
+
+    function editor_save()
+    {
+
+      var code = editor.getValue();
+      console.log("content",code);
+
+      socket.send(JSON.stringify({
+          "command": "editor_save",  // determines which handler will be used (see chat/routing.py)
+          "room": {{room.id}},
+          "code": code
+      }));
+
+    }
+
+
+    function editor_save_run()
+    {
+
+      var code = editor.getValue();
+
+      socket.send(JSON.stringify({
+          "command": "editor_save_run",  // determines which handler will be used (see chat/routing.py)
+          "room": {{room.id}},
+          "code": code
+      }));
+
+    }
+
+    function editor_load()
+    {
+      console.log("load content");
+
+      socket.send(JSON.stringify({
+          "command": "editor_load",  // determines which handler will be used (see chat/routing.py)
+          "room": {{room.id}},
+      }));
+    }
+
+
+    function search_helper()
+    {
+
+      console.log("send help request");
+      socket.send(JSON.stringify({
+          "command": "search_helper",  // determines which handler will be used (see chat/routing.py)
+          "room": {{room.id}},
+      }));
+    }
+
+    function ask_advice()
+    {
+      var code = editor.getValue();
+      console.log("send ask advice request");
+      socket.send(JSON.stringify({
+          "command": "ask_advice",  // determines which handler will be used (see chat/routing.py)
+          "room": {{room.id}},
+          "code": code
+      }));
+    }
+
+
+  });
+
+</script>
+<!-- <script type="text/javascript" src="{% static 'room.js' %}"></script> -->
+{% endblock %}

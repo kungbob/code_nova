@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Code Nova - {% block title %}{% endblock %}</title>
+      <meta charset="utf-8">
+      {% load static %}
+      <script type="text/javascript" src="{% static 'jquery/jquery-3.2.1.min.js' %}"></script>
+
+      <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}">
+
+      {% block extra_css %}{% endblock%}
+
+  </head>
+
+  <body>
+<!-- selecting menu bar based on user acc_type -->
+
+    <div class="menu_bar">
+      {%  if request.user.acc_type == "student" %}
+
+        {% include "code_nova/student_menu.html" %}
+
+      {% elif request.user.acc_type == "teacher" %}
+
+        {% include "code_nova/guest_menu.html" %}
+
+      {% else %}
+
+        {% include "code_nova/guest_menu.html" %}
+
+      {% endif%}
+
+    </div>
+
+    <div class="content">
+      {% block content %}{% endblock %}
+    </div>
+
+
+
+  </body>
+
+  {% block extra_js %}{% endblock %}
+
+</html>

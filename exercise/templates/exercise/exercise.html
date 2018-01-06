@@ -1,0 +1,33 @@
+{% extends "code_nova/base.html" %}
+
+{% block title %}Exercise{% endblock %}
+
+
+{% block content %}
+<h1>View Exercise Page content</h1>
+
+<h5>title : {{exercise.title}}</h5>
+
+
+<button type="button" name="button" onclick="window.location.replace('{% url 'start_exercise' exercise.id %}')">Start</button>
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script type="text/javascript">
+
+
+$('#test_append_button').on('click', function() {
+     /* your code here */
+
+     window.location.replace("");
+
+
+});
+
+
+</script>
+
+{% endblock %}
