@@ -2,9 +2,53 @@
 # Three mode are provided, hard, normal, easy
 # 1: easy, 2: normal, 3: hard
 import random, operator
-from generate_problem_database import generate_problem_database
+# from generate_problem_database import generate_problem_database
+from exercise.models import Exercise
+import json
+from tool.tree import flatten
 
-def exercise_suggestion(profile, mode, problems):
+def exercise_suggestion(seeker, mode):
+
+
+    seeker_profile = seeker.profile_tree
+
+    seeker_profile_json = json.loads(seeker_profile)
+    seeker_profile_json_flatten = flatten(seeker_profile_json)
+    thingtocompare = ['basicIO', 'condition', 'loop', 'array', 'function', \
+                        'class', 'module']
+    seeker_ability_dict = jsontocompare(seeker_profile_json_flatten, thingtocompare)
+
+    seeker_ability_list = list(seeker_ability_dict.values())
+
+    dictance_dict = dict()
+
+    exercise_list = Exercise.objects.all()
+    for exercise in exercise_list:
+        print(exercise.complete_student.all())
+        if seeker in exercise.complete_student.all():
+            continue
+        else:
+            exercise_problem_json = json.loads(exercise.problem_tree)
+            exercise_problem_json_flatten = flatten(exercise_problem_json)
+            exercise_problem_dict = jsontocompare(exercise_problem_json_flatten, thingtocompare)
+            exercise_problem_list = list(exercise_problem_dict.values())
+            distance = diff(seeker_ability_list, exercise_problem_list)
+            dictance_dict[exercise.id] = distance
+    if len(dictance_dict) == 0:
+        for exercise in exercise_list:
+            exercise_problem_json = json.loads(exercise.problem_tree)
+            exercise_problem_json_flatten = flatten(exercise_problem_json)
+            exercise_problem_dict = jsontocompare(exercise_problem_json_flatten, thingtocompare)
+            exercise_problem_list = list(exercise_problem_dict.values())
+            distance = diff(seeker_ability_list, exercise_problem_list)
+            dictance_dict[exercise.id] = distance
+    sorted_distance = sorted(dictance_dict.items(), key=operator.itemgetter(1))
+    print(sorted_distance)
+    result_problem = call(sorted_distance, mode)
+    print(result_problem)
+    return result_problem
+
+    '''
     user_list = list(profile.values())
     ability_list = user_list[0:7]
     dictance_dict = dict()
@@ -23,13 +67,13 @@ def exercise_suggestion(profile, mode, problems):
 
     sorted_distance = sorted(dictance_dict.items(), key=operator.itemgetter(1))
     result_problem = call(sorted_distance, mode)
-    return result_problem
+    '''
 
 def call(problem_list, mode):
     result = []
 
     if mode == 1:
-        result = [problem[0] for problem in problem_list if problem[1] < 0]
+        result = [problem[0] for problem in problem_list if problem[1] > 0]
         if len(problem_list) == 0:
             result = call(problem_list, 2)
     elif mode == 2:
@@ -37,7 +81,7 @@ def call(problem_list, mode):
         if len(problem_list) == 0:
             result = call(problem_list, 3)
     else:
-        result = [problem[0] for problem in problem_list if problem[1] > 0]
+        result = [problem[0] for problem in problem_list if problem[1] < 0]
         if len(problem_list) == 0:
             result = call(problem_list, 2)
     result = random.choice(result)
@@ -49,6 +93,12 @@ def diff(ability_list, problem_ability_list):
         temp = ability_list[i] - problem_ability_list[i]
         result = result + temp
     return result
+
+def jsontocompare(user_json, thingtocompare):
+    compare_dict = dict()
+    for item in thingtocompare:
+        compare_dict[item] = user_json[item]
+    return compare_dict
 
 if __name__ == "__main__":
     # Not used

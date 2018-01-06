@@ -14,6 +14,7 @@ from tool.compile_code import compile_code
 from tool.analyser import analyser
 from tool.advisor import advisor
 from tool.tree import get_problem_tree,get_version_tree
+from tool.exercise_suggestion import exercise_suggestion
 
 
 from exercise.models import Exercise
@@ -353,6 +354,14 @@ def editor_save_run(message):
     })
 
 
+@channel_session_user
+def ask_suggestion(message):
+
+
+    student = Student.objects.get(user = message.user)
+    exercise_suggestion(student,message["mode"])
+
+
 def ask_advice(message):
 
     problem_tree = get_problem_tree()
@@ -378,20 +387,19 @@ def search_helper(message):
     # print(message.user.reply_channel)
     # # users = User.objects.filter(acc_type="student").exclude(reply_channel="")
 
-
-    user_list = User.objects.get(email="student@gmail.com")
     #
     room = Room.objects.get(pk=message["room"])
     room.require_help = True
     room.save()
 
-
+    print(message.user)
 
     # helper_list = find_helper(message.user,room.exercise)
     # return list of User object
     seeker = Student.objects.get(user=message.user)
 
-    find_helper(seeker,room.exercise)
+    help_list = find_helper(seeker,room.exercise)
+    print(help_list)
 
 # bob code
         #

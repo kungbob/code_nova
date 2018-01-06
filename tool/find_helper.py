@@ -17,9 +17,6 @@ def find_helper(seeker, current_exercise):
 
     student_list = Student.objects.all()
 
-
-
-
     seeker_profile = seeker.profile_tree
 
     seeker_profile_json = json.loads(seeker_profile)
@@ -27,22 +24,27 @@ def find_helper(seeker, current_exercise):
     print(seeker_profile_json)
     print(flatten(seeker_profile_json))
 
-    seeker_profile_json
     thingtocompare = ['basicIO', 'condition', 'loop', 'array', 'function', \
                         'class', 'module']
-    seeker_ability_list = jsontocompare(seeker_profile_json_flatten, thingtocompare)
+    seeker_ability_dict = jsontocompare(seeker_profile_json_flatten, thingtocompare)
+    print(seeker_ability_dict)
+    seeker_ability_list = list(seeker_ability_dict.values())
     print(seeker_ability_list)
     # print(my_json)
     dictance_dict = dict()
     for helper in student_list:
-        helper_profile_json = json.loads(helper.profile_tree)
-        print(temp)
         if seeker.id == helper.id:
             continue
         else:
-            helper_dict = jsontocompare(helper_profile_json)
-            
-
+            helper_profile_json = json.loads(helper.profile_tree)
+            helper_profile_json_flatten = flatten(helper_profile_json)
+            helper_ability_dict = jsontocompare(helper_profile_json_flatten, thingtocompare)
+            helper_ability_list = list(helper_ability_dict.values())
+            distance = euclidean(seeker_ability_list, helper_ability_list)
+            dictance_dict[helper.id] = distance
+    sorted_distance = sorted(dictance_dict.items(), key=operator.itemgetter(1))
+    call_list = call(sorted_distance, 10)
+    return call_list
 
     # seeker_profile = flatten(my_json)
     #
@@ -99,10 +101,15 @@ def jsontocompare(user_json, thingtocompare):
     return compare_dict
 
 def call(helper_list, number):
-    call_list = helper_list[:number]
-    name_list = [name[0] for name in call_list]
-    number_list = [name[1] for name in call_list]
-    return name_list
+    if len(helper_list) < number:
+        call_list = helper_list
+        id_list = [student[0] for student in call_list]
+        return id_list
+    else:
+        call_list = helper_list[:number]
+        id_list = [student[0] for student in call_list]
+        number_list = [student[1] for student in call_list]
+        return id_list
 
 if __name__ == "__main__":
     database = generate_user_database()

@@ -61,6 +61,7 @@
 
     <button class="search_helper_button" type="button" name="button">search_helper</button>
     <button class="ask_advice_button" type="button" name="button">ask advice</button>
+        <button class="exercise_suggestion_button" type="button" name="button">exercise_suggestion</button>
 
 
   </div>
@@ -348,6 +349,11 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
         ask_advice();
     });
 
+    $('.exercise_suggestion_button').on('click', function() {
+         /* your code here */
+        exercise_suggestion();
+    });
+
 
     // function insert_changes(delta)
     // {
@@ -358,6 +364,17 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     //
     //
     // }
+
+
+
+    function exercise_suggestion()
+    {
+
+      socket.send(JSON.stringify({
+          "command": "ask_suggestion",  // determines which handler will be used (see chat/routing.py)
+          "mode": 1
+      }));
+    }
 
 
     function join_room()

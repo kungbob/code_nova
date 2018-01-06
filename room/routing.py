@@ -1,5 +1,5 @@
 from channels import route
-from .consumers import ws_connect, ws_receive, ws_disconnect,ask_advice,chat_send,chat_load,join_room,leave_room, editor_send,editor_load, editor_save,editor_save_run,search_helper
+from .consumers import ws_connect, ws_receive, ws_disconnect,ask_suggestion,ask_advice,chat_send,chat_load,join_room,leave_room, editor_send,editor_load, editor_save,editor_save_run,search_helper
 
 
 # There's no path matching on these routes; we just rely on the matching
@@ -35,4 +35,5 @@ custom_routing = [
 
     route("room.receive", search_helper, command="^search_helper$"),
     route("room.receive", ask_advice, command="^ask_advice$"),
+    route("room.receive", ask_suggestion, command="^ask_suggestion$"),
 ]
