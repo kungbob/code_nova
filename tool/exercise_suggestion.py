@@ -27,7 +27,7 @@ def exercise_suggestion(seeker, mode):
     # complete_count = exercise.complete_student.count()
     # print("Complete:", complete_count)
     for exercise in exercise_list:
-
+        # FIXME: When there are no students in the db, error occurs
         complete_count = exercise.complete_student.count()
 
         # # demo hardcode
