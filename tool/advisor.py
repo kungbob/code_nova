@@ -1,21 +1,21 @@
-from tree import get_problem_tree, get_version_tree, flatten
+from tool.tree import get_problem_tree, get_version_tree, flatten
 
 def message_lack_redundance (lack, redundance, flatten_problem, total_count):
 
 	#a dictionary to convert dictionary terms to natural language terms
-	conversion_list = {"basicIO_input": "Basic Input", "basicIO_output": "Basic Output", "condition_if_ifOnly": "If (Without else)", 
-				"condition_if_withElse": "If (With else)", "condition_switch": "Switch", "loop_single_for": "Single For-loop", "loop_single_while": "Single While-loop", 
-				"loop_nested_forOnly": "Nested For-loop", "loop_nested_whileOnly": "Nested While-loop", "loop_nested_mixed": "Nested Loop (For and While)", 
-				"array_nonCharArray_singleDim": "Non-character Array (Single Dimension)", "array_nonCharArray_multiDim": "Non-character Array (Multi-Dimension)", 
+	conversion_list = {"basicIO_input": "Basic Input", "basicIO_output": "Basic Output", "condition_if_ifOnly": "If (Without else)",
+				"condition_if_withElse": "If (With else)", "condition_switch": "Switch", "loop_single_for": "Single For-loop", "loop_single_while": "Single While-loop",
+				"loop_nested_forOnly": "Nested For-loop", "loop_nested_whileOnly": "Nested While-loop", "loop_nested_mixed": "Nested Loop (For and While)",
+				"array_nonCharArray_singleDim": "Non-character Array (Single Dimension)", "array_nonCharArray_multiDim": "Non-character Array (Multi-Dimension)",
 				"array_charArray_singleDim": "Character Array (Single Dimension)", "array_charArray_multiDim": "Character Array (Multi-Dimension)",
-				"function_recursion_procedure": "Procedure with Recursion", "function_recursion_function": "Function with Recursion", 
-				"function_notRecursion_procedure": "Procedure without Recursion", "function_notRecursion_function": "Function without Recursion", 
-				"class_inheritance_constructor": "Class (With Inheritance and Constructor)", "class_inheritance_noConstructor": "Class (With Inheritance and Without Constructor)", 
-				"class_noInheritance_constructor": "Class (Without Inheritance and With Constructor)", "class_noInheritance_noConstructor": "Class (Without Inheritance and Constructor)", 
-				"module_string_length": "String-Length", "module_string_concat": "String-Concatenate", "module_string_substr": "String-Substring", 
-				"module_string_replace": "String-Replace", "module_string_changeType": "String-Change Type", "module_fileIO_open": "FileIO-Open", 
-				"module_fileIO_close": "FileIO-Close", "module_fileIO_write": "FileIO-Write", "module_fileIO_read": "FileIO-Read", 
-				"module_array_length": "Array-Length", "module_array_concat": "Array-Concatenate", "module_array_split": "Array-Split", 
+				"function_recursion_procedure": "Procedure with Recursion", "function_recursion_function": "Function with Recursion",
+				"function_notRecursion_procedure": "Procedure without Recursion", "function_notRecursion_function": "Function without Recursion",
+				"class_inheritance_constructor": "Class (With Inheritance and Constructor)", "class_inheritance_noConstructor": "Class (With Inheritance and Without Constructor)",
+				"class_noInheritance_constructor": "Class (Without Inheritance and With Constructor)", "class_noInheritance_noConstructor": "Class (Without Inheritance and Constructor)",
+				"module_string_length": "String-Length", "module_string_concat": "String-Concatenate", "module_string_substr": "String-Substring",
+				"module_string_replace": "String-Replace", "module_string_changeType": "String-Change Type", "module_fileIO_open": "FileIO-Open",
+				"module_fileIO_close": "FileIO-Close", "module_fileIO_write": "FileIO-Write", "module_fileIO_read": "FileIO-Read",
+				"module_array_length": "Array-Length", "module_array_concat": "Array-Concatenate", "module_array_split": "Array-Split",
 				"module_array_sort": "Array-Sort", "module_array_pop": "Array-Pop", "module_array_push": "Array-Push", "module_array_find": "Array-Find"}
 
 	str = "You may try the followings to improve your program:\n\n"
@@ -68,7 +68,7 @@ def message_depth (flatten_version, flatten_problem):
 
 
 def advisor(version_tree, problem_tree, total_count):
-	
+
 	lack_limit = 0.5
 	redundance_limit = 0.1
 
@@ -78,11 +78,11 @@ def advisor(version_tree, problem_tree, total_count):
 	suggestions = []
 
 	#list of elements for comparison
-	compare_list = ['basicIO_input', 'basicIO_output', 'condition_if_ifOnly', 'condition_if_withElse', 'condition_switch', 'loop_single_for', 'loop_single_while', 
-				'loop_nested_forOnly', 'loop_nested_whileOnly', 'loop_nested_mixed', 'array_nonCharArray_singleDim', 'array_nonCharArray_multiDim', 
+	compare_list = ['basicIO_input', 'basicIO_output', 'condition_if_ifOnly', 'condition_if_withElse', 'condition_switch', 'loop_single_for', 'loop_single_while',
+				'loop_nested_forOnly', 'loop_nested_whileOnly', 'loop_nested_mixed', 'array_nonCharArray_singleDim', 'array_nonCharArray_multiDim',
 				'array_charArray_singleDim', 'array_charArray_multiDim', 'function_recursion_procedure', 'function_recursion_function', 'function_notRecursion_procedure',
-				'function_notRecursion_function', 'class_inheritance_constructor', 'class_inheritance_noConstructor', 'class_noInheritance_constructor', 
-				'class_noInheritance_noConstructor', 'module_string_length', 'module_string_concat', 'module_string_substr', 'module_string_replace', 
+				'function_notRecursion_function', 'class_inheritance_constructor', 'class_inheritance_noConstructor', 'class_noInheritance_constructor',
+				'class_noInheritance_noConstructor', 'module_string_length', 'module_string_concat', 'module_string_substr', 'module_string_replace',
 				'module_string_changeType', 'module_fileIO_open', 'module_fileIO_close', 'module_fileIO_write', 'module_fileIO_read', 'module_array_length',
 				'module_array_concat', 'module_array_split', 'module_array_sort', 'module_array_pop', 'module_array_push', 'module_array_find']
 
