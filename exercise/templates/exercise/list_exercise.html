@@ -2,17 +2,39 @@
 
 {% block title %}List Exercise{% endblock %}
 
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_exercise.css' %}">
+{% endblock%}
+
 
 {% block content %}
-<h1>List Exercise Page content</h1>
 
-  {% for exercise in exercises %}
 
-      <a href="{% url 'exercise' exercise.id %}">{{exercise.title}}</a>
 
-  {% endfor %}
+  <!-- <h5>suggestions</h5>
+  <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button> -->
+  <!-- <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button>
+  <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button> -->
 
-  <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button>
+  <div class="container">
+    <h1>Exercise List</h1>
+    <div class="row">
+      {% for exercise in exercises %}
+          <img src="{% static 'python.png' %}"  style="height:120px;width:120px" alt="">
+          <a href="{% url 'exercise' exercise.id %}">{{exercise.title}}</a>
+      {% endfor %}
+
+    </div>
+
+    <h5>suggestions</h5>
+    <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button>
+    <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button>
+    <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button>
+  </div>
+
+
+
 
 {% endblock %}
 

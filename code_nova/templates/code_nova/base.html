@@ -3,8 +3,12 @@
   <head>
       <title>Code Nova - {% block title %}{% endblock %}</title>
       <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       {% load static %}
+
+      <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
       <script type="text/javascript" src="{% static 'jquery/jquery-3.2.1.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 
       <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
       <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}">
@@ -16,7 +20,6 @@
   <body>
 <!-- selecting menu bar based on user acc_type -->
 
-    <div class="menu_bar">
       {%  if request.user.acc_type == "student" %}
 
         {% include "code_nova/student_menu.html" %}
@@ -31,9 +34,7 @@
 
       {% endif%}
 
-    </div>
-
-    <div class="content">
+    <div class="container-fluid">
       {% block content %}{% endblock %}
     </div>
 

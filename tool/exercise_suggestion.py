@@ -31,7 +31,7 @@ def exercise_suggestion(seeker, mode):
         complete_count = exercise.complete_student.count()
 
         # # demo hardcode
-        # complete_count = 100
+        complete_count = 100
 
         # print(exercise.complete_student.all())
         if seeker in exercise.complete_student.all():

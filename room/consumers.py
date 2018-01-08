@@ -318,8 +318,7 @@ def editor_save_run(message):
     result = compile_code(code,room.exercise)
 
 
-    result_json = json.dumps(result)
-    version_tree_json = json.dumps(version_tree)
+
     if result["overall_success"] == True:
 
         # print("all pass")
@@ -331,6 +330,9 @@ def editor_save_run(message):
 
     room.code = message["code"]
     room.save()
+
+    result_json = json.dumps(result)
+    version_tree_json = json.dumps(version_tree)
 
     version = Version()
 
@@ -344,9 +346,7 @@ def editor_save_run(message):
 
     #
     message.reply_channel.send({
-        "text": json.dumps({
-            "result": result_json,
-        }),
+        "text": json.dumps(result),
     })
 
 

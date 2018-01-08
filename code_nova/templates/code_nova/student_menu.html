@@ -1,10 +1,25 @@
 <!-- Student Menu -->
-<ul>
-  <li><a href="{% url 'index' %}">Home</a></li>
-  <li><a href="{% url 'list_exercise' %}">Exercise</a></li>
-  <li><a href="{% url 'list_room' %}">List room</a></li>
 
-  <li style="float:right"><a class="active" href="{% url 'logout' %}">Logout</a></li>
-  <li style="float:right"><a>{{request.user.email }}</a></li>
-
-</ul>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{% url 'index' %}">Code Nova</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="{% url 'index' %}">Index</a></li>
+      <li><a href="{% url 'list_exercise' %}">Exercise</a></li>
+      <li><a href="{% url 'list_room' %}">List room</a></li>
+      <!-- <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Page 1-1</a></li>
+          <li><a href="#">Page 1-2</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li> -->
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{request.user.email }}</a></li>
+      <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+    </ul>
+  </div>
+</nav>
