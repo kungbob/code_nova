@@ -12,5 +12,142 @@
 
   {% endfor %}
 
+  <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button>
 
+{% endblock %}
+
+{% load static %}
+{% block extra_js %}
+<script src="{% static 'reconnecting-websocket.min.js' %}"></script>
+
+<script type="text/javascript">
+
+const chat_template = ({ email, chat}) => `
+  <div class="chat_message">
+    <div class="sender">
+      ${email}
+    </div>
+    <div class="chat">
+      ${chat}
+
+    </div>
+  </div>
+`;
+const suggestion_template = ({ exercise_title, suggestion}) => `
+AI Tutor suggest exercise (${exercise_title}). Do you want to try?`;
+
+const help_template = ({ room_id,help_seeker,exercise_title }) => `
+  User ${help_seeker} ask you for help on exercise (${exercise_title}). Do you want to help?`;
+
+
+  $(function () {
+
+    // $(window).on("unload", function(e) {
+    //     // Do Something
+    //     e = e || window.event;
+    //
+    //     // For IE and Firefox prior to version 4
+    //     if (e) {
+    //         e.returnValue = 'Sure?';
+    //     }
+    //
+    //     // For Safari
+    //     return 'Sure?';
+    //
+    // });
+    //
+    // window.onbeforeunload = function (e) {
+    //     e = e || window.event;
+    //
+    //     // For IE and Firefox prior to version 4
+    //     if (e) {
+    //         e.returnValue = 'Sure?';
+    //     }
+    //
+    //     // For Safari
+    //     return 'Sure?';
+    // };
+
+
+    // Correctly decide between ws:// and wss://
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var ws_path = ws_scheme + '://' + window.location.host + "/room/stream/";
+    console.log("Connecting to " + ws_path);
+    var socket = new ReconnectingWebSocket(ws_path);
+
+
+    // Helpful debugging
+    socket.onopen = function () {
+        console.log("Connected to websocket");
+        // join_room()
+    };
+
+
+    socket.onclose = function () {
+        console.log("Disconnected from websocket");
+    };
+
+    socket.onmessage = function (message) {
+        // Decode the JSON
+        var data = JSON.parse(message.data);
+
+        console.log("recieve",data);
+        // Handle errors
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+
+
+        if (data.help_seeker)
+        {
+          console.log("receive a help request");
+
+          var text = [data].map(help_template);
+
+          if (confirm(text) == true){
+            window.location.replace(data.url);
+
+          }
+
+
+        }
+
+        if (data.suggestion)
+        {
+          console.log("receive a exercise suggestion");
+
+          var text = [data].map(suggestion_template);
+
+          if (confirm(text) == true){
+            window.location.replace(data.url);
+
+          }
+        }
+
+
+    };
+
+
+    $('.ask_suggestion_button').on('click', function() {
+         /* your code here */
+        ask_suggestion();
+    });
+
+
+    function ask_suggestion()
+    {
+
+      socket.send(JSON.stringify({
+          "command": "ask_suggestion",  // determines which handler will be used (see chat/routing.py)
+          "mode": 1
+      }));
+    }
+
+
+
+
+  });
+
+</script>
 {% endblock %}

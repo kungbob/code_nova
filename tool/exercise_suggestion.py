@@ -24,10 +24,16 @@ def exercise_suggestion(seeker, mode):
 
     exercise_list = Exercise.objects.all()
 
-    complete_count = exercise.complete_student.count()
-    print("Complete:", complete_count)
+    # complete_count = exercise.complete_student.count()
+    # print("Complete:", complete_count)
     for exercise in exercise_list:
-        print(exercise.complete_student.all())
+
+        complete_count = exercise.complete_student.count()
+
+        # # demo hardcode
+        # complete_count = 100
+
+        # print(exercise.complete_student.all())
         if seeker in exercise.complete_student.all():
             continue
         else:

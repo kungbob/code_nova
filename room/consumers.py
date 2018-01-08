@@ -26,7 +26,6 @@ import _thread
 @channel_session_user_from_http
 def ws_connect(message):
 
-    # print("someone knock")
 
     if message.user.is_authenticated():
         # add reply channel to user model
@@ -35,19 +34,8 @@ def ws_connect(message):
         message.user.save()
 
         message.reply_channel.send({'accept': True})
-
-
-        # Channel().send({
-        #     "text": json.dumps({
-        #         "error": "blabla",
-        #     }),
-        # })
-
-
         message.channel_session['rooms'] = []
 
-    else:
-        print("bad user")
 
 @channel_session_user
 def ws_receive(message):
@@ -68,6 +56,18 @@ def ws_disconnect(message):
             room = Room.objects.get(pk=room_id)
             room.websocket_group.discard(message.reply_channel)
 
+            output_message = {"leave": room.id,"email":message.user.email,"user_id":message.user.id}
+            temp_history = json.loads(room.chat_history)
+            temp_history["chat_history"].append(output_message)
+            room.chat_history = json.dumps(temp_history)
+
+            room.save()
+            room.broadcast(output_message)
+
+
+            room.save()
+
+
         except Room.DoesNotExist:
             pass
 
@@ -83,7 +83,7 @@ def ws_disconnect(message):
         student = Student.objects.get(user=message.user)
 
         # if user is room owner, remove help request of the rooms
-        # preven infinite loop of search helpers
+        # prevent infinite loop of search helpers
 
         for room in student.room_owner_set.all():
             room.require_help = False
@@ -94,30 +94,28 @@ def ws_disconnect(message):
 @channel_session_user
 def join_room(message):
 
-    # print("joining room")
+    print("joining room")
+    print(message.user)
     room = get_room_or_error(message["room"], message.user)
-
-    # if NOTIFY_USERS_ON_ENTER_OR_LEAVE_ROOMS:
-        # room.send_message(None, message.user, MSG_TYPE_ENTER)
-
     room.websocket_group.add(message.reply_channel)
 
     message.channel_session['rooms'] = list(set(message.channel_session['rooms']).union([room.id]))
 
-    # output_json = {"join": room.id,"email":request.user.email,"user_id":message.user.id}
-    #
-    # room.broadcast(output_json)
 
-    message.reply_channel.send({
-        "text": json.dumps({
-            "join": str(room.id),
-            # "title": room.title,
-        }),
-    })
+    output_message = {"join": room.id,"email":message.user.email,"user_id":message.user.id}
+    temp_history = json.loads(room.chat_history)
+    temp_history["chat_history"].append(output_message)
+    room.chat_history = json.dumps(temp_history)
+
+    room.save()
+    room.broadcast(output_message)
+
 # ------------------------------------------------------
 
 @channel_session_user
 def leave_room(message):
+
+
 
     room = get_room_or_error(message["room"], message.user)
 
@@ -125,18 +123,20 @@ def leave_room(message):
     #     room.send_message(None, message.user, MSG_TYPE_LEAVE)
 
     room.websocket_group.discard(message.reply_channel)
-    message.channel_session['rooms'] = list(set(message.channel_session['rooms']).difference([room.id]))
-    message.reply_channel.send({
-        "text": json.dumps({
-            "leave": str(room.id),
-        }),
-    })
+
+    output_message = {"leave": room.id,"email":message.user.email,"user_id":message.user.id}
+
+    temp_history = json.loads(room.chat_history)
+    temp_history["chat_history"].append(output_message)
+    room.chat_history = json.dumps(temp_history)
+
+    room.save()
+    room.broadcast(output_message)
 
 
 @channel_session_user
 def chat_send(message):
-    # if int(message['room']) not in message.channel_session['rooms']:
-    #     raise ClientError("ROOM_ACCESS_DENIED")
+
     room = get_room_or_error(message["room"], message.user)
     output_message = {'room': room.id, 'chat': message["chat"], 'user_id': message.user.id, 'email':message.user.email}
     print("chat:"+str(message))
@@ -149,10 +149,6 @@ def chat_send(message):
     room.chat_history = json.dumps(temp_history)
 
     room.save()
-    # room.chat_history = json.dumps(temp_history)
-
-    # room.chat_history = room.chat_history
-
 
     room.broadcast(output_message)
 
@@ -173,8 +169,8 @@ def chat_load(message):
 @catch_client_error
 @channel_session_user
 def editor_send(message):
-    if int(message['room']) not in message.channel_session['rooms']:
-        raise ClientError("ROOM_ACCESS_DENIED")
+    # if int(message['room']) not in message.channel_session['rooms']:
+    #     raise ClientError("ROOM_ACCESS_DENIED")
     room = get_room_or_error(message["room"], message.user)
 
 # closed for demo
@@ -357,10 +353,17 @@ def editor_save_run(message):
 @channel_session_user
 def ask_suggestion(message):
 
-
     student = Student.objects.get(user = message.user)
-    exercise_suggestion(student,message["mode"])
+    suggestion_id = exercise_suggestion(student,message["mode"])
 
+    exercise = Exercise.objects.get(pk=suggestion_id)
+
+    url = reverse('exercise',kwargs={'exercise_id':exercise.id})
+
+    suggestion_json = {"exercise_title":exercise.title,"suggestion":exercise.id,"url":url}
+    message.reply_channel.send({
+        "text": json.dumps(suggestion_json),
+    })
 
 def ask_advice(message):
 
@@ -397,23 +400,29 @@ def search_helper(message):
     # helper_list = find_helper(message.user,room.exercise)
     # return list of User object
     seeker = Student.objects.get(user=message.user)
+    helper_list = find_helper(seeker,room.exercise)
 
-    help_list = find_helper(seeker,room.exercise)
-    print(help_list)
+    for helper_id in helper_list:
+        if room.require_help == False:
+            break
+        student = Student.objects.get(pk=helper_id)
+        user = student.user
+        output_json =  {
+                "room_id": room.id,
+                "help_seeker": user.email,
+                "exercise_title":room.exercise.title,
+                "url": reverse('accept_help_request',kwargs={'room_id':room.id})
 
-# bob code
-        #
-        # exercise = Exercise.objects.get(pk=1)
-        # seeker = message.user
-        # find_helper(seeker,exercise)
-    #
-    #
+            }
+
+        # use another thread to send the message
+        _thread.start_new_thread(channel_send_thread,(user.reply_channel,output_json,))
+        time.sleep(20)
+
     # while room.require_help:
-    #     # print(message["reply_channel"])
-    #     print("in loop")
-    #     print(datetime.datetime.now())
-    #     # print(test_user.reply_channel)
-    #     user = User.objects.get(email="student@gmail.com")
+    #
+    #     student = Student.objects.get(pk=helper_list[count])
+    #     user = student.user
     #
     #     output_json =  {
     #             "room_id": room.id,
@@ -424,12 +433,13 @@ def search_helper(message):
     #         }
     #
     #     # use another thread to send the message
-    #     _thread.start_new_thread(channel_send_thread,(test_user.reply_channel,output_json,))
+    #     _thread.start_new_thread(channel_send_thread,(user.reply_channel,output_json,))
     #
     #
     #     # find a helper every 20s
     #     time.sleep(20)
     #     room = Room.objects.get(pk=message["room"])
+    #     count = count + 1
 
     print("search end")
 

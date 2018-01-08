@@ -21,48 +21,24 @@
 
 
   <div class="chat_panel">
-    <div class="chat_history_panel">
-      <div class="chat_message">
-        <div class="sender">
-          sender A
-        </div>
-        <div class="message">
-          this message is sent by A ar
-
-        </div>
-      </div>
-      <div class="chat_message">
-        <div class="sender">
-
-          sender B
-        </div>
-        <div class="message">
-          this message is sent by B ar
-
-        </div>
-      </div>
-    </div>
+    <div class="chat_history_panel"></div>
     <div class="chat_control_panel">
 
-      <textarea id="chat_field" name="chat_field" rows="8" cols="80"></textarea>
-      <button id="chat_send_button" type="button" name="button">chat</button>
+      <textarea class="chat_field" name="chat_field"></textarea>
+      <!-- <textarea id="chat_field" name="chat_field" rows="8" cols="80"></textarea> -->
+      <button class="chat_send_button" type="button" name="button">chat</button>
 
     </div>
   </div>
 
   <div class="control_panel">
 
-    <button id="join_room_button" type="button" name="button" >join room</button>
-    <button id="leave_room_button" type="button" name="button" >leave room</button>
 
     <button id="editor_save_button" type="button" name="button" >save</button>
-
     <button class="editor_save_run_button" type="button" name="button" >Save & Run</button>
 
     <button class="search_helper_button" type="button" name="button">search_helper</button>
     <button class="ask_advice_button" type="button" name="button">ask advice</button>
-        <button class="exercise_suggestion_button" type="button" name="button">exercise_suggestion</button>
-
 
   </div>
 
@@ -85,6 +61,7 @@
 
 <script type="text/javascript">
 
+
 const chat_template = ({ email, chat}) => `
   <div class="chat_message">
     <div class="sender">
@@ -97,10 +74,25 @@ const chat_template = ({ email, chat}) => `
   </div>
 `;
 
+const join_template = ({email}) => `
+  <div class="join_message">
+    <div class="join_message">
+      ${email} join the room
+    </div>
+  </div>
+`;
+
+const leave_template = ({email}) => `
+  <div class="join_message">
+    <div class="leave_message">
+      ${email} leave the room
+    </div>
+  </div>
+`;
+
 
 const help_template = ({ room_id,help_seeker,exercise_title }) => `
   User ${help_seeker} ask you for help on exercise (${exercise_title}). Do you want to help?`;
-
 
   $(function () {
 
@@ -233,6 +225,7 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
             console.log("someone joined")
             console.log("email",data.email)
+            $(".chat_history_panel").append([data].map(join_template));
 
         }
 
@@ -259,10 +252,9 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
           console.log("chat recieved",data.chat)
 
+
           $(".chat_history_panel").append([data].map(chat_template));
- //   { sender: 'sender1', message: 'message1' },
- //   { sender: 'sender2', message: 'message2' },
- // ].map(chat_template).join(''))
+
 
         }
 
@@ -270,9 +262,29 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
 
           $(".chat_history_panel").empty();
-          $(".chat_history_panel").append(data.chat_history.map(chat_template).join(""));
+            for (i in data.chat_history)
+            {
+              if (data.chat_history[i]["join"])
+              {
+                // this is a join message
+                // console.log("join")
+                $(".chat_history_panel").append(join_template(data.chat_history[i]));
+              }
 
-          console.log("chat chat_history",data.chat_history)
+              else if (data.chat_history[i]["leave"])
+              {
+                // this is leave message
+                // console.log("leave")
+                $(".chat_history_panel").append(leave_template(data.chat_history[i]));
+              }
+
+              else {
+                {
+                  // console.log("chat")
+                  $(".chat_history_panel").append(chat_template(data.chat_history[i]));
+                }
+              }
+            }
 
         }
 
@@ -329,7 +341,7 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     });
 
 
-    $('#chat_send_button').on('click', function() {
+    $('.chat_send_button').on('click', function() {
          /* your code here */
         chat_send();
     });
@@ -379,6 +391,7 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
     function join_room()
     {
+      console.log("sending join request");
       socket.send(JSON.stringify({
           "command": "join_room",  // determines which handler will be used (see chat/routing.py)
           "room": {{room.id}}
@@ -397,8 +410,8 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     function chat_send()
     {
 
-      chat_message = $("#chat_field").val();
-      $("#chat_field").val("");
+      chat_message = $(".chat_field").val();
+      $(".chat_field").val("");
 
       socket.send(JSON.stringify({
           "command": "chat_send",  // determines which handler will be used (see chat/routing.py)
