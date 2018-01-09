@@ -313,10 +313,7 @@ def editor_save_run(message):
     code = message["code"]
 
     # run the code with test cases of the exercise
-
-    version_tree = analyser(code)
     result = compile_code(code,room.exercise)
-
 
 
     if result["overall_success"] == True:
@@ -331,18 +328,28 @@ def editor_save_run(message):
     room.code = message["code"]
     room.save()
 
-    result_json = json.dumps(result)
-    version_tree_json = json.dumps(version_tree)
+    try:
+        version_tree = analyser(code)
 
-    version = Version()
+        result_json = json.dumps(result)
+        version_tree_json = json.dumps(version_tree)
 
-    version.code = message["code"]
-    version.room = room
-    version.result = result_json
-    version.overall_success = overall_success
-    version.version_tree =version_tree_json
+        version = Version()
 
-    version.save()
+        version.code = message["code"]
+        version.room = room
+        version.result = result_json
+        version.overall_success = overall_success
+        version.version_tree =version_tree_json
+
+        version.save()
+
+
+    except:
+        pass
+
+
+
 
     #
     message.reply_channel.send({
@@ -365,21 +372,28 @@ def ask_suggestion(message):
         "text": json.dumps(suggestion_json),
     })
 
+
+@channel_session_user
 def ask_advice(message):
 
-    problem_tree = get_problem_tree()
-    version_tree = get_version_tree()
-
-    total_count = 100
+    room = get_room_or_error(message["room"], message.user)
+    code = message["code"]
 
 
+    try:
+        problem_tree = json.loads(room.exercise.problem_tree)
+        version_tree = analyser(code)
+        total_count = 100
 
-    advice = advisor(version_tree,problem_tree,total_count)
-    advice_json = {"advice":advice}
+        advice = advisor(version_tree,problem_tree,total_count)
 
-    message.reply_channel.send({
-        "text": json.dumps(advice_json),
-    })
+        advice_json = {"advice":advice}
+        message.reply_channel.send({
+            "text": json.dumps(advice_json),
+        })
+    except:
+        pass
+
 
 
 

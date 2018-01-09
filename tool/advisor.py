@@ -78,17 +78,13 @@ def advisor(version_tree, problem_tree, total_count):
 	suggestions = []
 
 	#list of elements for comparison
-	compare_list = ['basicIO_input', 'basicIO_output', 'condition_if_ifOnly', 'condition_if_withElse', 'condition_switch', 'loop_single_for', 'loop_single_while',
+	compare_list = ['basicIO_output', 'condition_if_ifOnly', 'condition_if_withElse', 'condition_switch', 'loop_single_for', 'loop_single_while',
 				'loop_nested_forOnly', 'loop_nested_whileOnly', 'loop_nested_mixed', 'array_nonCharArray_singleDim', 'array_nonCharArray_multiDim',
 				'array_charArray_singleDim', 'array_charArray_multiDim', 'function_recursion_procedure', 'function_recursion_function', 'function_notRecursion_procedure',
 				'function_notRecursion_function', 'class_inheritance_constructor', 'class_inheritance_noConstructor', 'class_noInheritance_constructor',
 				'class_noInheritance_noConstructor', 'module_string_length', 'module_string_concat', 'module_string_substr', 'module_string_replace',
 				'module_string_changeType', 'module_fileIO_open', 'module_fileIO_close', 'module_fileIO_write', 'module_fileIO_read', 'module_array_length',
 				'module_array_concat', 'module_array_split', 'module_array_sort', 'module_array_pop', 'module_array_push', 'module_array_find']
-
-
-	input_problem_tree = get_problem_tree()
-	input_version_tree = get_version_tree()
 
 	#flatten both trees
 	flatten_version = flatten(input_version_tree)

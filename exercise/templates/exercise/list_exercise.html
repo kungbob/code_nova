@@ -24,13 +24,13 @@
           <img src="{% static 'python.png' %}"  style="height:120px;width:120px" alt="">
           <a href="{% url 'exercise' exercise.id %}">{{exercise.title}}</a>
       {% endfor %}
-
+      
     </div>
 
     <h5>suggestions</h5>
-    <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button>
-    <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button>
-    <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button>
+    <button class="ask_suggestion_button" mode="1" type="button" name="button">mode 1</button>
+    <button class="ask_suggestion_button" mode="2" type="button" name="button">mode 2</button>
+    <button class="ask_suggestion_button" mode ="3" type="button" name="button">mode 3</button>
   </div>
 
 
@@ -151,18 +151,20 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     };
 
 
-    $('.ask_suggestion_button').on('click', function() {
+    $('.ask_suggestion_button').click(function(){
          /* your code here */
-        ask_suggestion();
+
+         console.log("attr",$(this).attr("mode"));
+        ask_suggestion(parseInt($(this).attr("mode")));
     });
 
 
-    function ask_suggestion()
+    function ask_suggestion(mode)
     {
 
       socket.send(JSON.stringify({
           "command": "ask_suggestion",  // determines which handler will be used (see chat/routing.py)
-          "mode": 1
+          "mode": mode
       }));
     }
 

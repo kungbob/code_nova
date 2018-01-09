@@ -79,7 +79,7 @@
 
 const chat_template = ({ email,chat}) => `
   <div class="chat_message">
-    <span class="sender">${email} : </span>
+    <span class="sender font-weight-bold">${email} : </span>
     <span class="chat">${chat}</span>
   </div>
 `;
@@ -346,7 +346,7 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
         else if (data.advice)
         {
 
-          $(".chat_history_panel").append(data.advice.join("<br/> AI tutor : <br>"));
+          $(".chat_history_panel").append("<br/> AI tutor : <br>");
           for (var i = 0; i < data.advice.length; i++) {
             data.advice[i] = data.advice[i].split("\n").join("<br />")
           }
