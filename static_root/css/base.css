@@ -20,3 +20,13 @@ body {
 .content{
   height: 90%
 }
+.navbar{
+  margin-bottom: 0;
+}
+
+.fill{
+
+  padding-left: 0;
+  padding-right: 0;
+  
+}
