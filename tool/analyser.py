@@ -162,11 +162,9 @@ def analyser(prog):
             if vtree['maxIfDepth']['value'] < ifDepth:
                 vtree['maxIfDepth']['value'] = ifDepth;
             if (tree['orelse'] == []):
-                print ('ifOnly!')
                 if (parent != 'If' or attr != 'orelse'):
                     vtree['condition']['if']['ifOnly']['value'] += 1
             else:
-                print ('withElse')
                 if (parent != 'If' or attr != 'orelse'):
                     vtree['condition']['if']['withElse']['value'] += 1
             treeAnalyser(tree['test'], tree['_type'], 'test', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList)
