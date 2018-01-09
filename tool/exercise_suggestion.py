@@ -87,7 +87,7 @@ def call(problem_list, mode):
         if len(problem_list) == 0:
             result = call(problem_list, 2)
     elif mode == 2:
-        result = [problem[0] for problem in problem_list if problem[1] < 3 or problem[1] > -3]
+        result = [problem[0] for problem in problem_list if problem[1] == 0]
         if len(problem_list) == 0:
             result = call(problem_list, 3)
     else:
