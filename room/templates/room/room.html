@@ -14,7 +14,10 @@
   <div class="modal-content">
     <span class="close">&times;</span>
     <div class="modal-container">
-      <table class="table test_case_table" style="width:100%;">
+      <div id="test_case_modal">
+
+      </div>
+      <table class="table" id="test_case_table" style="width:100%;">
         <thead>
           <tr><th scope="col">input</th><th scope="col">expected output</th><th scope="col">actual output</th><th scope="col">success</th><th scope="col">error</th></tr>
         </thead>
@@ -111,7 +114,7 @@ const leave_template = ({email}) => `
 
 const test_case_template = ({input,expect_output,output,error,success}) => {
 
-return "<tr><td scope='row'>"+input+"</td><td>"+expect_output+"</td><td>"+output+"</td><td>"+success+"</td><td>"+ error.replace("\n","<br/>") +"</td></tr>"
+return "<tr><td scope='row'>"+input+"</td><td>"+expect_output.split("\n").join("<br/>")+"</td><td>"+output.split("\n").join("<br/>")+"</td><td>"+success+"</td><td>"+ error.split("\n").join("<br/>") +"</td></tr>"
 
 }
 
@@ -333,14 +336,24 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
         // result from save_run
         else if (data.result){
 
-          console.log(data.result);
-          $("#stest_case_table_body").empty();
+          // console.log(data.result);
+
+          $("#test_case_table_body").empty();
+          var succss_count = 0;
           for (var i = 0; i < data.result.length; i++) {
 
             $("#test_case_table_body").append(test_case_template(data.result[i]));
-            console.log(test_case_template(data.result[i]))
+            if (data.result[i]["success"])
+            {
+              succss_count++;
+            }
           }
 
+          var message = succss_count.toString()+"/"+data.result.length.toString()+" test cases passed"
+
+          $("#test_case_modal").html(message);
+
+          show_modal();
         }
 
         else if (data.advice)

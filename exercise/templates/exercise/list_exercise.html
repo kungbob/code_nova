@@ -21,16 +21,19 @@
     <h1>Exercise List</h1>
     <div class="row">
       {% for exercise in exercises %}
-          <img src="{% static 'python.png' %}"  style="height:120px;width:120px" alt="">
+        <div class="col-sm-3">
+          <img src="{% static 'python.png' %}"  style="height:100px;width:100px" alt="">
           <a href="{% url 'exercise' exercise.id %}">{{exercise.title}}</a>
+        </div>
+
       {% endfor %}
-      
+
     </div>
 
     <h5>suggestions</h5>
-    <button class="ask_suggestion_button" mode="1" type="button" name="button">mode 1</button>
-    <button class="ask_suggestion_button" mode="2" type="button" name="button">mode 2</button>
-    <button class="ask_suggestion_button" mode ="3" type="button" name="button">mode 3</button>
+    <button class="ask_suggestion_button" mode="1" type="button" name="button">easy</button>
+    <button class="ask_suggestion_button" mode="2" type="button" name="button">medium</button>
+    <button class="ask_suggestion_button" mode ="3" type="button" name="button">hard</button>
   </div>
 
 

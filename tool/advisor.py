@@ -87,8 +87,8 @@ def advisor(version_tree, problem_tree, total_count):
 				'module_array_concat', 'module_array_split', 'module_array_sort', 'module_array_pop', 'module_array_push', 'module_array_find']
 
 	#flatten both trees
-	flatten_version = flatten(input_version_tree)
-	flatten_problem = flatten(input_problem_tree)
+	flatten_version = flatten(version_tree)
+	flatten_problem = flatten(problem_tree)
 
 	#compare all elements in compare_list
 	for i in compare_list:

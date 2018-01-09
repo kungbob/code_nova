@@ -4,12 +4,12 @@
 
 
 {% block content %}
-<h1>View Exercise Page content</h1>
+<h1>{{exercise.title}}</h1>
 
-<h5>title : {{exercise.title}}</h5>
+<!-- <h5>title : {{exercise.title}}</h5> -->
 
 
-<button type="button" name="button" onclick="window.location.replace('{% url 'start_exercise' exercise.id %}')">Start</button>
+<button type="button" name="button" onclick="window.location.replace('{% url 'start_exercise' exercise.id %}')">Start Exercise</button>
 
 
 {% endblock %}
