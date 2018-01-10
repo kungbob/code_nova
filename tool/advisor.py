@@ -27,7 +27,7 @@ def message_lack_redundance (lack, redundance, flatten_problem, total_count):
 		else:
 			str = str + "Majority of the correct solutions contain the following elements while your program does not.\n"
 			for i in lack:
-				str = str + "%d out of the %d (%.2f%%) correction solutions contain " % (flatten_problem[i], total_count, 100*flatten_problem[i]/total_count) + conversion_list[i] + ".\n"
+				str = str + "%d out of the %d (%.2f%%) correct solutions contain " % (flatten_problem[i], total_count, 100*flatten_problem[i]/total_count) + conversion_list[i] + ".\n"
 			str = str + "You may try to utilize these elements in your program to see whether the problem can be solved.\n\n"
 
 	if redundance:
@@ -41,9 +41,9 @@ def message_lack_redundance (lack, redundance, flatten_problem, total_count):
 			str = str + "Your program contains the following elements while most of the correct solutions do not.\n"
 			for i in redundance:
 				if flatten_problem[i] == 0:
-					str = str + "None of the %d correction solutions contains " % (total_count) + conversion_list[i] + ".\n"
+					str = str + "None of the %d correct solutions contains " % (total_count) + conversion_list[i] + ".\n"
 				else:
-					str = str + "Only %d out of the %d (%.2f%%) correction solutions contain " % (flatten_problem[i], total_count, 100*flatten_problem[i]/total_count) + conversion_list[i] + ".\n"
+					str = str + "Only %d out of the %d (%.2f%%) correct solutions contain " % (flatten_problem[i], total_count, 100*flatten_problem[i]/total_count) + conversion_list[i] + ".\n"
 			str = str + "You may check whether these elements are necessary for this exercise.\n\n"
 
 	return str
