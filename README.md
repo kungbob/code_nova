@@ -77,3 +77,18 @@ Please run the website under CSVPN environment.
   ```
   pip install Pillow
   ```
+
+- Scikit-learn
+  ```
+  pip install -U scikit-learn
+  ```
+
+- pandas
+  ```
+  pip install pandas
+  ```
+
+- matplotlib
+  ```
+  python -mpip install -U matplotlib
+  ```
