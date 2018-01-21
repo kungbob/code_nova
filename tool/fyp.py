@@ -397,7 +397,6 @@ for dataset in all_dataset:
 	# plt.ylim((-5, 5))
 	plt.show()
 
-
 clf = svm.OneClassSVM(nu=0.1, kernel="rbf", gamma=0.1)
 clf.fit(raw_data)
 result = clf.predict(wrong_version_list)

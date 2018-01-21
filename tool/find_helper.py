@@ -30,6 +30,7 @@ def find_helper(seeker, current_exercise):
     seeker_ability_list = list(seeker_ability_dict.values())
     print(seeker_ability_list)
     # print(my_json)
+    # Compare value of two students' abilities
     dictance_dict = dict()
     for helper in student_list:
         if seeker.id == helper.id:
@@ -111,6 +112,7 @@ def call(helper_list, number):
         return id_list
 
 if __name__ == "__main__":
+    # Value set for demo
     database = generate_user_database()
     seeker = "test_user_1"
     print("Seeker is: " + seeker)

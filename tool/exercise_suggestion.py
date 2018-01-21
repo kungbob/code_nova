@@ -87,6 +87,7 @@ def call(problem_list, mode):
         if len(problem_list) == 0:
             result = call(problem_list, 2)
     elif mode == 2:
+        # The range is set for demo
         result = [problem[0] for problem in problem_list if problem[1] == 0]
         if len(problem_list) == 0:
             result = call(problem_list, 3)
@@ -113,7 +114,7 @@ def jsontocompare(user_json, thingtocompare):
 if __name__ == "__main__":
     # Not used
     current_user = "test_user_1"
-    # Just Hard-code
+    # Just Hard-code duel to demo
     profile = {'condition': 1, 'loop': 7, 'array': 7, 'function': 3, 'class': 7,
     'module': 7, 'basicIO': 10, '1': True, '2': True, '3': False}
     # Test
