@@ -272,7 +272,9 @@ version_list = [tri_1, tri_2, tri_3, tri_4, tri_5, tri_6, tri_7, tri_8, tri_9,
 data_matrix = []
 wrong_data_matrix = []
 for version in version_list:
+	# convert each program code into data value using analyser
 	version_json = analyser(version)
+	# flatten the data for ease of comparison
 	flatten_json = flatten(version_json)
 	print(flatten_json)
 	'''
@@ -284,11 +286,13 @@ for version in version_list:
 	print(choose_list)
 	version_list = list(choose_list.values())
 	'''
+	# convert dict to list
 	version_list = list(flatten_json.values())
+	# append list of value into data matrix
 	data_matrix.append(version_list)
 	print(version_list)
 
-
+# as there is only one wrong program code, no need to implement for loop
 wrong_json = analyser(wrong_tri_1)
 flatten_wrong_json = flatten(wrong_json)
 wrong_version_list = list(flatten_wrong_json.values())
@@ -301,7 +305,7 @@ print(newData)
 print(newData[:, 0])
 print(newData[:, 1])
 
-
+# start ploting the first graph
 plt.plot(newData[:, 0], newData[:, 1], 'o', color = 'blue', label='Normal code')
 # plt.plot(newData[-1, 0], newData[-1, 1], 'o', color = 'red')
 plt.plot(newData[0, 0], newData[0, 1], 'o', color = 'green', label='Hard-coded')
@@ -331,8 +335,8 @@ plt.plot(newData_normal[0, 0], newData_normal[0, 1], 'o', color = 'green')
 # plt.plot(newData_normal[-1, 0], newData_normal[-1, 1], 'o', color = 'red')
 plt.show()
 
-# Plot GaussianMixture
-
+# Plot graphs for three types of all_dataset
+# Raw data, standardized data, normalized data
 raw_data = newData
 test_data = (newData[1:, :])
 test_data_standard = (newData_standard[1:, :])
@@ -345,10 +349,12 @@ all_dataset.append(test_data_standard)
 all_dataset.append(newData_normal)
 all_dataset.append(test_data_normal)
 
+# Plotting the data density graph using gaussian density
+# Reference: http://scikit-learn.org/stable/auto_examples/mixture/plot_gmm_pdf.html
 for dataset in all_dataset:
 	clf = mixture.GaussianMixture(n_components=2, covariance_type='full')
 	clf.fit(dataset)
-
+	# Range of x and y value in graph
 	x = np.linspace(-5., 5.)
 	y = np.linspace(-5., 5.)
 	X, Y = np.meshgrid(x, y)
@@ -356,10 +362,11 @@ for dataset in all_dataset:
 	Z = -clf.score_samples(XX)
 	Z = Z.reshape(X.shape)
 
-
+	# Drawing contour line in the graph
 	CS = plt.contour(X, Y, Z, norm=LogNorm(vmin=1.0, vmax=1000.0),
 	                 levels=np.logspace(0, 3, 10))
 	CB = plt.colorbar(CS, shrink=0.8, extend='both')
+	# Plot the dots in the graph
 	plt.scatter(dataset[1:, 0], dataset[1:, 1], 8, marker = 'o', label = 'Normal code')
 	plt.scatter(dataset[0, 0], dataset[0, 1], 8, marker = 'o', color = 'red',
 				label = 'Hard-coded')
@@ -369,6 +376,8 @@ for dataset in all_dataset:
 	plt.legend(loc='upper right')
 	plt.show()
 
+# Plotting the data density using SVM kernel
+# Reference: http://scikit-learn.org/stable/auto_examples/svm/plot_oneclass.html#sphx-glr-auto-examples-svm-plot-oneclass-py
 for dataset in all_dataset:
 	xx, yy = np.meshgrid(np.linspace(-5, 5, 500), np.linspace(-5, 5, 500))
 	clf = svm.OneClassSVM(nu=0.1, kernel="rbf", gamma=0.1)
@@ -377,8 +386,7 @@ for dataset in all_dataset:
 	Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()])
 	Z = Z.reshape(xx.shape)
 
-
-	plt.title("Novelty Detection")
+	# Plot graph
 	plt.contourf(xx, yy, Z, levels=np.linspace(Z.min(), 0, 7), cmap=plt.cm.PuBu)
 	a = plt.contour(xx, yy, Z, levels=[0], linewidths=2, colors='darkred')
 	plt.contourf(xx, yy, Z, levels=[0, Z.max()], colors='palevioletred')
@@ -397,6 +405,7 @@ for dataset in all_dataset:
 	# plt.ylim((-5, 5))
 	plt.show()
 
+# Not used
 clf = svm.OneClassSVM(nu=0.1, kernel="rbf", gamma=0.1)
 clf.fit(raw_data)
 result = clf.predict(wrong_version_list)
