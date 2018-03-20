@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'student.apps.StudentConfig',
     'exercise.apps.ExerciseConfig',
     'version.apps.VersionConfig',
+    'cluster.apps.ClusterConfig',
     'ckeditor',
     'ckeditor_uploader',
     'course.apps.CourseConfig',

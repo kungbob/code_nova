@@ -138,7 +138,7 @@ def leave_room(message):
 def chat_send(message):
 
     room = get_room_or_error(message["room"], message.user)
-    output_message = {'room': room.id, 'chat': message["chat"], 'user_id': message.user.id, 'email':message.user.email}
+    output_message = {'room': room.id, 'chat': message["chat"], 'user_id': message.user.id, 'email':message.user.email,'time':message["time"]}
     print("chat:"+str(message))
 
     temp_history = json.loads(room.chat_history)
@@ -275,7 +275,7 @@ def editor_send(message):
     #     room.save()
         #perform remove
 
-    output_message = {'room': room.id, 'change': message["change"], 'user_id': message.user.id}
+    output_message = {'room': room.id, 'change': message["change"], 'user_id': message.user.id,'time':message['time']}
     room.broadcast(output_message)
     #
     # room.send_message(message["change"], message.user)

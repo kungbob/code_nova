@@ -80,35 +80,40 @@
 
 <script type="text/javascript">
 
-const chat_template = ({ email,chat}) => `
-  <div class="chat_message">
-    <span class="sender font-weight-bold">${email} : </span>
-    <span class="chat">${chat}</span>
-  </div>
-`;
-
-
-// const chat_template = ({ email, chat}) => `
+// const chat_template = ({ email,chat}) => `
 //   <div class="chat_message">
-//     <div class="sender">
-//       ${email}
-//     </div>
-//     <div class="chat">
-//       ${chat}
-//
-//     </div>
+//     <span class="sender font-weight-bold">${email} : </span>
+//     <span class="chat">${chat}</span>
 //   </div>
 // `;
 
+
+const chat_template = ({ email, chat,time}) => `
+
+<div class="chat_message">
+  <span class="glyphicon glyphicon-user"> ${email}</span>
+  <p>${chat}</p>
+  <span class="time-right">${time}</span>
+</div>
+`;
+
 const join_template = ({email}) => `
   <div class="join_message">
-      ${email} join the room
+      <span class="glyphicon glyphicon-user"> ${email}</span> join the room
   </div>
 `;
 
 const leave_template = ({email}) => `
   <div class="leave_message">
-    ${email} leave the room
+    <span class="glyphicon glyphicon-user"> ${email}</span> leave the room
+  </div>
+`;
+
+const advice_template = ({content,time}) => `
+  <div class="chat_advice">
+    <span class="glyphicon glyphicon-user"> AI Tutor</span>
+    <p>${content}</p>
+    <span class="time-right">${time}</span>
   </div>
 `;
 
@@ -359,13 +364,24 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
         else if (data.advice)
         {
 
+
+
+          for (var i = 0; i < data.advice.length; i++) {
+            data.advice[i] = data.advice[i].split("\n").join("<br />")
+          }
+
+
           $(".chat_history_panel").append("<br/> AI tutor : <br>");
           for (var i = 0; i < data.advice.length; i++) {
             data.advice[i] = data.advice[i].split("\n").join("<br />")
           }
           $(".chat_history_panel").append(data.advice.join("<br>"));
 
+
+
         }
+
+      $(".chat_history_panel").animate({ scrollTop: $(".chat_history_panel").prop("scrollHeight")}, 500);
 
     };
 
@@ -493,6 +509,8 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
     function chat_send()
     {
+      var dt = new Date();
+      var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
 
       chat_message = $(".chat_field").val();
       $(".chat_field").val("");
@@ -500,7 +518,8 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
       socket.send(JSON.stringify({
           "command": "chat_send",  // determines which handler will be used (see chat/routing.py)
           "room": {{room.id}},
-          "chat": chat_message
+          "chat": chat_message,
+          "time": time
       }));
 
 

@@ -6,6 +6,12 @@ from student.models import Student
 from django.shortcuts import redirect
 # Create your views here.
 
+def statistics(exercise_id):
+
+    exercise = Exercise.objects.get(pk=exercise_id)
+
+    return render(request,'exercise/exercise.html',{'exercise' : exercise})
+
 def exercise(request,exercise_id):
 
     exercise = Exercise.objects.get(pk=exercise_id)
