@@ -117,4 +117,5 @@ def run_kmeans(data_matrix):
 
 		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "skilltree": necessary_skill})
 
-	return cluster_list
+	output = {"cluster_list": cluster_list, "label": label}
+	return output
