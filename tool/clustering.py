@@ -91,6 +91,7 @@ def run_kmeans(data_matrix):
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 		necessary_skill = []
+		redundant_skill = []
 
 		for data in data_list[cluster]:
 			for i in range(0, len(data)):
@@ -100,9 +101,11 @@ def run_kmeans(data_matrix):
 		for i in range(0, len(skilltree)):
 			if skilltree[i] >= data_count[cluster]*0.75:
 				necessary_skill.append(skilltree_structure[i])
+			elif skilltree[i] <= data_count[cluster]*0.1:
+				redundant_skill.append(skilltree_structure[i])
 
 
-		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "skilltree": necessary_skill})
+		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "necessary_skill": necessary_skill, "redundant_skill": redundant_skill}) 
 
 	output = {"cluster_list": cluster_list, "label": label}
 	return output
