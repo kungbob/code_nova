@@ -16,7 +16,7 @@ from tool.advisor import advisor
 from tool.tree import get_problem_tree,get_version_tree,flatten
 from tool.exercise_suggestion import exercise_suggestion
 
-from tool.clustering import run_kmeans,preprocess_data
+from tool.clustering import run_kmeans
 
 
 from exercise.models import Exercise
@@ -357,9 +357,19 @@ def editor_save_run(message):
 
     if overall_success:
 
-        data_matrix = preprocess_data()
+        data_matrix = []
 
-        testing_data = run_kmeans(data_matrix);
+        version_list = Version.objects.filter(overall_success=True)
+        for version in version_list:
+
+            flatten_json = flatten(json.loads(version.version_tree))
+            flatten_list = list(flatten_json.values())
+
+
+            data_matrix.append(flatten_list)
+
+        testing_data = run_kmeans(data_matrix)
+
         print(testing_data)
 
 

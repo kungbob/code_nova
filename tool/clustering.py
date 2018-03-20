@@ -54,19 +54,6 @@ from version.models import Version
 #print("redundant element: ", redundance)
 
 
-def preprocess_data():
-
-    data_matrix = [];
-
-	version_list = Version.objects.filter(overall_success=True)
-    for version in version_list:
-		# version.version_tree is the submission's skill tree in text format
-		# version.id is the ID of the submission
-        flatten_json = flatten(json.loads(version.version_tree))
-        flatten_list = list(flatten_json.values())
-        data_matrix.append(flatten_list)
-
-	return data_matrix
 
 def run_kmeans(data_matrix):
 
@@ -117,4 +104,5 @@ def run_kmeans(data_matrix):
 
 		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "skilltree": necessary_skill})
 
-	return cluster_list
+	output = {"cluster_list": cluster_list, "label": label}
+	return output
