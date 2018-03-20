@@ -30,6 +30,7 @@ def compile_code(code, exercise):
 	test_case_list = json.loads(exercise.test_case)["test_case"]
 	result_list = []
 	overall_success = True
+	passed_test_case = 0
 
 	for test_case in test_case_list:
 		with stdoutIO() as out:
@@ -46,6 +47,7 @@ def compile_code(code, exercise):
 
 		if output == test_case["expect_output"]:
 			success = True
+			passed_test_case = passed_test_case + 1
 		else:
 			success = False
 			overall_success = False
@@ -56,6 +58,6 @@ def compile_code(code, exercise):
 
 	# print(result_list)
 
-	result = {"result":result_list,"overall_success":overall_success}
+	result = {"result":result_list,"total_test_case":len(test_case_list),"passed_test_case":passed_test_case,"overall_success":overall_success}
 
 	return result

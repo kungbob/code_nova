@@ -37,7 +37,8 @@
   </div>
   <div id="editor" class="column">{{room.code}}</div>
   <div  id="control_column" class="column" style="background-color:#ccc;">
-    <h1>Room ID:{{room.id}}</h1>
+    <b>Room ID:{{room.id}}</b>
+    
 
 
   <div class="chat_panel">
@@ -80,17 +81,10 @@
 
 <script type="text/javascript">
 
-// const chat_template = ({ email,chat}) => `
-//   <div class="chat_message">
-//     <span class="sender font-weight-bold">${email} : </span>
-//     <span class="chat">${chat}</span>
-//   </div>
-// `;
-
 
 const chat_template = ({ email, chat,time}) => `
 
-<div class="chat_message">
+<div class="chat">
   <span class="glyphicon glyphicon-user"> ${email}</span>
   <p>${chat}</p>
   <span class="time-right">${time}</span>
@@ -109,8 +103,37 @@ const leave_template = ({email}) => `
   </div>
 `;
 
+
+const save_run_template = ({overall_success,total_test_case,passed_test_case}) => {
+
+
+  if (overall_success) {
+
+    return `<div class="chat">
+      <span class="glyphicon glyphicon-user"> AI Tutor</span>
+      <p>You have passed all test cases! Good Work</p>
+      <p>Click here for more info</p>
+      <span class="time-right">time</span>
+    </div>`;
+
+  }
+
+  else {
+    return `<div class="chat">
+      <span class="glyphicon glyphicon-user"> AI Tutor</span>
+      <p>You have passed ${passed_test_case}/${total_test_case} test cases!</p>
+      <p>Click here for more info</p>
+      <span class="time-right">time</span>
+    </div>`;
+  }
+
+
+
+}
+
+
 const advice_template = ({content,time}) => `
-  <div class="chat_advice">
+  <div class="chat">
     <span class="glyphicon glyphicon-user"> AI Tutor</span>
     <p>${content}</p>
     <span class="time-right">${time}</span>
@@ -356,9 +379,12 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
           var message = succss_count.toString()+"/"+data.result.length.toString()+" test cases passed"
 
+          $(".chat_history_panel").append(save_run_template(data));
+
+
           $("#test_case_modal").html(message);
 
-          show_modal();
+          // show_modal();
         }
 
         else if (data.advice)

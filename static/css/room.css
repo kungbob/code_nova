@@ -2,7 +2,7 @@
 
 
 
-.chat_message {
+.chat {
     border: 2px solid #dedede;
     background-color: #f1f1f1;
     border-radius: 5px;
@@ -17,14 +17,14 @@
 }
 
 /* Clear floats */
-.chat_message::after {
+.chat::after {
     content: "";
     clear: both;
     display: table;
 }
 
 /* Style images */
-.chat_message img {
+.chat img {
     float: left;
     max-width: 60px;
     width: 100%;
@@ -33,7 +33,7 @@
 }
 
 /* Style the right image */
-.chat_message img.right {
+.chat img.right {
     float: right;
     margin-left: 20px;
     margin-right:0;

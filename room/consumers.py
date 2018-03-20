@@ -330,9 +330,10 @@ def editor_save_run(message):
 
     try:
         version_tree = analyser(code)
+        version_tree_json = json.dumps(version_tree)
 
         result_json = json.dumps(result)
-        version_tree_json = json.dumps(version_tree)
+
 
         version = Version()
 
