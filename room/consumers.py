@@ -370,6 +370,9 @@ def editor_save_run(message):
 
         testing_data = run_kmeans(data_matrix)
 
+        cluster_list = testing_data.cluster
+        label = testing_data.label
+
         print(testing_data)
 
 
