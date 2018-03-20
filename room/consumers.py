@@ -13,8 +13,10 @@ from tool.find_helper import find_helper
 from tool.compile_code import compile_code
 from tool.analyser import analyser
 from tool.advisor import advisor
-from tool.tree import get_problem_tree,get_version_tree
+from tool.tree import get_problem_tree,get_version_tree,flatten
 from tool.exercise_suggestion import exercise_suggestion
+
+from tool.clustering import run_kmeans,preprocess_data
 
 
 from exercise.models import Exercise
@@ -309,6 +311,9 @@ def editor_save(message):
 @channel_session_user
 def editor_save_run(message):
 
+
+
+
     room = get_room_or_error(message["room"], message.user)
     code = message["code"]
 
@@ -339,6 +344,7 @@ def editor_save_run(message):
 
         version.code = message["code"]
         version.room = room
+        version.exercise = room.exercise
         version.result = result_json
         version.overall_success = overall_success
         version.version_tree =version_tree_json
@@ -349,7 +355,12 @@ def editor_save_run(message):
     except:
         pass
 
+    if overall_success:
 
+        data_matrix = preprocess_data()
+
+        testing_data = run_kmeans(data_matrix);
+        print(testing_data)
 
 
     #

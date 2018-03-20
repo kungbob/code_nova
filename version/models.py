@@ -6,6 +6,7 @@ from room.models import Room
 
 class Version(models.Model):
     room = models.ForeignKey(Room,unique=False, on_delete=models.CASCADE,)
+    exercise = models.ForeignKey(Exercise,unique=False,on_delete=models.CASCADE,)
     code = models.TextField(default="")
     result = models.TextField(default="")
     version_tree = models.TextField(default='')

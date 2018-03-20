@@ -1,5 +1,5 @@
-from analyser import analyser
-from tree import flatten, get_empty_version_tree
+from tool.analyser import analyser
+from tool.tree import flatten, get_empty_version_tree
 from sklearn.decomposition import PCA
 import numpy as np # linear algebra
 import pandas as pd
@@ -10,7 +10,8 @@ from matplotlib.colors import LogNorm
 from sklearn import svm
 import matplotlib.font_manager
 from sklearn.cluster import KMeans
-from advisor import advisor
+
+from version.models import Version
 
 #pca = PCA(n_components = 2)
 #newData = pca.fit_transform(data_matrix)
@@ -53,13 +54,23 @@ from advisor import advisor
 #print("redundant element: ", redundance)
 
 
-def get_date ():
-	version_tree_list = []
+def preprocess_data():
 
-	return version_tree_list
+    data_matrix = [];
 
+	version_list = Version.objects.filter(overall_success=True)
+    for version in version_list:
+		# version.version_tree is the submission's skill tree in text format
+		# version.id is the ID of the submission
+        flatten_json = flatten(json.loads(version.version_tree))
+        flatten_list = list(flatten_json.values())
+        data_matrix.append(flatten_list)
+
+	return data_matrix
 
 def run_kmeans(data_matrix):
+
+
 	kmeans = KMeans(n_clusters=1, random_state=0).fit(data_matrix)
 	min_error = kmeans.inertia_
 	best_cluster_no = 1
@@ -78,18 +89,18 @@ def run_kmeans(data_matrix):
 	for i in range(0, best_cluster_no):
 		data_count.append(0)
 		data_list.append([])
-		
+
 
 	for i in range(0,len(data_matrix)):
 		data_list[label[i]].append(data_matrix[i])
 		data_count[label[i]] += 1
-	
+
 	skilltree_structure = list(flatten(get_empty_version_tree()).keys())
 	cluster_list = []
 
 
 	for cluster in range(0, best_cluster_no):
-		skilltree = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+		skilltree = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 		necessary_skill = []
@@ -104,9 +115,6 @@ def run_kmeans(data_matrix):
 				necessary_skill.append(skilltree_structure[i])
 
 
-		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "skilltree": necessary_skill}) 
+		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "skilltree": necessary_skill})
 
 	return cluster_list
-
-
-
