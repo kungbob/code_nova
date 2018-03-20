@@ -105,7 +105,7 @@ def run_kmeans(data_matrix):
 				redundant_skill.append(skilltree_structure[i])
 
 
-		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "necessary_skill": necessary_skill, "redundant_skill": redundant_skill}) 
+		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "necessary_skill": necessary_skill, "redundant_skill": redundant_skill})
 
 	output = {"cluster_list": cluster_list, "label": label}
 	return output
