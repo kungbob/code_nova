@@ -18,9 +18,10 @@ from tool.exercise_suggestion import exercise_suggestion
 
 from tool.clustering import run_kmeans
 
-
+from cluster.models import Cluster
 from exercise.models import Exercise
 
+import numpy as np
 import datetime
 import time
 import _thread
@@ -358,7 +359,6 @@ def editor_save_run(message):
     if overall_success:
 
         data_matrix = []
-
         version_list = Version.objects.filter(overall_success=True)
         for version in version_list:
 
@@ -368,12 +368,26 @@ def editor_save_run(message):
 
             data_matrix.append(flatten_list)
 
-        testing_data = run_kmeans(data_matrix)
+        cluster_result = run_kmeans(data_matrix)
 
-        cluster_list = testing_data.cluster
-        label = testing_data.label
 
-        print(testing_data)
+        cluster_list = cluster_result["cluster_list"]
+        label = cluster_result["label"]
+
+
+        print(cluster_list)
+        print(label)
+
+        for cluster in cluster_list:
+            new_cluster = Cluster()
+            new_cluster.exercise = room.exercise
+            # print(cluster["necessary_skill"])
+            new_cluster.necessary_skill = cluster["necessary_skill"]
+            new_cluster.redundant_skill = cluster["redundant_skill"]
+            new_cluster.center = np.array2string(cluster["center"],separator=",",suppress_small=True)
+            new_cluster.data_count = cluster["data_count"]
+
+            new_cluster.save()
 
 
     #
@@ -405,19 +419,33 @@ def ask_advice(message):
     code = message["code"]
 
 
-    try:
-        problem_tree = json.loads(room.exercise.problem_tree)
-        version_tree = analyser(code)
-        total_count = 100
+    version_tree = analyser(code)
 
-        advice = advisor(version_tree,problem_tree,total_count)
 
-        advice_json = {"advice":advice}
-        message.reply_channel.send({
-            "text": json.dumps(advice_json),
-        })
-    except:
-        pass
+    advice = advisor(room.exercise.id,version_tree)
+
+    print(advice)
+
+
+    # try:
+    #     # problem_tree = json.loads(room.exercise.problem_tree)
+    #
+    #     version_tree = analyser(code)
+    #
+    #     # advice = advisor(version_tree,problem_tree,total_count)
+    #
+    #     advice = advisor(room.exercise.id,version_tree)
+    #
+    #     print(advice)
+    #
+    #     # advice_json = {"advice":advice}
+    #     # message.reply_channel.send({
+    #     #     "text": json.dumps(advice_json),
+    #     # })
+    #
+    #
+    # except:
+    #     pass
 
 
 
