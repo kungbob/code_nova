@@ -384,7 +384,7 @@ def editor_save_run(message):
             # print(cluster["necessary_skill"])
             new_cluster.necessary_skill = cluster["necessary_skill"]
             new_cluster.redundant_skill = cluster["redundant_skill"]
-            new_cluster.center = np.array2string(cluster["center"],separator=",",suppress_small=True)
+            new_cluster.center = ','.join(map(str, center[cluster].tolist()))
             new_cluster.data_count = cluster["data_count"]
 
             new_cluster.save()
