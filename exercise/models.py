@@ -10,8 +10,9 @@ class Exercise(models.Model):
     material = RichTextUploadingField()
     template = models.TextField(default="",blank=True)
     test_case = models.TextField(default='',blank=True)
-    problem_tree = models.TextField(default="",blank=True)
     complete_student = models.ManyToManyField(Student)
+    # common_skill = models.TextField(default="",blank=True)
+    character_skill = models.TextField(default="",blank=True)
 
 
     def __str__(self):

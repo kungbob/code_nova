@@ -25,7 +25,6 @@ import numpy as np
 import datetime
 import time
 import _thread
-import base64
 
 @channel_session_user_from_http
 def ws_connect(message):
@@ -383,17 +382,9 @@ def editor_save_run(message):
             new_cluster = Cluster()
             new_cluster.exercise = room.exercise
             # print(cluster["necessary_skill"])
-
-            text = (base64.b64encode(cluster["center"]))
-
-            dumb = base64.decodestring(text)
-
-            print(dumb)
-
-
-            new_cluster.necessary_skill = cluster["necessary_skill"]
-            new_cluster.redundant_skill = cluster["redundant_skill"]
-            new_cluster.center = base64.b64encode(cluster["center"])
+            new_cluster.necessary_skill = ','.join(cluster["necessary_skill"])
+            new_cluster.redundant_skill = ','.join(cluster["redundant_skill"])
+            new_cluster.center = ','.join(map(str, cluster["center"].tolist()))
             new_cluster.data_count = cluster["data_count"]
 
             new_cluster.save()
@@ -426,6 +417,8 @@ def ask_advice(message):
 
     room = get_room_or_error(message["room"], message.user)
     code = message["code"]
+
+    print(code)
 
 
     version_tree = analyser(code)
@@ -462,12 +455,12 @@ def ask_advice(message):
 @channel_session_user
 def search_helper(message):
 
-    print("search_helper")
-    # print(message.user.reply_channel)
-    # # users = User.objects.filter(acc_type="student").exclude(reply_channel="")
 
-    #
+    code = message["code"]
+    print(code)
+
     room = Room.objects.get(pk=message["room"])
+
     room.require_help = True
     room.save()
 
@@ -476,7 +469,9 @@ def search_helper(message):
     # helper_list = find_helper(message.user,room.exercise)
     # return list of User object
     seeker = Student.objects.get(user=message.user)
-    helper_list = find_helper(seeker,room.exercise)
+    helper_list = find_helper(code,seeker,room.exercise)
+    print("-------------------------")
+    print(helper_list)
 
     for helper_id in helper_list:
         if room.require_help == False:
@@ -491,9 +486,14 @@ def search_helper(message):
 
             }
 
+        print(output_json)
+
         # use another thread to send the message
         _thread.start_new_thread(channel_send_thread,(user.reply_channel,output_json,))
         time.sleep(20)
+
+
+
 
     # while room.require_help:
     #

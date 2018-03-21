@@ -4,7 +4,6 @@ from scipy.spatial import distance
 from cluster.models import Cluster
 from exercise.models import Exercise
 import numpy as np # linear algebra
-import base64
 
 
 def advisor(ex_id, version_tree):
@@ -48,17 +47,14 @@ def advisor(ex_id, version_tree):
 	max_cluster_id = 0
 	max_cluster_count = 0
 
-	nearest_cluster_id = 0
+	nearest_cluster_id = cluster_list[0].id
 
-	print(cluster_list[0].center)
-	print(type(cluster_list[0].center))
-	print(base64.decodestring(cluster_list[0].center))
-	print(np.array(cluster_list[0].center,dtype=np.float64).dtype)
-	print(np.array(cluster_list[0].center,dtype=np.float64))
-	print(np.array(list(flatten_tree.values()),dtype=np.float64).dtype)
-	print(np.array(list(flatten_tree.values()),dtype=np.float64))
+	center = cluster_list[0].center.split(',')
 
-	nearest_cluster_dis = distance.euclidean(np.array(list(flatten_tree.values())),np.array(cluster_list[0].center))
+	for i in range(0, len(center)):
+		center[i] = float(center[i])
+
+	nearest_cluster_dis = distance.euclidean(np.array(list(flatten_tree.values())),np.array(center))
 
 	for cluster in cluster_list:
 		lacking = []
@@ -67,16 +63,23 @@ def advisor(ex_id, version_tree):
 		if max_cluster_count < cluster.data_count:
 			max_cluster_id = cluster.id
 
-		dist = distance.euclidean(list(flatten_tree.values()),np.array(cluster_list[0].center))
+		center = cluster.center.split(',')
+		necessary_skill = cluster.necessary_skill.split(',')
+		redundant_skill = cluster.redundant_skill.split(',')
+
+		for i in range(0, len(center)):
+			center[i] = float(center[i])
+
+		dist = distance.euclidean(list(flatten_tree.values()),np.array(center))
 
 		if nearest_cluster_dis > dist:
 			nearest_cluster_id = cluster.id
 
-		for skill in cluster.necessary_skill:
+		for skill in necessary_skill:
 			if flatten_tree[skill] == 0 and skill in compare_list:
 				lacking.append(conversion_list[skill])
 
-		for skill in cluster.redundant_skill:
+		for skill in redundant_skill:
 			if flatten_tree[skill] > 0 and skill in compare_list:
 				redundance.append(conversion_list[skill])
 

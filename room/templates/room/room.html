@@ -38,7 +38,7 @@
   <div id="editor" class="column">{{room.code}}</div>
   <div  id="control_column" class="column" style="background-color:#ccc;">
     <b>Room ID:{{room.id}}</b>
-    
+
 
 
   <div class="chat_panel">
@@ -608,10 +608,13 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     function search_helper()
     {
 
+      var code = editor.getValue();
+
       console.log("send help request");
       socket.send(JSON.stringify({
           "command": "search_helper",  // determines which handler will be used (see chat/routing.py)
           "room": {{room.id}},
+          "code": code
       }));
     }
 

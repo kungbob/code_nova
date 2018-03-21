@@ -7,3 +7,4 @@ class Cluster(models.Model):
   center =  models.TextField(default="")
   necessary_skill = models.TextField(default="")
   redundant_skill = models.TextField(default="")
+  character_skill = models.TextField(default="")
