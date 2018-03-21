@@ -1,20 +1,15 @@
 from tool.tree import get_problem_tree, get_version_tree, flatten
 from tool.analyser import analyser
-<<<<<<< HEAD
 from scipy.spatial import distance
 from cluster.models import Cluster
 from exercise.models import Exercise
 import numpy as np # linear algebra
-=======
-from tool.clustering import get_cluster_list
-from scipy.spatial import distance
->>>>>>> 8c34052ce2a5cd0eba4ee3a4f6dc4fc6a407e335
+import base64
 
 
 def advisor(ex_id, version_tree):
 
 
-<<<<<<< HEAD
 	flatten_tree = flatten(version_tree)
 
 
@@ -22,12 +17,6 @@ def advisor(ex_id, version_tree):
 	cluster_list = Cluster.objects.filter(exercise=exercise)
 
 
-=======
-	flatten_tree = flatten(analyser(version_tree))
-
-	cluster_list = get_cluster_list()
-	
->>>>>>> 8c34052ce2a5cd0eba4ee3a4f6dc4fc6a407e335
 	#list of elements for comparison
 	compare_list = ['basicIO_output', 'condition_if_ifOnly', 'condition_if_withElse', 'condition_switch', 'loop_single_for', 'loop_single_while',
 				'loop_nested', 'array_nonCharArray_singleDim', 'array_nonCharArray_multiDim',
@@ -60,17 +49,16 @@ def advisor(ex_id, version_tree):
 	max_cluster_count = 0
 
 	nearest_cluster_id = 0
-<<<<<<< HEAD
 
+	print(cluster_list[0].center)
+	print(type(cluster_list[0].center))
+	print(base64.decodestring(cluster_list[0].center))
 	print(np.array(cluster_list[0].center,dtype=np.float64).dtype)
 	print(np.array(cluster_list[0].center,dtype=np.float64))
 	print(np.array(list(flatten_tree.values()),dtype=np.float64).dtype)
 	print(np.array(list(flatten_tree.values()),dtype=np.float64))
 
 	nearest_cluster_dis = distance.euclidean(np.array(list(flatten_tree.values())),np.array(cluster_list[0].center))
-=======
-	nearest_cluster_dis = distance.euclidean(list(flatten_tree.values()),cluster_list[0].center)
->>>>>>> 8c34052ce2a5cd0eba4ee3a4f6dc4fc6a407e335
 
 	for cluster in cluster_list:
 		lacking = []
@@ -79,15 +67,9 @@ def advisor(ex_id, version_tree):
 		if max_cluster_count < cluster.data_count:
 			max_cluster_id = cluster.id
 
-<<<<<<< HEAD
 		dist = distance.euclidean(list(flatten_tree.values()),np.array(cluster_list[0].center))
 
 		if nearest_cluster_dis > dist:
-=======
-		distance = distance.euclidean(list(flatten_tree.values()),cluster.center)
-
-		if nearest_cluster_dis > distance:
->>>>>>> 8c34052ce2a5cd0eba4ee3a4f6dc4fc6a407e335
 			nearest_cluster_id = cluster.id
 
 		for skill in cluster.necessary_skill:
@@ -112,11 +94,7 @@ def advisor(ex_id, version_tree):
 
 def message_lack_redundance (lack, redundance, flatten_problem, total_count):
 
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 8c34052ce2a5cd0eba4ee3a4f6dc4fc6a407e335
 
 	#a dictionary to convert dictionary terms to natural language terms
 	conversion_list = {"basicIO_input": "Basic Input", "basicIO_output": "Basic Output", "condition_if_ifOnly": "If (Without else)",

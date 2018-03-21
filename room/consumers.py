@@ -25,6 +25,7 @@ import numpy as np
 import datetime
 import time
 import _thread
+import base64
 
 @channel_session_user_from_http
 def ws_connect(message):
@@ -382,9 +383,17 @@ def editor_save_run(message):
             new_cluster = Cluster()
             new_cluster.exercise = room.exercise
             # print(cluster["necessary_skill"])
+
+            text = (base64.b64encode(cluster["center"]))
+
+            dumb = base64.decodestring(text)
+
+            print(dumb)
+
+
             new_cluster.necessary_skill = cluster["necessary_skill"]
             new_cluster.redundant_skill = cluster["redundant_skill"]
-            new_cluster.center = np.array2string(cluster["center"],separator=",",suppress_small=True)
+            new_cluster.center = base64.b64encode(cluster["center"])
             new_cluster.data_count = cluster["data_count"]
 
             new_cluster.save()
