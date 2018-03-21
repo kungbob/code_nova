@@ -49,12 +49,17 @@ def advisor(ex_id, version_tree):
 
 	nearest_cluster_id = 0
 
-	print(np.array(cluster_list[0].center,dtype=np.float64).dtype)
-	print(np.array(cluster_list[0].center,dtype=np.float64))
-	print(np.array(list(flatten_tree.values()),dtype=np.float64).dtype)
-	print(np.array(list(flatten_tree.values()),dtype=np.float64))
+	#print(np.array(cluster_list[0].center,dtype=np.float64).dtype)
+	#print(np.array(cluster_list[0].center,dtype=np.float64))
+	#print(np.array(list(flatten_tree.values()),dtype=np.float64).dtype)
+	#print(np.array(list(flatten_tree.values()),dtype=np.float64))
 
-	nearest_cluster_dis = distance.euclidean(np.array(list(flatten_tree.values())),np.array(cluster_list[0].center))
+	center = cluster_list[0].center.split(',')
+
+	for i in range(0, len(center)):
+		center[i] = float(center[i])
+
+	nearest_cluster_dis = distance.euclidean(np.array(list(flatten_tree.values())),np.array(center))
 
 	for cluster in cluster_list:
 		lacking = []
@@ -63,7 +68,12 @@ def advisor(ex_id, version_tree):
 		if max_cluster_count < cluster.data_count:
 			max_cluster_id = cluster.id
 
-		dist = distance.euclidean(list(flatten_tree.values()),np.array(cluster_list[0].center))
+		center = cluster.center.split(',')
+
+		for i in range(0, len(center)):
+			center[i] = float(center[i])
+
+		dist = distance.euclidean(list(flatten_tree.values()),np.array(center))
 
 		if nearest_cluster_dis > dist:
 			nearest_cluster_id = cluster.id
