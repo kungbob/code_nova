@@ -382,15 +382,9 @@ def editor_save_run(message):
             new_cluster = Cluster()
             new_cluster.exercise = room.exercise
             # print(cluster["necessary_skill"])
-<<<<<<< HEAD
             new_cluster.necessary_skill = ','.join(cluster["necessary_skill"])
             new_cluster.redundant_skill = ','.join(cluster["redundant_skill"])
             new_cluster.center = ','.join(map(str, cluster["center"].tolist()))
-=======
-            new_cluster.necessary_skill = cluster["necessary_skill"]
-            new_cluster.redundant_skill = cluster["redundant_skill"]
-            new_cluster.center = ','.join(map(str, center[cluster].tolist()))
->>>>>>> bcc7b46fdf59f55bed329e91775f98a673c488f9
             new_cluster.data_count = cluster["data_count"]
 
             new_cluster.save()

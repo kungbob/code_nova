@@ -47,16 +47,7 @@ def advisor(ex_id, version_tree):
 	max_cluster_id = 0
 	max_cluster_count = 0
 
-<<<<<<< HEAD
 	nearest_cluster_id = cluster_list[0].id
-=======
-	nearest_cluster_id = 0
-
-	#print(np.array(cluster_list[0].center,dtype=np.float64).dtype)
-	#print(np.array(cluster_list[0].center,dtype=np.float64))
-	#print(np.array(list(flatten_tree.values()),dtype=np.float64).dtype)
-	#print(np.array(list(flatten_tree.values()),dtype=np.float64))
->>>>>>> bcc7b46fdf59f55bed329e91775f98a673c488f9
 
 	center = cluster_list[0].center.split(',')
 
