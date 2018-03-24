@@ -55,6 +55,7 @@ from version.models import Version
 
 def run_kmeans(data_matrix):
 
+	other_list = ["maxIfDepth", "maxLoopDepth", "totalArraySize", "maxArrayDim"]
 
 	kmeans = KMeans(n_clusters=1, random_state=0).fit(data_matrix)
 	min_error = kmeans.inertia_
@@ -90,20 +91,43 @@ def run_kmeans(data_matrix):
 
 		necessary_skill = []
 		redundant_skill = []
+		other_count = []
+
+		for i in other_list:
+			other_count.append([])
 
 		for data in data_list[cluster]:
 			for i in range(0, len(data)):
 				if data[i] > 0:
 					skilltree[i] += 1
 
+			for skill in [57,58,59,60]:
+				other_count[skill - 57].append(data[skill])
+
 		for i in range(0, len(skilltree)):
-			if skilltree[i] >= data_count[cluster]*0.75:
+			if skilltree[i] >= data_count[cluster]*0.75 and skilltree_structure[i] not in other_list:
 				necessary_skill.append(skilltree_structure[i])
-			elif skilltree[i] <= data_count[cluster]*0.1:
+			elif skilltree[i] <= data_count[cluster]*0.1 and skilltree_structure[i] not in other_list:
 				redundant_skill.append(skilltree_structure[i])
 
+		other_skill = []
+		for i in range(0, len(other_list)):
+			mode = max(set(other_count[i]), key=other_count[i].count)
+			other_skill.append({"name": other_list[i], "mode": mode})
 
-		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "necessary_skill": necessary_skill, "redundant_skill": redundant_skill})
+		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "necessary_skill": necessary_skill,
+			"redundant_skill": redundant_skill, "other_skill": other_skill, "character_skill": ""})
 
-	output = {"cluster_list": cluster_list, "label": label}
+
+	common_feature = cluster_list[0]["necessary_skill"]
+	for cluster in cluster_list:
+		common_feature = list(set(cluster["necessary_skill"]).intersection(common_feature))
+
+	for cluster in cluster_list:
+		charcteristic = list(cluster["necessary_skill"])
+		for common in common_feature:
+			charcteristic.remove(common)
+		cluster["charcteristic"] = charcteristic
+
+	output = {"cluster_list": cluster_list, "label": label, "common_skill": common_feature}
 	return output

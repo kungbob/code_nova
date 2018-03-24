@@ -17,21 +17,19 @@ body {
     width: 100%;
 }
 
+.menu_bar{
+  height: 10%;
+}
+.content{
+  height: 100%
+}
 .navbar{
   margin-bottom: 0;
-  flex-shrink: 0;
 }
-
-.content{
-  /* height: 100% */
-  flex-grow: 1;
-}
-
 
 .fill{
 
   padding-left: 0;
   padding-right: 0;
-  margin: 0;
 
 }

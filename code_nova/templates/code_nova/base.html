@@ -18,6 +18,7 @@
   </head>
 
   <body>
+
 <!-- selecting menu bar based on user acc_type -->
 
       {%  if request.user.acc_type == "student" %}
@@ -34,7 +35,7 @@
 
       {% endif%}
 
-    <div class="container-fluid fill">
+    <div class="container-fluid fill content">
       {% block content %}{% endblock %}
     </div>
 

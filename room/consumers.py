@@ -26,6 +26,9 @@ import datetime
 import time
 import _thread
 
+
+CONST_MIN_VERSION = 10
+
 @channel_session_user_from_http
 def ws_connect(message):
 
@@ -337,7 +340,6 @@ def editor_save_run(message):
     try:
         version_tree = analyser(code)
         version_tree_json = json.dumps(version_tree)
-
         result_json = json.dumps(result)
 
 
@@ -348,46 +350,58 @@ def editor_save_run(message):
         version.exercise = room.exercise
         version.result = result_json
         version.overall_success = overall_success
-        version.version_tree =version_tree_json
+        version.version_tree = version_tree_json
 
         version.save()
 
 
-    except:
-        pass
+    except Exception as e:
+        print(e)
 
     if overall_success:
 
         data_matrix = []
-        version_list = Version.objects.filter(overall_success=True)
-        for version in version_list:
+        version_list = Version.objects.filter(exercise=room.exercise,overall_success=True)
 
-            flatten_json = flatten(json.loads(version.version_tree))
-            flatten_list = list(flatten_json.values())
+        if len(version_list) >= CONST_MIN_VERSION :
+            for version in version_list:
 
-
-            data_matrix.append(flatten_list)
-
-        cluster_result = run_kmeans(data_matrix)
+                flatten_json = flatten(json.loads(version.version_tree))
+                flatten_list = list(flatten_json.values())
 
 
-        cluster_list = cluster_result["cluster_list"]
-        label = cluster_result["label"]
+                data_matrix.append(flatten_list)
+
+            cluster_result = run_kmeans(data_matrix)
 
 
-        print(cluster_list)
-        print(label)
+            cluster_list = cluster_result["cluster_list"]
+            label = cluster_result["label"]
+            common_skill = cluster_result["common_skill"]
 
-        for cluster in cluster_list:
-            new_cluster = Cluster()
-            new_cluster.exercise = room.exercise
-            # print(cluster["necessary_skill"])
-            new_cluster.necessary_skill = ','.join(cluster["necessary_skill"])
-            new_cluster.redundant_skill = ','.join(cluster["redundant_skill"])
-            new_cluster.center = ','.join(map(str, cluster["center"].tolist()))
-            new_cluster.data_count = cluster["data_count"]
 
-            new_cluster.save()
+
+            cluster_object_list = []
+            for cluster in cluster_list:
+                new_cluster = Cluster()
+                new_cluster.exercise = room.exercise
+                # print(cluster["necessary_skill"])
+                new_cluster.necessary_skill = ','.join(cluster["necessary_skill"])
+                new_cluster.redundant_skill = ','.join(cluster["redundant_skill"])
+                new_cluster.center = ','.join(map(str, cluster["center"].tolist()))
+                new_cluster.data_count = cluster["data_count"]
+                new_cluster.character_skill = cluster["character_skill"]
+                new_cluster.save()
+                cluster_object_list.append(new_cluster)
+
+            for i in range(0,len(label)):
+                cluster = cluster_object_list[label[i]]
+                version_list[i].cluster = cluster
+                version_list[i].save()
+
+
+            room.exercise.common_skill = ','.join(common_skill)
+            room.exercise.save()
 
 
     #
@@ -422,7 +436,6 @@ def ask_advice(message):
 
 
     version_tree = analyser(code)
-
 
     advice = advisor(room.exercise.id,version_tree)
 
