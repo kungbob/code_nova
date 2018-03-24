@@ -1,4 +1,4 @@
-from tool.tree import get_problem_tree, get_version_tree, flatten
+from tool.tree import get_problem_tree, get_version_tree, flatten, translate
 from tool.analyser import analyser
 from scipy.spatial import distance
 from cluster.models import Cluster
@@ -17,7 +17,7 @@ def advisor(ex_id, version_tree):
 
 
 	#list of elements for comparison
-	compare_list = ['basicIO_output', 'condition_if_ifOnly', 'condition_if_withElse', 'condition_switch', 'loop_single_for', 'loop_single_while',
+	compare_list = ['basicIO_input','basicIO_output', 'condition_if_ifOnly', 'condition_if_withElse', 'condition_switch', 'loop_single_for', 'loop_single_while',
 				'loop_nested', 'array_nonCharArray_singleDim', 'array_nonCharArray_multiDim',
 				'array_charArray_singleDim', 'array_charArray_multiDim', 'function_recursion_procedure', 'function_recursion_function', 'function_notRecursion_procedure',
 				'function_notRecursion_function', 'class_inheritance_constructor', 'class_inheritance_noConstructor', 'class_noInheritance_constructor',
@@ -26,22 +26,6 @@ def advisor(ex_id, version_tree):
 				'module_array_concat', 'module_array_split', 'module_array_sort', 'module_array_pop', 'module_array_push', 'module_array_find']
 
 
-	#a dictionary to convert dictionary terms to natural language terms
-	conversion_list = {"basicIO_input": "Basic Input", "basicIO_output": "Basic Output", "condition_if_ifOnly": "If (Without else)",
-				"condition_if_withElse": "If (With else)", "condition_switch": "Switch", "loop_single_for": "Single For-loop", "loop_single_while": "Single While-loop",
-				"loop_nested": "Nested Loop",
-				"array_nonCharArray_singleDim": "Non-character Array (Single Dimension)", "array_nonCharArray_multiDim": "Non-character Array (Multi-Dimension)",
-				"array_charArray_singleDim": "Character Array (Single Dimension)", "array_charArray_multiDim": "Character Array (Multi-Dimension)",
-				"function_recursion_procedure": "Procedure with Recursion", "function_recursion_function": "Function with Recursion",
-				"function_notRecursion_procedure": "Procedure without Recursion", "function_notRecursion_function": "Function without Recursion",
-				"class_inheritance_constructor": "Class (With Inheritance and Constructor)", "class_inheritance_noConstructor": "Class (With Inheritance and Without Constructor)",
-				"class_noInheritance_constructor": "Class (Without Inheritance and With Constructor)", "class_noInheritance_noConstructor": "Class (Without Inheritance and Constructor)",
-				"module_string_length": "String-Length", "module_string_concat": "String-Concatenate", "module_string_substr": "String-Substring",
-				"module_string_replace": "String-Replace", "module_string_changeType": "String-Change Type", "module_fileIO_open": "FileIO-Open",
-				"module_fileIO_close": "FileIO-Close", "module_fileIO_write": "FileIO-Write", "module_fileIO_read": "FileIO-Read",
-				"module_array_length": "Array-Length", "module_array_concat": "Array-Concatenate", "module_array_split": "Array-Split",
-				"module_array_sort": "Array-Sort", "module_array_pop": "Array-Pop", "module_array_push": "Array-Push", "module_array_find": "Array-Find"}
-
 	advice_list = []
 
 	max_cluster_id = 0
@@ -49,12 +33,12 @@ def advisor(ex_id, version_tree):
 
 	nearest_cluster_id = cluster_list[0].id
 
-	center = cluster_list[0].center.split(',')
+	print(np.array(cluster_list[0].center,dtype=np.float64).dtype)
+	print(np.array(cluster_list[0].center,dtype=np.float64))
+	print(np.array(list(flatten_tree.values()),dtype=np.float64).dtype)
+	print(np.array(list(flatten_tree.values()),dtype=np.float64))
 
-	for i in range(0, len(center)):
-		center[i] = float(center[i])
-
-	nearest_cluster_dis = distance.euclidean(np.array(list(flatten_tree.values())),np.array(center))
+	nearest_cluster_dis = distance.euclidean(np.array(list(flatten_tree.values())),np.array(cluster_list[0].center))
 
 	for cluster in cluster_list:
 		lacking = []
@@ -63,25 +47,18 @@ def advisor(ex_id, version_tree):
 		if max_cluster_count < cluster.data_count:
 			max_cluster_id = cluster.id
 
-		center = cluster.center.split(',')
-		necessary_skill = cluster.necessary_skill.split(',')
-		redundant_skill = cluster.redundant_skill.split(',')
-
-		for i in range(0, len(center)):
-			center[i] = float(center[i])
-
-		dist = distance.euclidean(list(flatten_tree.values()),np.array(center))
+		dist = distance.euclidean(list(flatten_tree.values()),np.array(cluster_list[0].center))
 
 		if nearest_cluster_dis > dist:
 			nearest_cluster_id = cluster.id
 
-		for skill in necessary_skill:
+		for skill in cluster.necessary_skill:
 			if flatten_tree[skill] == 0 and skill in compare_list:
-				lacking.append(conversion_list[skill])
+				lacking.append(translate(skill))
 
-		for skill in redundant_skill:
+		for skill in cluster.redundant_skill:
 			if flatten_tree[skill] > 0 and skill in compare_list:
-				redundance.append(conversion_list[skill])
+				redundance.append(translate(skill))
 
 		advice_list.append({"lacking": lacking, "redundance": redundance})
 

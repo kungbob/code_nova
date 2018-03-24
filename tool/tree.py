@@ -95,4 +95,27 @@ def get_version_tree():
 
 	return version_tree
 
+def translate(skill):
+    #a dictionary to convert dictionary terms to natural language terms
+    conversion_list = {"basicIO": "Basic IO","basicIO_input": "Basic Input", "basicIO_output": "Basic Output", 
+                "condition": "Condition", "condition_if": "If", "condition_if_ifOnly": "If (Without else)", "condition_if_withElse": "If (With else)", "condition_switch": "Switch",
+                "loop": "Loop", "loop_single": "Single Loop", "loop_single_for": "Single For-loop", "loop_single_while": "Single While-loop",
+                "loop_nested": "Nested Loop", "loop_nested_forOnly": "Nested Loop (For Only)", "loop_nested_whileOnly": "Nested Loop (While Only)", "loop_nested_mixed": "Nested Loop (For + While)",
+                "array": "Array", "array_nonCharArray": "Non-character Array", "array_charArray": "Character Array",
+                "array_nonCharArray_singleDim": "Non-character Array (Single Dimension)", "array_nonCharArray_multiDim": "Non-character Array (Multi-Dimension)",
+                "array_charArray_singleDim": "Character Array (Single Dimension)", "array_charArray_multiDim": "Character Array (Multi-Dimension)",
+                "function": "Function/Procedure", "function_recursion": "Function/Procedure With Recursion", "function_notRecursion": "Function/Procedure Without Recursion",
+                "function_recursion_procedure": "Procedure With Recursion", "function_recursion_function": "Function With Recursion",
+                "function_notRecursion_procedure": "Procedure Without Recursion", "function_notRecursion_function": "Function Without Recursion",
+                "class": "Class", "class_inheritance": "Class (With Inheritance)", "class_noInheritance": "Class (Without Inheritance)",
+                "class_inheritance_constructor": "Class (With Inheritance and Constructor)", "class_inheritance_noConstructor": "Class (With Inheritance and Without Constructor)",
+                "class_noInheritance_constructor": "Class (Without Inheritance and With Constructor)", "class_noInheritance_noConstructor": "Class (Without Inheritance and Constructor)",
+                "module": "Module Function", "module_string": "Module Function (String)", "module_fileIO": "Module Function (File IO)", "module_array": "Module Function (Array)",
+                "module_string_length": "String-Length", "module_string_concat": "String-Concatenate", "module_string_substr": "String-Substring",
+                "module_string_replace": "String-Replace", "module_string_changeType": "String-Change Type", "module_fileIO_open": "FileIO-Open",
+                "module_fileIO_close": "FileIO-Close", "module_fileIO_write": "FileIO-Write", "module_fileIO_read": "FileIO-Read",
+                "module_array_length": "Array-Length", "module_array_concat": "Array-Concatenate", "module_array_split": "Array-Split",
+                "module_array_sort": "Array-Sort", "module_array_pop": "Array-Pop", "module_array_push": "Array-Push", "module_array_find": "Array-Find"}
+
+    return conversion_list[skill]
 
