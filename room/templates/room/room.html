@@ -29,44 +29,79 @@
   </div>
 
 </div>
+
 <div class="myrow">
+
   <div class="column" id="material_column" style="background-color:#aaa;">
+
+    <button type="button" class="hide_material_column" name="button" >hide</button>
+    <button type="button" class="show_material_column" name="button">show</button>
 
     {{room.exercise.material | safe }}
 
   </div>
-  <div id="editor" class="column">{{room.code}}</div>
+
+  <div id="editor_column" class="column">
+
+    <span class="glyphicon glyphicon-menu-right show_material_column" style="position:absolute;left:0%;top:50%;color:white;z-index:10;display:none;" ></span>
+    <div id="editor">{{room.code}}</div>
+
+    <span class="glyphicon glyphicon-menu-left show_control_column " style="position:absolute;left:97%;top:50%;color:white;display:none;" ></span>
+
+  </div>
+
+
+
   <div  id="control_column" class="column" style="background-color:#ccc;">
-    
+
     <!-- <b>Room ID:{{room.id}}</b> -->
 
+  <div class="hide_control_column" style="flex:0;align-self:center;">
+      <span class="glyphicon glyphicon-menu-right"></span>
+  </div>
 
+  <div class="" style="flex:1;">
 
-  <div class="chat_panel">
-    <div class="chat_history_panel"></div>
-    <div class="chat_control_panel">
+    <div class="chat_panel">
+      <div class="chat_history_panel"></div>
+      <div class="chat_control_panel">
 
-      <textarea class="chat_field" name="chat_field"></textarea>
-      <!-- <textarea id="chat_field" name="chat_field" rows="8" cols="80"></textarea> -->
-      <button class="chat_send_button" type="button" name="button">chat</button>
+        <textarea class="chat_field" name="chat_field"></textarea>
+        <!-- <textarea id="chat_field" name="chat_field" rows="8" cols="80"></textarea> -->
+        <button class="chat_send_button" type="button" name="button">chat</button>
+
+      </div>
+    </div>
+
+    <div class="control_panel">
+      <div class="control_panel_button editor_save_button" >
+        <img  class="control_panel_button_image" src="{% static 'image/button_save.png' %}" alt="">
+      </div>
+      <div class="control_panel_button editor_save_run_button" >
+        <img  class="control_panel_button_image" src="{% static 'image/button_save_run.png' %}" alt="">
+      </div>
+
+      <div class="control_panel_button search_helper_button" >
+        <img  class="control_panel_button_image" src="{% static 'image/button_search_helper.png' %}" alt="">
+      </div>
+      <div class="control_panel_button ask_advice_button" >
+        <img  class="control_panel_button_image" src="{% static 'image/button_ask_advice.png' %}" alt="">
+      </div>
+
+      <div class="control_panel_button show_result_button" >
+        <img  class="control_panel_button_image" src="{% static 'image/button_show_result.png' %}" alt="">
+      </div>
 
     </div>
-  </div>
-
-  <div class="control_panel">
-
-
-    <button id="editor_save_button" type="button" name="button" >save</button>
-    <button class="editor_save_run_button" type="button" name="button" >Save & Run</button>
-
-    <button class="search_helper_button" type="button" name="button">search_helper</button>
-    <button class="ask_advice_button" type="button" name="button">ask advice</button>
-    <button class="show_modal_button" type="button" name="button">show_result</button>
-
-  </div>
 
 
   </div>
+  </div>
+
+
+
+
+
 </div>
 
 
@@ -467,9 +502,30 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
         exercise_suggestion();
     });
 
-    $('.show_modal_button').on('click', function() {
+    $('.show_result_button').on('click', function() {
          /* your code here */
         show_modal();
+    });
+
+    $('.show_control_column').on('click', function() {
+         /* your code here */
+        show_control_column();
+    });
+
+    $('.hide_control_column').on('click', function() {
+         /* your code here */
+        hide_control_column();
+    });
+
+
+    $('.show_material_column').on('click', function() {
+         /* your code here */
+        show_material_column();
+    });
+
+    $('.hide_material_column').on('click', function() {
+         /* your code here */
+        hide_material_column();
     });
 
     var modal = document.getElementById('myModal');
@@ -500,8 +556,67 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
       modal.style.display = "block";
       // $(".modal-container").empty();
-
       // $(".modal-container").append("""table""");
+
+
+    }
+
+
+    function show_material_column()
+    {
+
+
+      $(".show_material_column").hide();
+      $(".hide_material_column").show();
+
+      $("#material_column").show('slow/400/fast', function() {
+        // [object Object]
+      });
+
+
+    }
+
+    function hide_material_column()
+    {
+
+      console.log("asdf");
+
+      $(".show_material_column").show();
+      $(".hide_material_column").hide();
+      $("#material_column").hide('slow/400/fast', function() {
+        // [object Object]
+
+
+      });
+    }
+
+
+    function show_control_column()
+    {
+
+
+      console.log("asdf");
+      $(".show_control_column").hide();
+      $(".hide_control_column").show();
+
+      $("#control_column").show('slow/400/fast', function() {
+        // [object Object]
+      });
+
+
+    }
+
+    function hide_control_column()
+    {
+
+      console.log("asdf");
+      $(".show_control_column").show();
+      $(".hide_control_column").hide();
+      $("#control_column").hide('slow/400/fast', function() {
+        // [object Object]
+
+
+      });
     }
 
 

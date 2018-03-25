@@ -120,6 +120,7 @@ def run_kmeans(data_matrix):
 
 
 
+
 	common_feature = cluster_list[0]["necessary_skill"]
 	for cluster in cluster_list:
 		common_feature = list(set(cluster["necessary_skill"]).intersection(common_feature))
@@ -131,5 +132,6 @@ def run_kmeans(data_matrix):
 		cluster["charcteristic"] = charcteristic
 
 	output = {"cluster_list": cluster_list, "label": label, "common_skill": common_feature}
+
 
 	return output
