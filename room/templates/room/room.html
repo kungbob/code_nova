@@ -34,10 +34,10 @@
 
   <div class="column" id="material_column" style="background-color:#aaa;">
 
-    <button type="button" class="hide_material_column" name="button" >hide</button>
-    <button type="button" class="show_material_column" name="button">show</button>
-
+    <span class="glyphicon glyphicon-menu-left hide_material_column" style="position: relative;top:50%;float:right;color:black;height:50px;"></span>
     {{room.exercise.material | safe }}
+
+
 
   </div>
 
@@ -55,10 +55,7 @@
   <div  id="control_column" class="column" style="background-color:#ccc;">
 
     <!-- <b>Room ID:{{room.id}}</b> -->
-
-  <div class="hide_control_column" style="flex:0;align-self:center;">
-      <span class="glyphicon glyphicon-menu-right"></span>
-  </div>
+  <span class="glyphicon glyphicon-menu-right hide_control_column" style="position: relative;top:50%;float:left;color:black;height:50px;"></span>
 
   <div class="" style="flex:1;">
 
@@ -423,11 +420,14 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
           // show_modal();
         }
 
-        else if (data.advice)
+        else if (data.advice_list)
         {
 
+          // when received advice
 
 
+
+    
           for (var i = 0; i < data.advice.length; i++) {
             data.advice[i] = data.advice[i].split("\n").join("<br />")
           }

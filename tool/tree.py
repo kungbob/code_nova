@@ -40,9 +40,7 @@ def get_empty_version_tree():
         "maxArrayDim" : {"value" : 0}
        }
 
-
 	return version_tree
-
 
 def flatten(d, parent_key='', sep='_'):
     items = []
@@ -54,6 +52,20 @@ def flatten(d, parent_key='', sep='_'):
         	new_key = new_key[:-6]
         	items.append((new_key, v))
     return dict(items)
+
+
+# summing two tree together
+def add_tree(tree,new_tree):
+
+    if type(tree) == int:
+        tree = tree + new_tree
+        return tree
+
+    for key,value in tree.items():
+        # print("key:"+key+"  value:"+str(value))
+        tree[key] = add_tree(tree[key],new_tree[key])
+
+    return tree
 
 def get_problem_tree():
 
@@ -97,7 +109,7 @@ def get_version_tree():
 
 def translate(skill):
     #a dictionary to convert dictionary terms to natural language terms
-    conversion_list = {"basicIO": "Basic IO","basicIO_input": "Basic Input", "basicIO_output": "Basic Output", 
+    conversion_list = {"basicIO": "Basic IO","basicIO_input": "Basic Input", "basicIO_output": "Basic Output",
                 "condition": "Condition", "condition_if": "If", "condition_if_ifOnly": "If (Without else)", "condition_if_withElse": "If (With else)", "condition_switch": "Switch",
                 "loop": "Loop", "loop_single": "Single Loop", "loop_single_for": "Single For-loop", "loop_single_while": "Single While-loop",
                 "loop_nested": "Nested Loop", "loop_nested_forOnly": "Nested Loop (For Only)", "loop_nested_whileOnly": "Nested Loop (While Only)", "loop_nested_mixed": "Nested Loop (For + While)",
@@ -118,4 +130,3 @@ def translate(skill):
                 "module_array_sort": "Array-Sort", "module_array_pop": "Array-Pop", "module_array_push": "Array-Push", "module_array_find": "Array-Find"}
 
     return conversion_list[skill]
-

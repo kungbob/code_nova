@@ -13,7 +13,7 @@ from tool.find_helper import find_helper
 from tool.compile_code import compile_code
 from tool.analyser import analyser
 from tool.advisor import advisor
-from tool.tree import get_problem_tree,get_version_tree,flatten
+from tool.tree import get_problem_tree,get_version_tree,flatten,add_tree
 from tool.exercise_suggestion import exercise_suggestion
 
 from tool.clustering import run_kmeans
@@ -337,32 +337,44 @@ def editor_save_run(message):
     room.code = message["code"]
     room.save()
 
+    result_json = json.dumps(result)
+
+    version = Version()
     try:
         version_tree = analyser(code)
         version_tree_json = json.dumps(version_tree)
-        result_json = json.dumps(result)
-
-
-        version = Version()
-
-        version.code = message["code"]
-        version.room = room
-        version.exercise = room.exercise
-        version.result = result_json
-        version.overall_success = overall_success
         version.version_tree = version_tree_json
 
-        version.save()
-
-
     except Exception as e:
-        print(e)
+        # version tree cannot be generated
+        version.version_tree = ""
+
+
+
+    version.code = message["code"]
+    version.room = room
+    version.exercise = room.exercise
+    version.result = result_json
+    version.overall_success = overall_success
+    version.save()
+
+    # when it is a success submission
+
 
     if overall_success:
 
         data_matrix = []
         version_list = Version.objects.filter(exercise=room.exercise,overall_success=True)
 
+
+        student = Student.objects.get(user=message.user)
+        profile_tree = json.loads(student.profile_tree)
+
+        new_profile_tree = add_tree(profile_tree,version_tree);
+
+        student.profile_tree = json.dumps(new_profile_tree)
+
+        student.save()
 
         # will only run when the number of success submission is >= limit
         if len(version_list) >= CONST_MIN_VERSION :
@@ -386,6 +398,9 @@ def editor_save_run(message):
             common_skill = cluster_result["common_skill"]
 
             cluster_object_list = []
+
+
+            # create new cluster
             for cluster in cluster_list:
                 new_cluster = Cluster()
                 new_cluster.exercise = room.exercise
@@ -436,14 +451,31 @@ def ask_advice(message):
 
     room = get_room_or_error(message["room"], message.user)
     code = message["code"]
-    
-    version_tree = analyser(code)
 
-    advice = advisor(room.exercise.id,version_tree)
 
-    print("---")
+    try:
+        version_tree = analyser(code)
+        advice = advisor(room.exercise.id,version_tree)
+        print(advice)
 
-    print(advice)
+        message.reply_channel.send({
+            "text": json.dumps(advice),
+        })
+
+
+    except Exception as e:
+        # when version tree can not be generated
+        print()
+
+
+
+
+
+
+
+
+
+
 
 
     # try:

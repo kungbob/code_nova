@@ -107,7 +107,9 @@ def find_helper(code,seeker,current_exercise):
 		# Compare value of two students' abilities
 		dictance_dict = dict()
 		for helper in student_list:
-			if seeker.id == helper.id:
+
+			# check if the helper is seeker himself and helper is online or not
+			if seeker.id == helper.id or helper.user.reply_channel == "":
 				continue
 			else:
 				helper_profile_json = json.loads(helper.profile_tree)

@@ -98,10 +98,6 @@
 
 }
 
-.column {
-
-    flex: 1;
-}
 
 #control_column{
 
@@ -110,9 +106,18 @@
 
 }
 
+
+#material_column{
+
+  flex:0 0 30%;
+}
 #editor_column{
 
   flex: 1;
+}
+
+#control_column{
+  flex:0 0 25%;
 }
 
 #editor{
