@@ -14,3 +14,6 @@ class Version(models.Model):
     version_tree = models.TextField(default='')
     cluster = models.ForeignKey(Cluster,unique=False,on_delete=models.CASCADE,default=0)
     overall_success = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.room) + " version"

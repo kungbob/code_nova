@@ -119,17 +119,15 @@ def run_kmeans(data_matrix):
 			"redundant_skill": redundant_skill, "other_skill": other_skill, "character_skill": ""})
 
 
-
-
 	common_feature = cluster_list[0]["necessary_skill"]
 	for cluster in cluster_list:
 		common_feature = list(set(cluster["necessary_skill"]).intersection(common_feature))
 
 	for cluster in cluster_list:
-		charcteristic = list(cluster["necessary_skill"])
+		character_skill = list(cluster["necessary_skill"])
 		for common in common_feature:
-			charcteristic.remove(common)
-		cluster["charcteristic"] = charcteristic
+			character_skill.remove(common)
+		cluster["character_skill"] = character_skill
 
 	output = {"cluster_list": cluster_list, "label": label, "common_skill": common_feature}
 

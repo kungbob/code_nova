@@ -392,6 +392,8 @@ def editor_save_run(message):
 
             cluster_result = run_kmeans(data_matrix)
 
+            print(cluster_result)
+
 
             cluster_list = cluster_result["cluster_list"]
             label = cluster_result["label"]
@@ -405,12 +407,12 @@ def editor_save_run(message):
                 new_cluster = Cluster()
                 new_cluster.exercise = room.exercise
                 # print(cluster["necessary_skill"])
-                new_cluster.necessary_skill = ','.join(cluster["necessary_skill"])
-                new_cluster.redundant_skill = ','.join(cluster["redundant_skill"])
+                new_cluster.necessary_skill = json.dumps(cluster["necessary_skill"])
+                new_cluster.redundant_skill = json.dumps(cluster["redundant_skill"])
                 new_cluster.center = ','.join(map(str, cluster["center"].tolist()))
                 new_cluster.data_count = cluster["data_count"]
-                new_cluster.character_skill = cluster["character_skill"]
-                new_cluster.character_skill = cluster["other_skill"]
+                new_cluster.character_skill = json.dumps(cluster["character_skill"])
+                new_cluster.other_skill = json.dumps(cluster["other_skill"])
                 new_cluster.save()
                 cluster_object_list.append(new_cluster)
 
@@ -420,7 +422,7 @@ def editor_save_run(message):
                 version_list[i].save()
 
 
-            room.exercise.common_skill = ','.join(common_skill)
+            room.exercise.common_skill = json.dumps(common_skill)
             room.exercise.save()
 
 
@@ -453,19 +455,30 @@ def ask_advice(message):
     code = message["code"]
 
 
-    try:
-        version_tree = analyser(code)
-        advice = advisor(room.exercise.id,version_tree)
-        print(advice)
+    version_tree = analyser(code)
+    advice = advisor(room.exercise.id,version_tree)
 
-        message.reply_channel.send({
-            "text": json.dumps(advice),
-        })
+    message.reply_channel.send({
+        "text": json.dumps(advice),
+    })
+
+    
+    # print(advice)
 
 
-    except Exception as e:
-        # when version tree can not be generated
-        print()
+    # try:
+    #     version_tree = analyser(code)
+    #     advice = advisor(room.exercise.id,version_tree)
+    #     print(advice)
+    #
+    #     message.reply_channel.send({
+    #         "text": json.dumps(advice),
+    #     })
+    #
+    #
+    # except Exception as e:
+    #     # when version tree can not be generated
+    #     print(e)
 
 
 

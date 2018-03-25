@@ -10,3 +10,7 @@ class Cluster(models.Model):
   redundant_skill = models.TextField(default="")
   character_skill = models.TextField(default="")
   other_skill = models.TextField(default="")
+
+
+  def __str__(self):
+      return str(self.exercise) + " cluster -" + str(self.id)

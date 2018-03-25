@@ -426,19 +426,29 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
           // when received advice
 
 
+          // data.max_cluster_id : get the id
+          //  nearest_cluster_id : get id
 
-    
-          for (var i = 0; i < data.advice.length; i++) {
-            data.advice[i] = data.advice[i].split("\n").join("<br />")
+          // looping all cluster
+          for (var i = 0; i < data.advice_list.length; i++) {
+            data.advice_list[i]
           }
 
 
-          $(".chat_history_panel").append("<br/> AI tutor : <br>");
-          for (var i = 0; i < data.advice.length; i++) {
-            data.advice[i] = data.advice[i].split("\n").join("<br />")
-          }
-          $(".chat_history_panel").append(data.advice.join("<br>"));
 
+
+          // for (var i = 0; i < data.advice_list.length; i++) {
+          //
+            // data.advice_list[i] = data.advice_list[i].split("\n").join("<br />")
+          // }
+
+          //
+          // $(".chat_history_panel").append("<br/> AI tutor : <br>");
+          // for (var i = 0; i < data.advice.length; i++) {
+          //   data.advice[i] = data.advice[i].split("\n").join("<br />")
+          // }
+          // $(".chat_history_panel").append(data.advice.join("<br>"));
+          //
 
 
         }

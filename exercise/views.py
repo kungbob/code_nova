@@ -3,6 +3,7 @@ from .models import Exercise
 from room.models import Room
 from user.models import User
 from student.models import Student
+from cluster.models import Cluster
 from django.shortcuts import redirect
 # Create your views here.
 
@@ -16,7 +17,9 @@ def exercise(request,exercise_id):
 
     exercise = Exercise.objects.get(pk=exercise_id)
 
-    return render(request,'exercise/exercise.html',{'exercise' : exercise})
+    cluster_list = Cluster.objects.filter(exercise=exercise)
+
+    return render(request,'exercise/exercise.html',{'exercise' : exercise,'cluster_list': cluster_list})
 
 def list_exercise(request):
     exercises = Exercise.objects.all()

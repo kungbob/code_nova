@@ -4,6 +4,7 @@ from scipy.spatial import distance
 from cluster.models import Cluster
 from exercise.models import Exercise
 import numpy as np # linear algebra
+import json
 
 
 def advisor(ex_id, version_tree):
@@ -41,9 +42,12 @@ def advisor(ex_id, version_tree):
 
 	for cluster in cluster_list:
 
-		necessary_skill_list = cluster.necessary_skill.split(',')
-		redundant_skill_list = cluster.redundant_skill.split(',')
-		other_skill_list = cluster.other_skill.split(',')
+
+
+		necessary_skill_list = json.loads(cluster.necessary_skill)
+		redundant_skill_list = json.loads(cluster.redundant_skill)
+		character_skill_list = json.loads(cluster.character_skill)
+		other_skill_list = json.loads(cluster.other_skill)
 
 
 		lacking = []
@@ -70,12 +74,12 @@ def advisor(ex_id, version_tree):
 			if flatten_tree[skill] > 0 and skill in compare_list:
 				redundance.append(translate(skill))
 
-		for skill in cluster.other_skill:
+		for skill in other_skill_list:
 			if flatten_tree[skill["name"]] != skill["mode"]:
 				others.append({"name": skill["name"], "current": flatten_tree[skill["name"]], "suggestion": skill["mode"]})
 
 
-		advice_list.append({"lacking": lacking, "redundance": redundance, "others": others})
+		advice_list.append({"cluster_id": cluster.id,"character_skill":character_skill_list,"lacking": lacking, "redundance": redundance, "others": others})
 
 	output = {"max_cluster_id": max_cluster_id, "nearest_cluster_id": nearest_cluster_id, "advice_list": advice_list}
 
