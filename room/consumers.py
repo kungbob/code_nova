@@ -363,6 +363,8 @@ def editor_save_run(message):
         data_matrix = []
         version_list = Version.objects.filter(exercise=room.exercise,overall_success=True)
 
+
+        # will only run when the number of success submission is >= limit
         if len(version_list) >= CONST_MIN_VERSION :
             for version in version_list:
 
@@ -372,14 +374,16 @@ def editor_save_run(message):
 
                 data_matrix.append(flatten_list)
 
+            # remove all old clusters
+
+            Cluster.objects.filter(exercise=room.exercise).delete()
+
             cluster_result = run_kmeans(data_matrix)
 
 
             cluster_list = cluster_result["cluster_list"]
             label = cluster_result["label"]
             common_skill = cluster_result["common_skill"]
-
-
 
             cluster_object_list = []
             for cluster in cluster_list:
@@ -391,6 +395,7 @@ def editor_save_run(message):
                 new_cluster.center = ','.join(map(str, cluster["center"].tolist()))
                 new_cluster.data_count = cluster["data_count"]
                 new_cluster.character_skill = cluster["character_skill"]
+                new_cluster.character_skill = cluster["other_skill"]
                 new_cluster.save()
                 cluster_object_list.append(new_cluster)
 
@@ -431,13 +436,12 @@ def ask_advice(message):
 
     room = get_room_or_error(message["room"], message.user)
     code = message["code"]
-
-    print(code)
-
-
+    
     version_tree = analyser(code)
 
     advice = advisor(room.exercise.id,version_tree)
+
+    print("---")
 
     print(advice)
 
@@ -534,6 +538,7 @@ def search_helper(message):
 
 def channel_send_thread(reply_channel,output_json):
 
+    print("reply_channel="+reply_channel)
     # print("send start")
     Channel(reply_channel).send({
         "text": json.dumps(output_json),

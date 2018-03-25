@@ -9,3 +9,4 @@ class Cluster(models.Model):
   necessary_skill = models.TextField(default="")
   redundant_skill = models.TextField(default="")
   character_skill = models.TextField(default="")
+  other_skill = models.TextField(default="")

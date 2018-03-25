@@ -40,8 +40,15 @@ def advisor(ex_id, version_tree):
 	nearest_cluster_dis = distance.euclidean(np.array(list(flatten_tree.values())),np.array(center))
 
 	for cluster in cluster_list:
+
+		necessary_skill_list = cluster.necessary_skill.split(',')
+		redundant_skill_list = cluster.redundant_skill.split(',')
+		other_skill_list = cluster.other_skill.split(',')
+
+
 		lacking = []
 		redundance = []
+		others = []
 
 		if max_cluster_count < cluster.data_count:
 			max_cluster_id = cluster.id
@@ -55,15 +62,20 @@ def advisor(ex_id, version_tree):
 		if nearest_cluster_dis > dist:
 			nearest_cluster_id = cluster.id
 
-		for skill in cluster.necessary_skill:
+		for skill in necessary_skill_list:
 			if flatten_tree[skill] == 0 and skill in compare_list:
 				lacking.append(translate(skill))
 
-		for skill in cluster.redundant_skill:
+		for skill in redundant_skill_list:
 			if flatten_tree[skill] > 0 and skill in compare_list:
 				redundance.append(translate(skill))
 
-		advice_list.append({"lacking": lacking, "redundance": redundance})
+		for skill in cluster.other_skill:
+			if flatten_tree[skill["name"]] != skill["mode"]:
+				others.append({"name": skill["name"], "current": flatten_tree[skill["name"]], "suggestion": skill["mode"]})
+
+
+		advice_list.append({"lacking": lacking, "redundance": redundance, "others": others})
 
 	output = {"max_cluster_id": max_cluster_id, "nearest_cluster_id": nearest_cluster_id, "advice_list": advice_list}
 
