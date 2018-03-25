@@ -115,8 +115,18 @@ def run_kmeans(data_matrix):
 			mode = max(set(other_count[i]), key=other_count[i].count)
 			other_skill.append({"name": other_list[i], "mode": mode})
 
+<<<<<<< HEAD
 		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "necessary_skill": necessary_skill,
 			"redundant_skill": redundant_skill, "other_skill": other_skill, "character_skill": ""})
+=======
+<<<<<<< HEAD
+		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "necessary_skill": necessary_skill,
+			"redundant_skill": redundant_skill, "other_skill": other_skill, "character_skill": ""})
+=======
+		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "necessary_skill": necessary_skill, 
+			"redundant_skill": redundant_skill, "other_skill": other_skill, "characteristic": ""})
+>>>>>>> 6b35f86d48d7e13396f77e6c7fe0cb7b41eddbfe
+>>>>>>> 094101c208b38b0f909dc68beccfd133f4812797
 
 
 	common_feature = cluster_list[0]["necessary_skill"]
@@ -129,5 +139,13 @@ def run_kmeans(data_matrix):
 			charcteristic.remove(common)
 		cluster["charcteristic"] = charcteristic
 
+<<<<<<< HEAD
 	output = {"cluster_list": cluster_list, "label": label, "common_skill": common_feature}
+=======
+<<<<<<< HEAD
+	output = {"cluster_list": cluster_list, "label": label, "common_skill": common_feature}
+=======
+	output = {"cluster_list": cluster_list, "label": label, "common_feature": common_feature}
+>>>>>>> 6b35f86d48d7e13396f77e6c7fe0cb7b41eddbfe
+>>>>>>> 094101c208b38b0f909dc68beccfd133f4812797
 	return output
