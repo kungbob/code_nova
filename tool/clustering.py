@@ -117,6 +117,7 @@ def run_kmeans(data_matrix):
 
 		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "necessary_skill": necessary_skill,
 			"redundant_skill": redundant_skill, "other_skill": other_skill, "character_skill": ""})
+>>>>>>> 094101c208b38b0f909dc68beccfd133f4812797
 
 
 	common_feature = cluster_list[0]["necessary_skill"]
@@ -130,4 +131,5 @@ def run_kmeans(data_matrix):
 		cluster["charcteristic"] = charcteristic
 
 	output = {"cluster_list": cluster_list, "label": label, "common_skill": common_feature}
+>>>>>>> 094101c208b38b0f909dc68beccfd133f4812797
 	return output
