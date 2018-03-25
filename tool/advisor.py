@@ -42,6 +42,7 @@ def advisor(ex_id, version_tree):
 	for cluster in cluster_list:
 		lacking = []
 		redundance = []
+		others = []
 
 		if max_cluster_count < cluster.data_count:
 			max_cluster_id = cluster.id
@@ -63,7 +64,12 @@ def advisor(ex_id, version_tree):
 			if flatten_tree[skill] > 0 and skill in compare_list:
 				redundance.append(translate(skill))
 
-		advice_list.append({"lacking": lacking, "redundance": redundance})
+		for skill in cluster.other_skill:
+			if flatten_tree[skill["name"]] != skill["mode"]:
+				others.append({"name": skill["name"], "current": flatten_tree[skill["name"]], "suggestion": skill["mode"]})
+
+
+		advice_list.append({"lacking": lacking, "redundance": redundance, "others": others})
 
 	output = {"max_cluster_id": max_cluster_id, "nearest_cluster_id": nearest_cluster_id, "advice_list": advice_list}
 
