@@ -11,33 +11,44 @@
 <div id="myModal" class="modal">
 
   <!-- Modal content -->
-  <div class="modal-content">
+  <div class="modal_content">
     <span class="close">&times;</span>
-    <div class="modal-container">
-      <div id="test_case_modal">
+    <div id="test_case_modal_container" class="modal_container">
+      <div id="test_case_count"></div>
+
+      <div id="test_case_table_container">
+
+        <table class="table" id="test_case_table" style="width:100%;">
+          <thead>
+            <tr><th scope="col">input</th><th scope="col">expected output</th><th scope="col">actual output</th><th scope="col">success</th><th scope="col">error</th></tr>
+          </thead>
+          <tbody id="test_case_table_body">
+
+          </tbody>
+        </table>
 
       </div>
-      <table class="table" id="test_case_table" style="width:100%;">
-        <thead>
-          <tr><th scope="col">input</th><th scope="col">expected output</th><th scope="col">actual output</th><th scope="col">success</th><th scope="col">error</th></tr>
-        </thead>
-        <tbody id="test_case_table_body">
+    </div>
 
-        </tbody>
-      </table>
+    <div id="advice_modal_container" class="modal_container" style="display:none;">
+
+      <div id="cluster_count"></div>
+
+      <div id="piechart" style="width: 100%; height: 30%;"></div>
+      <div id="cluster_list_container"></div>
+
     </div>
   </div>
-
 </div>
 
 <div class="myrow">
 
   <div class="column" id="material_column" style="background-color:#aaa;">
 
+    <button type="button" name="button" class="cluster_button">show cluster</button>
+
     <span class="glyphicon glyphicon-menu-left hide_material_column" style="position: relative;top:50%;float:right;color:black;height:50px;"></span>
     {{room.exercise.material | safe }}
-
-
 
   </div>
 
@@ -110,9 +121,64 @@
 <script src="{% static 'ace-builds-master/src-noconflict/ace.js' %}"></script>
 <script src="{% static 'reconnecting-websocket.min.js' %}"></script>
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 
 
 <script type="text/javascript">
+
+
+google.charts.load('current', {'packages':['corechart']});
+// google.charts.setOnLoadCallback(drawChart);
+
+
+
+
+
+function drawChart(advice_list) {
+
+  // var temp = [['character_skill', 'number of submission']];
+  // for (var i = 0; i < advice_list.length; i++) {
+  //   temp.push([advice_list[i]["character_skill"].join(),10]);
+  // }
+  // var data = google.visualization.arrayToDataTable(temp);
+
+  var data = google.visualization.arrayToDataTable([
+    ['character_skill', 'number of submission'],
+    ['Work',  11],
+    ['Eat', 2],
+    ['Commute', 2],
+    ['Watch TV', 2],
+    ['Sleep',    7]
+  ]);
+
+
+
+  var options = {
+    title: 'Cluster result'
+  };
+
+
+  function selectHandler() {
+    var selectedItem = chart.getSelection()[0];
+    if (selectedItem) {
+
+
+      //selectedItem.row can be used to find cluster with local_id
+      
+      var value = data.getValue(selectedItem.row,0);
+      alert('The user selected ' + value);
+    }
+  }
+
+
+  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+  google.visualization.events.addListener(chart, 'select', selectHandler);
+
+  chart.draw(data, options);
+}
+
 
 
 const chat_template = ({ email, chat,time}) => `
@@ -176,6 +242,28 @@ const advice_template = ({content,time}) => `
 const test_case_template = ({input,expect_output,output,error,success}) => {
 
 return "<tr><td scope='row'>"+input+"</td><td>"+expect_output.split("\n").join("<br/>")+"</td><td>"+output.split("\n").join("<br/>")+"</td><td>"+success+"</td><td>"+ error.split("\n").join("<br/>") +"</td></tr>"
+
+}
+
+
+const cluster_template = (index,{cluster_id,character_skill,lacking,redundance,other_skill}) => {
+
+
+  output = `
+  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#cluster${cluster_id}"/>
+  <div id="cluster${cluster_id}" local_id="${index}" class="collapse">
+  cluster_id : ${cluster_id}
+  character_skill : ${character_skill}
+  lacking : ${lacking}
+  redundance: ${redundance}
+  other_skill: ${other_skill}
+
+
+  </div>
+
+  `;
+
+  return output
 
 }
 
@@ -415,7 +503,7 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
           $(".chat_history_panel").append(save_run_template(data));
 
 
-          $("#test_case_modal").html(message);
+          $("#test_case_count").html(message);
 
           // show_modal();
         }
@@ -430,8 +518,12 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
           //  nearest_cluster_id : get id
 
           // looping all cluster
+
+          drawChart(data.advice_list);
           for (var i = 0; i < data.advice_list.length; i++) {
-            data.advice_list[i]
+
+            $("#cluster_list_container").empty();
+            $("#cluster_list_container").append(cluster_template(i,data.advice_list[i]));
           }
 
 
@@ -514,7 +606,12 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
     $('.show_result_button').on('click', function() {
          /* your code here */
-        show_modal();
+        show_test_case_modal();
+    });
+
+    $('.cluster_button').on('click', function() {
+
+      show_advice_modal();
     });
 
     $('.show_control_column').on('click', function() {
@@ -561,14 +658,25 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     //
     // }
 
-    function show_modal()
+
+
+
+    function show_test_case_modal()
     {
 
+
+      $("#advice_modal_container").hide();
+      $("#test_case_modal_container").show();
       modal.style.display = "block";
       // $(".modal-container").empty();
       // $(".modal-container").append("""table""");
+    }
 
-
+    function show_advice_modal()
+    {
+      $("#test_case_modal_container").hide();
+      $("#advice_modal_container").show();
+      modal.style.display = "block";
     }
 
 

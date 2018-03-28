@@ -39,7 +39,7 @@ def find_helper(code,seeker,current_exercise):
 				nearest_cluster_id = cluster.id
 
 		nearest_cluster_object = Cluster.objects.get(pk=nearest_cluster_id)
-		compare_list = nearest_cluster_object.necessary_skill.split(',')
+		compare_list = json.loads(nearest_cluster_object.necessary_skill)
 		#######################################################################
 
 		student_list = Student.objects.all()
@@ -87,7 +87,7 @@ def find_helper(code,seeker,current_exercise):
 				max_cluster_id = cluster.id
 
 		majority_cluster_object = Cluster.objects.get(pk=max_cluster_id)
-		compare_list = majority_cluster_object.necessary_skill.split(',')
+		compare_list = json.loads(majority_cluster_object.necessary_skill)
 		#######################################################################
 
 		student_list = Student.objects.all()

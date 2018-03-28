@@ -79,7 +79,7 @@ def advisor(ex_id, version_tree):
 				others.append({"name": skill["name"], "current": flatten_tree[skill["name"]], "suggestion": skill["mode"]})
 
 
-		advice_list.append({"cluster_id": cluster.id,"character_skill":character_skill_list,"lacking": lacking, "redundance": redundance, "others": others})
+		advice_list.append({"cluster_id": cluster.id,"character_skill":character_skill_list,"lacking": lacking, "redundance": redundance, "other_skill": others})
 
 	output = {"max_cluster_id": max_cluster_id, "nearest_cluster_id": nearest_cluster_id, "advice_list": advice_list}
 
