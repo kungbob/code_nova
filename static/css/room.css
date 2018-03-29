@@ -232,7 +232,7 @@ div.chat_control_panel {
 /* Modal Content/Box */
 .modal_content {
 
-    height: 70%;
+    height: 85%;
     background-color: #fefefe;
     margin: 5% auto; /* 15% from the top and centered */
     padding: 20px;

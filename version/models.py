@@ -12,7 +12,7 @@ class Version(models.Model):
     code = models.TextField(default="")
     result = models.TextField(default="")
     version_tree = models.TextField(default='')
-    cluster = models.ForeignKey(Cluster,unique=False,on_delete=models.CASCADE,default=0)
+    cluster = models.ForeignKey(Cluster,unique=False,on_delete=models.SET_NULL,default=0,null=True)
     overall_success = models.BooleanField(default=False)
 
     def __str__(self):

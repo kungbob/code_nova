@@ -32,9 +32,10 @@
 
     <div id="advice_modal_container" class="modal_container" style="display:none;">
 
+      <a href="#cluster48">asasdfasdf</a>
       <div id="cluster_count"></div>
 
-      <div id="piechart" style="width: 100%; height: 30%;"></div>
+      <div id="piechart" style="width: 100%; height: 50%;"></div>
       <div id="cluster_list_container"></div>
 
     </div>
@@ -46,6 +47,8 @@
   <div class="column" id="material_column" style="background-color:#aaa;">
 
     <button type="button" name="button" class="cluster_button">show cluster</button>
+
+
 
     <span class="glyphicon glyphicon-menu-left hide_material_column" style="position: relative;top:50%;float:right;color:black;height:50px;"></span>
     {{room.exercise.material | safe }}
@@ -137,25 +140,25 @@ google.charts.load('current', {'packages':['corechart']});
 
 function drawChart(advice_list) {
 
-  // var temp = [['character_skill', 'number of submission']];
-  // for (var i = 0; i < advice_list.length; i++) {
-  //   temp.push([advice_list[i]["character_skill"].join(),10]);
-  // }
-  // var data = google.visualization.arrayToDataTable(temp);
+  var temp = [['character_skill', 'number of submission']];
+  for (var i = 0; i < advice_list.length; i++) {
+    temp.push([advice_list[i]["character_skill"].join(),advice_list[i]["data_count"]]);
+  }
+  var data = google.visualization.arrayToDataTable(temp);
 
-  var data = google.visualization.arrayToDataTable([
-    ['character_skill', 'number of submission'],
-    ['Work',  11],
-    ['Eat', 2],
-    ['Commute', 2],
-    ['Watch TV', 2],
-    ['Sleep',    7]
-  ]);
+  // var data = google.visualization.arrayToDataTable([
+  //   ['character_skill', 'number of submission'],
+  //   ['Work',  11],
+  //   ['Eat', 2],
+  //   ['Commute', 2],
+  //   ['Watch TV', 2],
+  //   ['Sleep',    7]
+  // ]);
 
 
 
   var options = {
-    title: 'Cluster result'
+    title: 'Clustering Result'
   };
 
 
@@ -165,7 +168,7 @@ function drawChart(advice_list) {
 
 
       //selectedItem.row can be used to find cluster with local_id
-      
+
       var value = data.getValue(selectedItem.row,0);
       alert('The user selected ' + value);
     }
@@ -246,22 +249,42 @@ return "<tr><td scope='row'>"+input+"</td><td>"+expect_output.split("\n").join("
 }
 
 
-const cluster_template = (index,{cluster_id,character_skill,lacking,redundance,other_skill}) => {
-
+const cluster_template = (index,{cluster_id,data_count,character_skill,lacking,redundance,other_skill}) => {
 
   output = `
-  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#cluster${cluster_id}"/>
-  <div id="cluster${cluster_id}" local_id="${index}" class="collapse">
-  cluster_id : ${cluster_id}
-  character_skill : ${character_skill}
-  lacking : ${lacking}
-  redundance: ${redundance}
-  other_skill: ${other_skill}
-
-
+  <div>
+  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#cluster${cluster_id}">Cluster ${index+1} [${character_skill}]</button>
   </div>
 
+  <div id="cluster${cluster_id}" local_id="${index}" class="collapse">
+    cluster_id : ${cluster_id}
+    data count : ${data_count}
+    character_skill : ${character_skill}
+    lacking : ${lacking}
+    redundance: ${redundance}
+
   `;
+
+  // for (var i = 0; i < array.length; i++) {
+  //   array[i]
+  // }
+
+
+
+  for (var i in other_skill){
+
+
+  var dumb = `
+      <div>skill_name : ${ other_skill[i]["name"]}</div>
+      <div>current : ${other_skill[i]["current"]}</div>
+      <div>suggestion : ${other_skill[i]["suggestion"]}</div>`;
+
+    output = output + dumb;
+  }
+
+
+  output = output + `</div>`;
+
 
   return output
 
@@ -350,6 +373,7 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
                           "command": "editor_send",  // determines which handler will be used (see chat/routing.py)
                           "room": {{room.id}},
                           "change" : e,
+
                           // "change" : JSON.stringify(e)
                       }));
 
@@ -520,9 +544,10 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
           // looping all cluster
 
           drawChart(data.advice_list);
+          $("#cluster_list_container").empty();
           for (var i = 0; i < data.advice_list.length; i++) {
 
-            $("#cluster_list_container").empty();
+
             $("#cluster_list_container").append(cluster_template(i,data.advice_list[i]));
           }
 
@@ -567,7 +592,7 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     });
 
 
-    $('#editor_save_button').on('click', function() {
+    $('.editor_save_button').on('click', function() {
          /* your code here */
         editor_save();
     });
@@ -803,13 +828,17 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     function editor_save()
     {
 
+
+      var dt = new Date();
+      var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
       var code = editor.getValue();
       console.log("content",code);
 
       socket.send(JSON.stringify({
           "command": "editor_save",  // determines which handler will be used (see chat/routing.py)
           "room": {{room.id}},
-          "code": code
+          "code": code,
+          "time": time
       }));
 
     }
@@ -818,12 +847,16 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     function editor_save_run()
     {
 
+      var dt = new Date();
+      var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+
       var code = editor.getValue();
 
       socket.send(JSON.stringify({
           "command": "editor_save_run",  // determines which handler will be used (see chat/routing.py)
           "room": {{room.id}},
-          "code": code
+          "code": code,
+          "time": time
       }));
 
     }

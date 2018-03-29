@@ -40,21 +40,9 @@ def get_empty_version_tree():
         "maxArrayDim" : {"value" : 0}
        }
 
+
 	return version_tree
 
-def flatten(d, parent_key='', sep='_'):
-    items = []
-    for k, v in d.items():
-        new_key = parent_key + sep + k if parent_key else k
-        if isinstance(v, collections.MutableMapping):
-            items.extend(flatten(v, new_key, sep=sep).items())
-        else:
-        	new_key = new_key[:-6]
-        	items.append((new_key, v))
-    return dict(items)
-
-
-# summing two tree together
 def add_tree(tree,new_tree):
 
     if type(tree) == int:
@@ -66,6 +54,18 @@ def add_tree(tree,new_tree):
         tree[key] = add_tree(tree[key],new_tree[key])
 
     return tree
+
+
+def flatten(d, parent_key='', sep='_'):
+    items = []
+    for k, v in d.items():
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, collections.MutableMapping):
+            items.extend(flatten(v, new_key, sep=sep).items())
+        else:
+        	new_key = new_key[:-6]
+        	items.append((new_key, v))
+    return dict(items)
 
 def get_problem_tree():
 
@@ -127,6 +127,7 @@ def translate(skill):
                 "module_string_replace": "String-Replace", "module_string_changeType": "String-Change Type", "module_fileIO_open": "FileIO-Open",
                 "module_fileIO_close": "FileIO-Close", "module_fileIO_write": "FileIO-Write", "module_fileIO_read": "FileIO-Read",
                 "module_array_length": "Array-Length", "module_array_concat": "Array-Concatenate", "module_array_split": "Array-Split",
-                "module_array_sort": "Array-Sort", "module_array_pop": "Array-Pop", "module_array_push": "Array-Push", "module_array_find": "Array-Find"}
+                "module_array_sort": "Array-Sort", "module_array_pop": "Array-Pop", "module_array_push": "Array-Push", "module_array_find": "Array-Find",
+                "maxIfDepth": "Maximum Depth of If", "maxLoopDepth": "Maximum Depth of Loop", "totalArraySize": "Total Array Size", "maxArrayDim": "Highest Array Dimension"}
 
     return conversion_list[skill]

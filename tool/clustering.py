@@ -63,12 +63,18 @@ def run_kmeans(data_matrix):
 
 	for i in range(2,4):
 		kmeans = KMeans(n_clusters=i, random_state=0).fit(data_matrix)
+
+		print("error in with no. "+str(i)+":"+str(kmeans.inertia_))
 		if kmeans.inertia_ < min_error:
 			best_cluster_no = i
+
 
 	kmeans = KMeans(n_clusters=best_cluster_no, random_state=0).fit(data_matrix)
 	label = kmeans.labels_
 	center = kmeans.cluster_centers_
+
+
+	best_cluster_no = len(np.unique(label))
 
 	data_count = []
 	data_list = []
@@ -85,9 +91,19 @@ def run_kmeans(data_matrix):
 	cluster_list = []
 
 
+	print(label)
+
+	print(best_cluster_no)
+
+
 	for cluster in range(0, best_cluster_no):
 		skilltree = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+		#
+		#
+		print("cluster : " + str(cluster))
+		print("data_list:"+str(data_list[cluster]))
+		print("data_count:"+str(data_count[cluster]))
 
 		necessary_skill = []
 		redundant_skill = []
@@ -111,6 +127,9 @@ def run_kmeans(data_matrix):
 				redundant_skill.append(skilltree_structure[i])
 
 		other_skill = []
+
+
+		print("other_count:"+str(other_count))
 		for i in range(0, len(other_list)):
 			mode = max(set(other_count[i]), key=other_count[i].count)
 			other_skill.append({"name": other_list[i], "mode": mode})

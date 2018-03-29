@@ -281,7 +281,7 @@ def editor_send(message):
     #     room.save()
         #perform remove
 
-    output_message = {'room': room.id, 'change': message["change"], 'user_id': message.user.id,'time':message['time']}
+    output_message = {'room': room.id, 'change': message["change"], 'user_id': message.user.id}
     room.broadcast(output_message)
     #
     # room.send_message(message["change"], message.user)
@@ -462,7 +462,7 @@ def ask_advice(message):
         "text": json.dumps(advice),
     })
 
-    
+
     # print(advice)
 
 
