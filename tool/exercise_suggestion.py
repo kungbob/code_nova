@@ -1,24 +1,32 @@
 # Suggest exercsise depends on mode
 # Three mode are provided, hard, normal, easy
-# 1: easy, 2: normal, 3: hard
+# 1: learn (random) new skill, 2: learn particular new skill, 3: reinforce a skill
 import random, operator
 # from generate_problem_database import generate_problem_database
 from exercise.models import Exercise
+from user.models import User
 import json
 from tool.tree import flatten
 
-def exercise_suggestion(seeker, mode):
-
+def exercise_suggestion(seeker, mode[, skill]):
 
     seeker_profile = seeker.profile_tree
 
     seeker_profile_json = json.loads(seeker_profile)
     seeker_profile_json_flatten = flatten(seeker_profile_json)
-    thingtocompare = ['basicIO', 'condition', 'loop', 'array', 'function', \
-                        'class', 'module']
-    seeker_ability_dict = jsontocompare(seeker_profile_json_flatten, thingtocompare)
 
-    seeker_ability_list = list(seeker_ability_dict.values())
+    #list of elements to learn, from user's profile tree, copied from advisor.py
+	thingtocompare = ['basicIO_input','basicIO_output', 'condition_if_ifOnly', 'condition_if_withElse', 'condition_switch', 'loop_single_for', 'loop_single_while',
+				'loop_nested', 'array_nonCharArray_singleDim', 'array_nonCharArray_multiDim',
+				'array_charArray_singleDim', 'array_charArray_multiDim', 'function_recursion_procedure', 'function_recursion_function', 'function_notRecursion_procedure',
+				'function_notRecursion_function', 'class_inheritance_constructor', 'class_inheritance_noConstructor', 'class_noInheritance_constructor',
+				'class_noInheritance_noConstructor', 'module_string_length', 'module_string_concat', 'module_string_substr', 'module_string_replace',
+				'module_string_changeType', 'module_fileIO_open', 'module_fileIO_close', 'module_fileIO_write', 'module_fileIO_read', 'module_array_length',
+				'module_array_concat', 'module_array_split', 'module_array_sort', 'module_array_pop', 'module_array_push', 'module_array_find']
+
+    learn_question_id_dict = dict((el, []) for el in thingtocompare)
+    reinforce_question_id_dict = dict((el, []) for el in thingtocompare)
+    seeker_ability_dict = jsontocompare(seeker_profile_json_flatten, thingtocompare)
 
     dictance_dict = dict()
 
@@ -40,23 +48,21 @@ def exercise_suggestion(seeker, mode):
             exercise_problem_json = json.loads(exercise.problem_tree)
             exercise_problem_json_flatten = flatten(exercise_problem_json)
             exercise_problem_dict = jsontocompare(exercise_problem_json_flatten, thingtocompare)
-            exercise_problem_list = list(exercise_problem_dict.values())
-            exercise_problem_list = [x / complete_count for x in exercise_problem_list]
-            distance = diff(seeker_ability_list, exercise_problem_list)
-            dictance_dict[exercise.id] = distance
-    if len(dictance_dict) == 0:
-        for exercise in exercise_list:
-            exercise_problem_json = json.loads(exercise.problem_tree)
-            exercise_problem_json_flatten = flatten(exercise_problem_json)
-            exercise_problem_dict = jsontocompare(exercise_problem_json_flatten, thingtocompare)
-            exercise_problem_list = list(exercise_problem_dict.values())
-            distance = diff(seeker_ability_list, exercise_problem_list)
-            dictance_dict[exercise.id] = distance
-    sorted_distance = sorted(dictance_dict.items(), key=operator.itemgetter(1))
-    print(sorted_distance)
-    result_problem = call(sorted_distance, mode)
-    print(result_problem)
-    return result_problem
+            different_skill, same_skill = diff(seeker_ability_dict, exercise_problem_dict)
+            for different in different_skill:
+                learn_question_id_dict[different].append(exercise.id)
+            for same in same_skill:
+                reinforce_question_id_dict[same].append(exercise.id)
+    if mode == 1:
+        skill = random.choice(learn_question_id_dict.keys())
+        learn_question_id = list(learn_question_id_dict[skill].values())
+        return random.choice(learn_question_id)
+    elif mode == 2:
+        learn_question_id = list(learn_question_id_dict[skill].values())
+        return random.choice(learn_question_id)
+    elif mode == 3:
+        reinforce_question_id = list(reinforce_question_id_dict[skill].values())
+        return random.choice(reinforce_question_id)
 
     '''
     user_list = list(profile.values())
@@ -98,12 +104,18 @@ def call(problem_list, mode):
     result = random.choice(result)
     return result
 
-def diff(ability_list, problem_ability_list):
-    result = 0
-    for i in range(7):
-        temp = ability_list[i] - problem_ability_list[i]
-        result = result + temp
-    return result
+def diff(ability_dict, problem_ability_dict):
+    different_skill = dict()
+    same_skill = dict()
+    for ability in ability_list:
+        if ability in problem_ability_dict:
+            if ability.values != 0:
+                same_skill.append(ability)
+            else:
+                different_skill.append(ability)
+        else:
+            different_skill.append(ability)
+    return same_skill, different_skill
 
 def jsontocompare(user_json, thingtocompare):
     compare_dict = dict()
