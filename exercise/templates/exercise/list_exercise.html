@@ -163,9 +163,12 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     function ask_suggestion(mode)
     {
 
+      var skill = "";
+
       socket.send(JSON.stringify({
           "command": "ask_suggestion",  // determines which handler will be used (see chat/routing.py)
-          "mode": mode
+          "mode": mode,
+          "skill":skill,
       }));
     }
 

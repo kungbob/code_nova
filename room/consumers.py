@@ -436,7 +436,7 @@ def editor_save_run(message):
 def ask_suggestion(message):
 
     student = Student.objects.get(user = message.user)
-    suggestion_id = exercise_suggestion(student,message["mode"])
+    suggestion_id = exercise_suggestion(student,message["mode"],message["skill"])
 
     exercise = Exercise.objects.get(pk=suggestion_id)
 

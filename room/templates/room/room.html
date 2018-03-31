@@ -46,7 +46,7 @@
 
   <div class="column" id="material_column" style="background-color:#aaa;">
 
-    <button type="button" name="button" class="cluster_button">show cluster</button>
+    <!-- <button type="button" name="button" class="cluster_button">show cluster</button> -->
 
 
 
@@ -242,28 +242,28 @@ const save_run_template = ({overall_success,total_test_case,passed_test_case}) =
 
 const lacking_template = (skill_name) => {
 
-return "You seems to lack skill [${skill_name}]";
+return `You seems to lack skill [${skill_name}]`;
 
 }
 
 const redundance_template = (skill_name) => {
 
-return "You seems to have redundant skill [${skill_name}]";
+return `You seems to have redundant skill [${skill_name}]`;
 
 }
 
 const other_skill_template = ({name,current,suggestion}) => {
 
-return "You seems to have other skill [${skill_name}], current : ${current} , suggestion: ${suggestion}";
+return `You seems to have other skill [${skill_name}], current : ${current} , suggestion: ${suggestion}`;
 
 }
 
 
-const advice_template = ({content,time}) => `
+const advice_template = (content,time) => `
   <div class="chat">
     <span class="glyphicon glyphicon-user"> AI Tutor</span>
     <p>${content}</p>
-    <a onclick="show_advice_modal();"><p>click here for more info</p></a>
+    <a class="cluster_button"><p>click here for more info</p></a>
     <span class="time-right">${time}</span>
   </div>
 `;
@@ -612,6 +612,8 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
           // $("#cluster"+data.max_cluster_id).pre
 
 
+
+          hint_content = ""
           for (var i = 0; i < data.advice_list.length; i++) {
 
             if (data.advice_list[i]["cluster_id"] == data.nearest_cluster_id)
@@ -622,7 +624,6 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
               {
 
                 hint_content = lacking_template(data.advice_list[i]["lacking"][0]);
-
 
               }
 
@@ -640,10 +641,11 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
               }
 
-              // console.log("nearest_cluster_id",data.nearest_cluster_id);
-              // console.log("data.advice_list[i][lacking].length",data.advice_list[i]["lacking"].length);
-              // console.log("data.advice_list[i][redundance].length",data.advice_list[i]["redundance"].length);
-              // console.log("data.advice_list[i][other].length",data.advice_list[i]["other_skill"].length);
+
+              var dt = new Date();
+              var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+
+              $(".chat_history_panel").append(advice_template(hint_content,time));
 
 
               console.log(hint_content);
@@ -736,7 +738,8 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
         show_test_case_modal();
     });
 
-    $('.cluster_button').on('click', function() {
+
+    $('body').on('click','.cluster_button', function() {
 
       show_advice_modal();
     });

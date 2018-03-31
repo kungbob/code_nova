@@ -2,6 +2,11 @@
 
 
 
+.chat_history_panel::-webkit-scrollbar {
+
+  display: none;
+}
+
 .chat {
     border: 2px solid #dedede;
     background-color: #f1f1f1;
@@ -172,14 +177,15 @@ div.chat_control_panel {
 
   height: 80%;
   width: 80%;
-
+  margin-top: 15px;
   border-radius: 10px;
 }
 
 .chat_send_button{
 
-  width: 10%;
-
+  position: relative;
+  float: right;
+  top: 50%;
 }
 
 .sender{
@@ -232,9 +238,9 @@ div.chat_control_panel {
 /* Modal Content/Box */
 .modal_content {
 
-    height: 85%;
+    height: 80%;
     background-color: #fefefe;
-    margin: 5% auto; /* 15% from the top and centered */
+    margin: 3% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
