@@ -140,6 +140,8 @@ google.charts.load('current', {'packages':['corechart']});
 
 function drawChart(advice_list) {
 
+
+  // preparing data for piehcart
   var temp = [['character_skill', 'number of submission']];
   for (var i = 0; i < advice_list.length; i++) {
     temp.push([advice_list[i]["character_skill"].join(),advice_list[i]["data_count"]]);
@@ -170,7 +172,7 @@ function drawChart(advice_list) {
       //selectedItem.row can be used to find cluster with local_id
 
       var value = data.getValue(selectedItem.row,0);
-      alert('The user selected ' + value);
+      // alert('The user selected ' + value);
     }
   }
 
@@ -180,6 +182,11 @@ function drawChart(advice_list) {
   google.visualization.events.addListener(chart, 'select', selectHandler);
 
   chart.draw(data, options);
+
+
+  // one advice is given as hint in chat box
+
+
 }
 
 
@@ -233,11 +240,30 @@ const save_run_template = ({overall_success,total_test_case,passed_test_case}) =
 
 }
 
+const lacking_template = (skill_name) => {
+
+return "You seems to lack skill [${skill_name}]";
+
+}
+
+const redundance_template = (skill_name) => {
+
+return "You seems to have redundant skill [${skill_name}]";
+
+}
+
+const other_skill_template = ({name,current,suggestion}) => {
+
+return "You seems to have other skill [${skill_name}], current : ${current} , suggestion: ${suggestion}";
+
+}
+
 
 const advice_template = ({content,time}) => `
   <div class="chat">
     <span class="glyphicon glyphicon-user"> AI Tutor</span>
     <p>${content}</p>
+    <a onclick="show_advice_modal();"><p>click here for more info</p></a>
     <span class="time-right">${time}</span>
   </div>
 `;
@@ -252,16 +278,33 @@ return "<tr><td scope='row'>"+input+"</td><td>"+expect_output.split("\n").join("
 const cluster_template = (index,{cluster_id,data_count,character_skill,lacking,redundance,other_skill}) => {
 
   output = `
-  <div>
-  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#cluster${cluster_id}">Cluster ${index+1} [${character_skill}]</button>
+  <div id="cluster${cluster_id}">
+
+  <div  id="cluster${cluster_id}_title" data-toggle="collapse" data-target="#cluster${cluster_id}_detail">
+    <h5>Cluster ${index+1} [${character_skill}]</h5>
   </div>
 
-  <div id="cluster${cluster_id}" local_id="${index}" class="collapse">
-    cluster_id : ${cluster_id}
-    data count : ${data_count}
-    character_skill : ${character_skill}
-    lacking : ${lacking}
-    redundance: ${redundance}
+  <div id="cluster${cluster_id}_detail" local_id="${index}" class="collapse">
+    <div>
+      cluster_id : ${cluster_id}
+    </div>
+    <div>
+      Submission : ${data_count}
+    </div>
+
+    <div>
+      character_skill : ${character_skill}
+    </div>
+
+
+    <div>
+      lacking : ${lacking}
+    </div>
+
+    <div>
+      redundance: ${redundance}
+    </div>
+
 
   `;
 
@@ -270,18 +313,30 @@ const cluster_template = (index,{cluster_id,data_count,character_skill,lacking,r
   // }
 
 
+  var other_skill_list = `<div>`;
+
 
   for (var i in other_skill){
 
-
   var dumb = `
-      <div>skill_name : ${ other_skill[i]["name"]}</div>
-      <div>current : ${other_skill[i]["current"]}</div>
-      <div>suggestion : ${other_skill[i]["suggestion"]}</div>`;
+      <div>
+        <div>skill_name : ${ other_skill[i]["name"]}</div>
+        <div>current : ${other_skill[i]["current"]}</div>
+        <div>suggestion : ${other_skill[i]["suggestion"]}</div>
+      </div>`;
 
     output = output + dumb;
   }
 
+
+
+  // enclosing other_skill list div tag
+  other_skill_list = other_skill_list + "</div>";
+
+
+
+  // enclosing the cluster template div tag
+  output = output +other_skill_list+`</div>`;
 
   output = output + `</div>`;
 
@@ -297,6 +352,7 @@ const cluster_template = (index,{cluster_id,data_count,character_skill,lacking,r
 //   }
 //
 // }
+
 
 
 const help_template = ({ room_id,help_seeker,exercise_title }) => `
@@ -544,11 +600,57 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
           // looping all cluster
 
           drawChart(data.advice_list);
+
+
           $("#cluster_list_container").empty();
           for (var i = 0; i < data.advice_list.length; i++) {
 
 
             $("#cluster_list_container").append(cluster_template(i,data.advice_list[i]));
+          }
+
+          // $("#cluster"+data.max_cluster_id).pre
+
+
+          for (var i = 0; i < data.advice_list.length; i++) {
+
+            if (data.advice_list[i]["cluster_id"] == data.nearest_cluster_id)
+            {
+
+              // check if ther is lacking skill
+              if (data.advice_list[i]["lacking"].length > 0)
+              {
+
+                hint_content = lacking_template(data.advice_list[i]["lacking"][0]);
+
+
+              }
+
+
+              else if (data.advice_list[i]["other_skill"].length > 0)
+              {
+                hint_content = other_skill_template(data.advice_list[i]["other_skill"][0]);
+              }
+
+              else if (data.advice_list[i]["redundance"].length > 0)
+              {
+
+
+                hint_content = redundance_template(data.advice_list[i]["redundance"][0]);
+
+              }
+
+              // console.log("nearest_cluster_id",data.nearest_cluster_id);
+              // console.log("data.advice_list[i][lacking].length",data.advice_list[i]["lacking"].length);
+              // console.log("data.advice_list[i][redundance].length",data.advice_list[i]["redundance"].length);
+              // console.log("data.advice_list[i][other].length",data.advice_list[i]["other_skill"].length);
+
+
+              console.log(hint_content);
+            }
+
+
+
           }
 
 

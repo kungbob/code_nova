@@ -61,7 +61,7 @@ def gaussian_clustering(newdata):
 	Z = Z.reshape(X.shape)
 
 	CS = plt.contour(X, Y, Z, norm=LogNorm(vmin=1.0, vmax=1000.0),
-	                 levels=np.logspace(0, 3, 10))
+					 levels=np.logspace(0, 3, 10))
 	CB = plt.colorbar(CS, shrink=0.8, extend='both')
 	plt.scatter(newdata[:, 0], newdata[:, 1], .8)
 
