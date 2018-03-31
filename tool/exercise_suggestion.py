@@ -8,7 +8,7 @@ from user.models import User
 import json
 from tool.tree import flatten
 
-def exercise_suggestion(seeker, mode[, skill]):
+def exercise_suggestion(seeker, mode, skill=''):
 
     seeker_profile = seeker.profile_tree
 

@@ -32,5 +32,5 @@ print(concatenated_df.columns)
 
 merged = df5.merge(concatenated_df, on = 'SolutionID')
 print(merged.head())
-test_solution = merged.Solutions
+test_solution = merged
 test_solution.to_csv("program_code_python_only.csv", encoding='utf-8')
