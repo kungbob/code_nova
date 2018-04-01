@@ -251,34 +251,34 @@ def analyser(prog):
         #elif tree['_type'] == 'IfExp':
 
         elif tree['_type'] == 'Dict':
-            vtree['datastr']['dict']['value'] += 1
+            vtree['dataStructure']['dict']['value'] += 1
             for child in tree['keys']: 
                 treeAnalyser(child, tree['_type'], 'keys', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
             for child in tree['values']: 
                 treeAnalyser(child, tree['_type'], 'values', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
 
         elif tree['_type'] == 'Set':
-            vtree['datastr']['set']['value'] += 1
+            vtree['dataStructure']['set']['value'] += 1
             for child in tree['elts']: 
                 treeAnalyser(child, tree['_type'], 'elts', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
 
         elif tree['_type'] == 'ListComp':
             vtree['comprehension']['list']['value'] += 1 # list comprehension
-            vtree['datastr']['list']['construct']['value'] += 1 # list comprehension is also a list
+            vtree['dataStructure']['list']['construct']['value'] += 1 # list comprehension is also a list
             treeAnalyser(tree['elt'], tree['_type'], 'elt', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
             for child in tree['generators']:
                 treeAnalyser(child, tree['_type'], 'generators', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
 
         elif tree['_type'] == 'SetComp':
             vtree['comprehension']['set']['value'] += 1 # set comprehension
-            vtree['datastr']['set']['value'] += 1 # set comprehension is also a set
+            vtree['dataStructure']['set']['value'] += 1 # set comprehension is also a set
             treeAnalyser(tree['elt'], tree['_type'], 'elt', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
             for child in tree['generators']:
                 treeAnalyser(child, tree['_type'], 'generators', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
 
         elif tree['_type'] == 'DictComp':
             vtree['comprehension']['dict']['value'] += 1 # dict comprehension
-            vtree['datastr']['dict']['value'] += 1 # dict comprehension is also a dict
+            vtree['dataStructure']['dict']['value'] += 1 # dict comprehension is also a dict
             treeAnalyser(tree['key'], tree['_type'], 'key', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
             treeAnalyser(tree['value'], tree['_type'], 'value', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
             for child in tree['generators']:
@@ -334,12 +334,12 @@ def analyser(prog):
         #elif tree['_type'] == 'Constant':
 
         elif tree['_type'] == 'Attribute':
-            if (tree['attr'] in vtree['datastr']['list']['function']):
+            if (tree['attr'] in vtree['dataStructure']['list']['function']):
                 if (tree['value']['_type'] == 'List'):
-                    vtree['datastr']['list']['function'][tree['attr']]['value'] += 1
+                    vtree['dataStructure']['list']['function'][tree['attr']]['value'] += 1
                 elif (tree['value']['_type'] == 'Name' and tree['value']['id'] in allVar):
                     if (allVar[tree['value']['id']][0] == 'list'):
-                        vtree['datastr']['list']['function'][tree['attr']]['value'] += 1
+                        vtree['dataStructure']['list']['function'][tree['attr']]['value'] += 1
 
             if (tree['attr'] in vtree['py-str']['attrfunc']):
                 if (tree['value']['_type'] == 'Str'):
@@ -375,15 +375,15 @@ def analyser(prog):
                 checkModuleFun(allVar[tree['id']][0])
 
             if tree['id'] == 'range' or tree['id'] == 'list': # range( ) returns a list
-                vtree['datastr']['list']['construct']['value'] += 1
+                vtree['dataStructure']['list']['construct']['value'] += 1
             elif tree['id'] == 'dict':
-                vtree['datastr']['dict']['value'] += 1
+                vtree['dataStructure']['dict']['value'] += 1
             elif tree['id'] == 'set':
-                vtree['datastr']['set']['value'] += 1
+                vtree['dataStructure']['set']['value'] += 1
             elif tree['id'] == 'input' or tree['id'] == 'str': # input( ) returns a string
                 vtree['py-str']['construct']['value'] += 1
             elif tree['id'] == 'tuple':
-                vtree['datastr']['tuple']['value'] += 1
+                vtree['dataStructure']['tuple']['value'] += 1
 
             if tree['id'] == 'input':
                 vtree['basicIO']['input']['value'] += 1
@@ -395,7 +395,7 @@ def analyser(prog):
                 classList[1] = True
 
         elif tree['_type'] == 'List':
-            vtree['datastr']['list']['construct']['value'] += 1
+            vtree['dataStructure']['list']['construct']['value'] += 1
             size, dim = calculatelistSize(tree['elts'], allVar)
             if (nextAssignedVar[0] != None):
                 allVar[nextAssignedVar[0]] = (nextAssignedVar[1], size, dim)
@@ -407,7 +407,7 @@ def analyser(prog):
                 treeAnalyser(child, tree['_type'], 'elts', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
 
         elif tree['_type'] == 'Tuple':
-            vtree['datastr']['tuple']['value'] += 1
+            vtree['dataStructure']['tuple']['value'] += 1
             for child in tree['elts']: 
                 treeAnalyser(child, tree['_type'], 'elts', ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
 
