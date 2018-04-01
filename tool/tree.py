@@ -77,6 +77,19 @@ def flatten(d, parent_key='', sep='_'):
         	items.append((new_key, v))
     return dict(items)
 
+def flatten_self_define(d, wanted_list ,parent_key='', sep='_'):
+    items = []
+    for k, v in d.items():
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, collections.MutableMapping):
+            items.extend(flatten_self_define(v, wanted_list, new_key, sep=sep).items())
+        else:
+            new_key = new_key[:-6]
+            if new_key in wanted_list:
+                items.append((new_key, v))
+    return dict(items)
+
+
 def get_problem_tree():
 
     problem_tree = {"basicIO" : {"value" : 200, "input" : {"value" : 100}, "output" : {"value" : 100}},
