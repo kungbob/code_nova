@@ -97,10 +97,11 @@ def run_kmeans(data_matrix):
 
 
 	for cluster in range(0, best_cluster_no):
-		skilltree = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-		#
-		#
+		skilltree = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+		
+		
 		print("cluster : " + str(cluster))
 		print("data_list:"+str(data_list[cluster]))
 		print("data_count:"+str(data_count[cluster]))
@@ -117,8 +118,8 @@ def run_kmeans(data_matrix):
 				if data[i] > 0:
 					skilltree[i] += 1
 
-			for skill in [57,58,59,60]:
-				other_count[skill - 57].append(data[skill])
+			for skill in [153,154,155,156]:
+				other_count[skill - 153].append(data[skill])
 
 		for i in range(0, len(skilltree)):
 			if skilltree[i] >= data_count[cluster]*0.75 and skilltree_structure[i] not in other_list:
