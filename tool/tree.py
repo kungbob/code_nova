@@ -77,7 +77,7 @@ def flatten(d, parent_key='', sep='_'):
         	items.append((new_key, v))
     return dict(items)
 
-def flatten_self_define(d, wanted_list ,parent_key='', sep='_'):
+def flatten_self_define(d, wanted_list='' ,parent_key='', sep='_'):
     items = []
     for k, v in d.items():
         new_key = parent_key + sep + k if parent_key else k
@@ -85,7 +85,7 @@ def flatten_self_define(d, wanted_list ,parent_key='', sep='_'):
             items.extend(flatten_self_define(v, wanted_list, new_key, sep=sep).items())
         else:
             new_key = new_key[:-6]
-            if new_key in wanted_list:
+            if new_key in wanted_list or wanted_list == '':
                 items.append((new_key, v))
     return dict(items)
 
@@ -145,12 +145,39 @@ def translate(skill):
                 "class": "Class", "class_inheritance": "Class (With Inheritance)", "class_noInheritance": "Class (Without Inheritance)",
                 "class_inheritance_constructor": "Class (With Inheritance and Constructor)", "class_inheritance_noConstructor": "Class (With Inheritance and Without Constructor)",
                 "class_noInheritance_constructor": "Class (Without Inheritance and With Constructor)", "class_noInheritance_noConstructor": "Class (Without Inheritance and Constructor)",
-                "module": "Module Function", "module_string": "Module Function (String)", "module_fileIO": "Module Function (File IO)", "module_array": "Module Function (Array)",
-                "module_string_length": "String-Length", "module_string_concat": "String-Concatenate", "module_string_substr": "String-Substring",
-                "module_string_replace": "String-Replace", "module_string_changeType": "String-Change Type", "module_fileIO_open": "FileIO-Open",
-                "module_fileIO_close": "FileIO-Close", "module_fileIO_write": "FileIO-Write", "module_fileIO_read": "FileIO-Read",
-                "module_array_length": "Array-Length", "module_array_concat": "Array-Concatenate", "module_array_split": "Array-Split",
-                "module_array_sort": "Array-Sort", "module_array_pop": "Array-Pop", "module_array_push": "Array-Push", "module_array_find": "Array-Find",
-                "maxIfDepth": "Maximum Depth of If", "maxLoopDepth": "Maximum Depth of Loop", "totalArraySize": "Total Array Size", "maxArrayDim": "Highest Array Dimension"}
+                'lambda': "Lambda Function", 'comprehension': "Comprehension", 'comprehension_list': "Comprehension (List)", 'comprehension_set': "Comprehension (Set)", 
+                'comprehension_dict': "Comprehension (Dict)", 'dataStructure': "Data Structure", 'dataStructure_list': "List", 
+                'dataStructure_list_construct': "List Construct", 'dataStructure_list_function': "List Function", 'dataStructure_list_function_append': "List-append", 
+                'dataStructure_list_function_extend': "List-extend", 'dataStructure_list_function_insert': "List-insert", 'dataStructure_list_function_remove': "List-remove", 
+                'dataStructure_list_function_pop': "List-pop", 'dataStructure_list_function_clear': "List-clear", 'dataStructure_list_function_count': "List-count", 
+                'dataStructure_list_function_sort': "List-sort", 'dataStructure_list_function_reverse': "List-reverse", 'dataStructure_set': "Set", 
+                'dataStructure_dict': "Dict", 'dataStructure_tuple': "Tuple", 'py-str': "String", 'py-str_construct': "String Construct", 
+                'py-str_attrfunc': "String Function", 'py-str_attrfunc_count': "String-count", 'py-str_attrfunc_find': "String-find", 
+                'py-str_attrfunc_join': "String-join", 'py-str_attrfunc_partition': "String-partition", 'py-str_attrfunc_replace': "String-replace", 
+                'py-str_attrfunc_split': "String-split", 'py-str_attrfunc_splitlines': "String-splitlines", 'py-buildin': "Built-in Function", 
+                'py-buildin_abs': "Builtin-abs", 'py-buildin_all': "Builtin-all", 'py-buildin_any': "Builtin-any", 'py-buildin_ascii': "Builtin-ascii", 
+                'py-buildin_bin': "Builtin-bin", 'py-buildin_bool': "Builtin-bool", 'py-buildin_bytearray': "Builtin-byteArray", 'py-buildin_bytes': "Builtin-bytes",
+                'py-buildin_callable': "Builtin-callable", 'py-buildin_chr': "Builtin-chr", 'py-buildin_classmethod': "Builtin-classmethod", 
+                'py-buildin_compile': "Builtin-compile", 'py-buildin_complex': "Builtin-complex", 'py-buildin_delattr': "Builtin-delattr", 
+                'py-buildin_dict': "Builtin-dict", 'py-buildin_dir': "Builtin-dir", 'py-buildin_divmod': "Builtin-divmod", 'py-buildin_enumerate': "Builtin-enumerate", 
+                'py-buildin_eval': "Builtin-eval", 'py-buildin_exec': "Builtin-exec", 'py-buildin_filter': "Builtin-filter", 'py-buildin_float': "Builtin-float", 
+                'py-buildin_format': "Builtin-format", 'py-buildin_frozenset': "Builtin-frozenset", 'py-buildin_getattr': "Builtin-getattr", 'py-buildin_globals': "Builtin-globals", 
+                'py-buildin_hasattr': "Builtin-hasattr", 'py-buildin_hash': "Builtin-hash", 'py-buildin_help': "Builtin-help", 'py-buildin_hex': "Builtin-hex", 
+                'py-buildin_id': "Builtin-id", 'py-buildin_input': "Builtin-input", 'py-buildin_int': "Builtin-int", 'py-buildin_isinstance': "Builtin-isinstance", 
+                'py-buildin_issubclass': "Builtin-issubclass", 'py-buildin_iter': "Builtin-iter", 'py-buildin_len': "Builtin-len", 
+                'py-buildin_list': "Builtin-list", 'py-buildin_locals': "Builtin-locals", 'py-buildin_map': "Builtin-map", 'py-buildin_max': "Builtin-max", 
+                'py-buildin_memoryview': "Builtin-memoryview", 'py-buildin_min': "Builtin-min", 'py-buildin_next': "Builtin-next", 'py-buildin_object': "Builtin-object", 
+                'py-buildin_oct': "Builtin-oct", 'py-buildin_open': "Builtin-open", 'py-buildin_ord': "Builtin-ord", 'py-buildin_pow': "Builtin-pow", 
+                'py-buildin_print': "Builtin-print", 'py-buildin_property': "Builtin-property", 'py-buildin_range': "Builtin-range", 'py-buildin_repr': "Builtin-repr", 
+                'py-buildin_reversed': "Builtin-reversed", 'py-buildin_round': "Builtin-round", 'py-buildin_set': "Builtin-set", 'py-buildin_setattr': "Builtin-setattr", 
+                'py-buildin_slice': "Builtin-slice", 'py-buildin_sorted': "Builtin-sorted", 'py-buildin_staticmethod': "Builtin-staticmethod", 'py-buildin_str': "Builtin-str", 
+                'py-buildin_sum': "Builtin-sum", 'py-buildin_super': "Builtin-super", 'py-buildin_tuple': "Builtin-tuple", 'py-buildin_type': "Builtin-type", 
+                'py-buildin_vars': "Builtin-vars", 'py-buildin_zip': "Builtin-zip", 'py-buildin___import__': "Builtin-import", 'module': "Module", 
+                'module_collections': "Collections", 'module_collections_namedtuple()': "Collections-namedtuple", 'module_collections_deque': "Collections-deque", 
+                'module_collections_ChainMap': "Collections-chain map", 'module_collections_Counter': "Collections-counter", 'module_collections_OrderedDict': "Collections-ordered dict", 
+                'module_collections_defaultdict': "Collections-default dict", 'module_collections_UserDict': "Collections-user dict", 'module_collections_UserList': "Collections-user list", 
+                'module_collections_UserString': "Collections-user string", 'module_fileIO': "File IO", 'module_fileIO_open': "File IO-open", 'module_fileIO_close': "File IO-close", 
+                'module_fileIO_write': "File IO-write", 'module_fileIO_read': "File IO-read",
+                "maxIfDepth": "Maximum Depth of If", "maxLoopDepth": "Maximum Depth of Loop", "maxArraySize": "Largest Array Size", "maxArrayDim": "Largest Array Dimension"}
 
     return conversion_list[skill]
