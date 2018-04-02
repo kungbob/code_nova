@@ -5,6 +5,7 @@ from cluster.models import Cluster
 from exercise.models import Exercise
 import numpy as np # linear algebra
 import json
+from sklearn.preprocessing import StandardScaler
 
 
 def advisor(ex_id, version_tree):
@@ -25,7 +26,11 @@ def advisor(ex_id, version_tree):
         data_matrix.append(flatten_list)
 
 
+    scaler = StandardScaler().fit(data_matrix)
+
 	flatten_tree = flatten(version_tree)
+
+	standardized_data = scaler.transform(np.array(list(flatten_tree.values())))
 
 	cluster_list = Cluster.objects.filter(exercise=exercise)
 
@@ -68,7 +73,7 @@ def advisor(ex_id, version_tree):
 	for i in range(0, len(center)):
 		center[i] = float(center[i])
 
-	nearest_cluster_dis = distance.euclidean(np.array(list(flatten_tree.values())),np.array(center))
+	nearest_cluster_dis = distance.euclidean(standardized_data,np.array(center))
 
 	for cluster in cluster_list:
 
@@ -89,7 +94,7 @@ def advisor(ex_id, version_tree):
 		for i in range(0, len(center)):
 			center[i] = float(center[i])
 
-		dist = distance.euclidean(list(flatten_tree.values()),np.array(center))
+		dist = distance.euclidean(standardized_data,np.array(center))
 
 		if nearest_cluster_dis > dist:
 			nearest_cluster_id = cluster.id
