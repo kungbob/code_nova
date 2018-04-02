@@ -123,9 +123,9 @@ def run_ms(data_matrix):
 	standardized_data = scaler.transform(data_matrix)
 
 	if len(data_matrix) > 100:
-		bandwidth = estimate_bandwidth(standardized_data, quantile=0.3, n_samples = 100)
+		bandwidth = estimate_bandwidth(standardized_data, quantile=0.2, n_samples = 100)
 	else:
-		bandwidth = estimate_bandwidth(standardized_data, quantile=0.3)
+		bandwidth = estimate_bandwidth(standardized_data, quantile=0.2)
 
 	ms = MeanShift(bandwidth=bandwidth, bin_seeding=True).fit(standardized_data)
 
