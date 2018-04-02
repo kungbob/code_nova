@@ -315,10 +315,7 @@ def editor_save(message):
 @catch_client_error
 @channel_session_user
 def editor_save_run(message):
-
-
-
-
+    
     room = get_room_or_error(message["room"], message.user)
     code = message["code"]
 
