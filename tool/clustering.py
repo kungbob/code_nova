@@ -117,12 +117,16 @@ def run_kmeans(data_matrix):
 
 	return output
 
-def clustering(data_matrix):
+def run_ms(data_matrix):
 
 	scaler = StandardScaler().fit(data_matrix)
 	standardized_data = scaler.transform(data_matrix)
 
-	bandwidth = estimate_bandwidth(standardized_data, quantile=0.2, n_samples = 100)
+	if len(data_matrix) > 100:
+		bandwidth = estimate_bandwidth(standardized_data, quantile=0.2, n_samples = 100)
+	else:
+		bandwidth = estimate_bandwidth(standardized_data, quantile=0.2)
+
 	ms = MeanShift(bandwidth=bandwidth, bin_seeding=True).fit(standardized_data)
 
 	other_list = ["maxIfDepth", "maxLoopDepth", "maxArraySize", "maxArrayDim"]
