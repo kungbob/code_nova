@@ -9,11 +9,23 @@ import json
 
 def advisor(ex_id, version_tree):
 
+	exercise = Exercise.objects.get(pk=ex_id)
+
+
+	# list of all version
+	version_list = Version.objects.filter(exercise=exercise)
+	
+	# data_matrix used for standardization
+	data_matrix = []
+
+	for version in version_list:
+		flatten_json = flatten(json.loads(version.version_tree))
+		flatten_list = list(flatten_json.values())
+		data_matrix.append(flatten_list)
+
 
 	flatten_tree = flatten(version_tree)
 
-
-	exercise = Exercise.objects.get(pk=ex_id)
 	cluster_list = Cluster.objects.filter(exercise=exercise)
 
 
@@ -58,8 +70,6 @@ def advisor(ex_id, version_tree):
 	nearest_cluster_dis = distance.euclidean(np.array(list(flatten_tree.values())),np.array(center))
 
 	for cluster in cluster_list:
-
-
 
 		necessary_skill_list = json.loads(cluster.necessary_skill)
 		redundant_skill_list = json.loads(cluster.redundant_skill)
