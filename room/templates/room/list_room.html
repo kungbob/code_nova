@@ -6,9 +6,57 @@
 {% block content %}
 <h1>List Room Page content</h1>
 
+
+<table>
+
+  <tr><th>owner</th><th>exercise</th><th>owner</th></tr>
+
   {% for room in rooms %}
 
-      <a href="{% url 'room' room.id %}">{{room}}</a>
+  <tr>
+    <td>{{room.owner}}</td>
+    <td>{{room.exercise.title}}</td>
+    <td><a href="{% url 'room' room.id %}"><button type="button" class="btn" name="button">Enter</button></a></td>
+  </tr>
+
+  <!-- <div class="room">
+    <div class="room_title">
+        {{room.exercise.title}}
+    </div>
+    <div class="room_owner">
+
+        {{room.owner}}
+
+    </div>
+
+
+      <a href="{% url 'room' room.id %}"><button type="button" class="btn" name="button">Enter</button></a>
+  </div> -->
+
+
+
+  {% endfor %}
+
+
+</table>
+
+  {% for room in rooms %}
+
+  <div class="room">
+    <div class="room_title">
+        {{room.exercise.title}}
+    </div>
+    <div class="room_owner">
+
+        {{room.owner}}
+
+    </div>
+
+
+      <a href="{% url 'room' room.id %}"><button type="button" class="btn" name="button">Enter</button></a>
+  </div>
+
+
 
   {% endfor %}
 

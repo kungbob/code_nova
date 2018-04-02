@@ -117,10 +117,10 @@ def run_kmeans(data_matrix):
 
 	return output
 
-def run_ms(data):
+def clustering(data_matrix):
 
-	scaler = StandardScaler().fit(data)
-	standardized_data = scaler.transform(data)
+	scaler = StandardScaler().fit(data_matrix)
+	standardized_data = scaler.transform(data_matrix)
 
 	bandwidth = estimate_bandwidth(standardized_data, quantile=0.2, n_samples = 100)
 	ms = MeanShift(bandwidth=bandwidth, bin_seeding=True).fit(standardized_data)
@@ -144,13 +144,13 @@ def run_ms(data):
 
 	skilltree_structure = list(flatten(get_empty_version_tree()).keys())
 	cluster_list = []
-
+	data_length = len(data_matrix[0])
 
 	for cluster in range(0, cluster_no):
 
 		skilltree = []
-		list_length = len(data_matrix[0])
-		for i in range(0, list_length):
+
+		for i in range(0, data_length):
 			skilltree.append(0)
 
 		necessary_skill = []
@@ -161,14 +161,14 @@ def run_ms(data):
 			other_count.append([])
 
 		for data in data_list[cluster]:
-			for i in range(0, len(data)):
+			for i in range(0, data_length):
 				if data[i] > 0:
 					skilltree[i] += 1
 
-			for skill in [list_length-4,list_length-3,list_length-2,list_length-1]:
-				other_count[skill - list_length + 4].append(data[skill])
+			for skill in [data_length-4,data_length-3,data_length-2,data_length-1]:
+				other_count[skill - data_length + 4].append(data[skill])
 
-		for i in range(0, len(skilltree)):
+		for i in range(0, data_length):
 			if skilltree[i] >= data_count[cluster]*0.75 and skilltree_structure[i] not in other_list:
 				necessary_skill.append(skilltree_structure[i])
 			elif skilltree[i] <= data_count[cluster]*0.1 and skilltree_structure[i] not in other_list:
