@@ -84,7 +84,7 @@ def cluster_data():
         data_matrix = []
         version_list = Version.objects.filter(exercise=exercise)
 
-        if len(version_list) >= 10 :
+        if len(version_list) >= 50 :
             for version in version_list:
 
                 flatten_json = flatten(json.loads(version.version_tree))

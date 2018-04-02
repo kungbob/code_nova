@@ -24,6 +24,8 @@
           </thead>
           <tbody id="test_case_table_body">
 
+            <h5>You haven't run the code yet</h5>
+
           </tbody>
         </table>
 
@@ -307,7 +309,7 @@ const cluster_template = (index,{cluster_id,data_count,character_skill,lacking,r
     <div class="panel-heading">
       <h4 data-toggle="collapse" data-parent="#cluster_list_container" href="#collapse${cluster_id+1}" class="panel-title expand">
         <div class="right-arrow pull-right">+</div>
-        <a href="#">Cluster ${index}</a>
+        <a href="#">Cluster ${index+1}</a>
       </h4>
     </div>
     <div id="collapse${cluster_id+1}" class="panel-collapse collapse">
@@ -560,7 +562,7 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
         else if (data.result){
 
           // console.log(data.result);
-
+          $("#test_case_table_container").show();
           $("#test_case_table_body").empty();
           var succss_count = 0;
           for (var i = 0; i < data.result.length; i++) {
@@ -607,7 +609,7 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
 
 
-          hint_content = ""
+          hint_content = "You seems to have very similar skill with the other submission"
           for (var i = 0; i < data.advice_list.length; i++) {
 
             if (data.advice_list[i]["cluster_id"] == data.nearest_cluster_id)

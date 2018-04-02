@@ -7,6 +7,7 @@ from cluster.models import Cluster
 from django.shortcuts import redirect
 from tool.import_data import import_data,delete_data,cluster_data
 from tool.tree import get_empty_version_tree,flatten,translate
+import json
 # Create your views here.
 
 def statistics(exercise_id):
@@ -37,6 +38,57 @@ def exercise(request,exercise_id):
 
         exercise = Exercise.objects.get(pk=exercise_id)
         cluster_list = Cluster.objects.filter(exercise=exercise)
+
+
+        output_cluster_list = []
+
+
+        for cluster in cluster_list:
+
+
+            cluster.necessary_skill = json.loads(cluster.necessary_skill)
+            cluster.redundant_skill = json.loads(cluster.redundant_skill)
+            cluster.character_skill = json.loads(cluster.character_skill)
+            cluster.other_skill = json.loads(cluster.other_skill)
+        #
+        # for cluster in cluster_list:
+        #     necessary_skill = json.loads(cluster.necessary_skill)
+        #     redundant_skill = json.loads(cluster.redundant_skill)
+        #     character_skill = json.loads(cluster.character_skill)
+        #     other_skill = json.loads(cluster.other_skill)
+        #     output_cluster_list.append({"necessary_skill":necessary_skill,"redundant_skill":redundant_skill,"character_skill":character_skill,"other_skill":other_skill})
+        #
+        # for cluster in output_cluster_list:
+        #
+        #     for skill in cluster["necessary_skill"]:
+        #         skill = translate(skill)
+        #     for skill in cluster["redundant_skill"]:
+        #         skill = translate(skill)
+        #     for skill in cluster["character_skill"]:
+        # #         skill = translate(skill)
+        #
+        # print(output_cluster_list)
+
+        # 
+		# for skill in necessary_skill_list:
+		# 	if flatten_tree[skill] == 0 and skill in compare_list:
+		# 		lacking.append(translate(skill))
+        #
+		# for skill in redundant_skill_list:
+		# 	if flatten_tree[skill] > 0 and skill in compare_list:
+		# 		redundance.append(translate(skill))
+        #
+		# for skill in character_skill_list:
+		# 	if skill in compare_list:
+		# 		character.append(translate(skill))
+        #
+		# for skill in other_skill_list:
+		# 	if flatten_tree[skill["name"]] != skill["mode"]:
+		# 		others.append({"name": translate(skill["name"]), "current": flatten_tree[skill["name"]], "suggestion": skill["mode"]})
+
+
+
+
 
         return render(request,'exercise/exercise.html',{'exercise' : exercise,'cluster_list': cluster_list})
 

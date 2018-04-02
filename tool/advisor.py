@@ -3,30 +3,40 @@ from tool.analyser import analyser
 from scipy.spatial import distance
 from cluster.models import Cluster
 from exercise.models import Exercise
+from version.models import Version
 import numpy as np # linear algebra
 import json
+from sklearn.preprocessing import StandardScaler
 
 
 def advisor(ex_id, version_tree):
+
+
+
+	flatten_tree = flatten(version_tree)
 
 	exercise = Exercise.objects.get(pk=ex_id)
 
 
 	# list of all version
 	version_list = Version.objects.filter(exercise=exercise)
-	
+
 	# data_matrix used for standardization
 	data_matrix = []
 
 	for version in version_list:
+
 		flatten_json = flatten(json.loads(version.version_tree))
 		flatten_list = list(flatten_json.values())
 		data_matrix.append(flatten_list)
 
 
-	flatten_tree = flatten(version_tree)
+		scaler = StandardScaler().fit(data_matrix)
 
-	cluster_list = Cluster.objects.filter(exercise=exercise)
+
+		standardized_data = scaler.transform(np.array([list(flatten_tree.values())]))
+
+		cluster_list = Cluster.objects.filter(exercise=exercise)
 
 
 	#list of elements for comparison
@@ -67,7 +77,7 @@ def advisor(ex_id, version_tree):
 	for i in range(0, len(center)):
 		center[i] = float(center[i])
 
-	nearest_cluster_dis = distance.euclidean(np.array(list(flatten_tree.values())),np.array(center))
+	nearest_cluster_dis = distance.euclidean(standardized_data,np.array(center))
 
 	for cluster in cluster_list:
 
@@ -79,6 +89,7 @@ def advisor(ex_id, version_tree):
 
 		lacking = []
 		redundance = []
+		character = []
 		others = []
 
 		if max_cluster_count < cluster.data_count:
@@ -88,7 +99,7 @@ def advisor(ex_id, version_tree):
 		for i in range(0, len(center)):
 			center[i] = float(center[i])
 
-		dist = distance.euclidean(list(flatten_tree.values()),np.array(center))
+		dist = distance.euclidean(standardized_data,np.array(center))
 
 		if nearest_cluster_dis > dist:
 			nearest_cluster_id = cluster.id
@@ -101,12 +112,16 @@ def advisor(ex_id, version_tree):
 			if flatten_tree[skill] > 0 and skill in compare_list:
 				redundance.append(translate(skill))
 
+		for skill in character_skill_list:
+			if skill in compare_list:
+				character.append(translate(skill))
+
 		for skill in other_skill_list:
 			if flatten_tree[skill["name"]] != skill["mode"]:
-				others.append({"name": skill["name"], "current": flatten_tree[skill["name"]], "suggestion": skill["mode"]})
+				others.append({"name": translate(skill["name"]), "current": flatten_tree[skill["name"]], "suggestion": skill["mode"]})
 
 
-		advice_list.append({"cluster_id": cluster.id,"data_count":cluster.data_count,"character_skill":character_skill_list,"lacking": lacking, "redundance": redundance, "other_skill": others})
+		advice_list.append({"cluster_id": cluster.id,"data_count":cluster.data_count,"character_skill":character,"lacking": lacking, "redundance": redundance, "other_skill": others})
 
 	output = {"max_cluster_id": max_cluster_id, "nearest_cluster_id": nearest_cluster_id, "advice_list": advice_list}
 
