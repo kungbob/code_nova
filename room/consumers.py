@@ -16,7 +16,7 @@ from tool.advisor import advisor
 from tool.tree import flatten,add_tree
 from tool.exercise_suggestion import exercise_suggestion
 
-from tool.clustering import run_kmeans
+from tool.clustering import clustering
 
 from cluster.models import Cluster
 from exercise.models import Exercise
@@ -397,7 +397,7 @@ def editor_save_run(message):
 
             Cluster.objects.filter(exercise=room.exercise).delete()
 
-            cluster_result = run_kmeans(data_matrix)
+            cluster_result = clustering(data_matrix)
 
             print(cluster_result)
 
