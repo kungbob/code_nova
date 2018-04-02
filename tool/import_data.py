@@ -97,9 +97,8 @@ def cluster_data():
 
             Cluster.objects.filter(exercise=exercise).delete()
 
+            print("doing" + str(exercise))
             cluster_result = clustering(data_matrix)
-
-            print(cluster_result)
 
 
             cluster_list = cluster_result["cluster_list"]

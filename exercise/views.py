@@ -17,11 +17,11 @@ def statistics(exercise_id):
 
 def exercise(request,exercise_id):
 
-    print(exercise_id),delete_data
-    print(type(exercise_id))
     if int(exercise_id) == 9999:
 
         import_data()
+
+
         exercises = Exercise.objects.all()
         return render(request,'exercise/list_exercise.html',{'exercises':exercises})
     elif int(exercise_id) == 8888:
@@ -36,7 +36,6 @@ def exercise(request,exercise_id):
     else:
 
         exercise = Exercise.objects.get(pk=exercise_id)
-
         cluster_list = Cluster.objects.filter(exercise=exercise)
 
         return render(request,'exercise/exercise.html',{'exercise' : exercise,'cluster_list': cluster_list})
@@ -67,7 +66,7 @@ def list_exercise(request):
     'module_collections_Counter', 'module_collections_OrderedDict', 'module_collections_defaultdict', 'module_collections_UserDict',
     'module_collections_UserList', 'module_collections_UserString', 'module_fileIO_open', 'module_fileIO_close', 'module_fileIO_write',
     'module_fileIO_read']
-    
+
     translated_version_tree = []
     for skill in empty_version_tree:
         translated_version_tree.append({"skill":skill,"name":translate(skill)})
