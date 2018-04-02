@@ -7,6 +7,7 @@ from cluster.models import Cluster
 from django.shortcuts import redirect
 from tool.import_data import import_data,delete_data,cluster_data
 from tool.tree import get_empty_version_tree,flatten,translate
+import json
 # Create your views here.
 
 def statistics(exercise_id):
@@ -34,10 +35,22 @@ def exercise(request,exercise_id):
         return render(request,'exercise/list_exercise.html',{'exercises':exercises})
 
     else:
-
+        
         exercise = Exercise.objects.get(pk=exercise_id)
         cluster_list = Cluster.objects.filter(exercise=exercise)
 
+        for cluster in cluster_list:
+            cluster.necessary_skill = json.loads(cluster.necessary_skill)
+            cluster.redundant_skill = json.loads(cluster.redundant_skill)
+            cluster.character_skill = json.loads(cluster.character_skill)
+            cluster.other_skill = json.loads(cluster.other_skill)
+
+        for skill in cluster.necessary_skill:
+            skill = translate(skill)
+        for skill in cluster.redundant_skill:
+            skill = translate(skill)
+
+        print(str(cluster_list))
         return render(request,'exercise/exercise.html',{'exercise' : exercise,'cluster_list': cluster_list})
 
 def list_exercise(request):

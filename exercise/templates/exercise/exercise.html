@@ -27,26 +27,31 @@
     <div class="panel-heading">
       <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse{{cluster.id}}" class="panel-title expand">
         <div class="right-arrow pull-right">+</div>
-        <a href="#">Cluster{{forloop.counter}}</a>
+        <a href="#">Cluster {{forloop.counter}}</a>
       </h4>
     </div>
+
     <div id="collapse{{cluster.id}}" class="panel-collapse collapse">
       <div class="panel-body">
 
         <div class="">
-          {{cluster.necessary_skill}}
+          Necessary Skill :
+          {% for skill in cluster.necessary_skill%}
+              <button type="button" name="button btn">{{skill}}</button>
+
+          {% endfor %}
         </div>
 
-        <div class="">
+        <!-- <div class="">
           {{cluster.redundant_skill}}
-        </div>
+        </div> -->
 
-        <div class="">
+        <!-- <div class="">
           {{cluster.character_skill}}
-        </div>
+        </div> -->
 
         <div class="">
-          {{cluster.common_skill}}
+          Character Skill : {{cluster.character_skill}}
         </div>
 
       </div>

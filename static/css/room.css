@@ -115,6 +115,7 @@
 #material_column{
 
   flex:0 0 30%;
+  padding: 10px;
 }
 #editor_column{
 
