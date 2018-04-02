@@ -221,6 +221,29 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
         hide_modal();
     });
 
+    var modal = document.getElementById('myModal');
+
+    $('.show_modal_button').on('click', function() {
+         /* your code here */
+        show_modal();
+    });
+
+    $('.hide_modal_button').on('click', function() {
+         /* your code here */
+        hide_modal();
+    });
+
+
+    function show_modal()
+    {
+      modal.style.display = "block";
+    }
+
+    function hide_modal()
+    {
+      modal.style.display = "none";
+    }
+
 
     function show_modal()
     {
