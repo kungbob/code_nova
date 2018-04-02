@@ -1,4 +1,4 @@
-from tool.tree import get_problem_tree, get_version_tree, flatten, translate
+from tool.tree import  flatten, translate
 from tool.analyser import analyser
 from scipy.spatial import distance
 from cluster.models import Cluster
@@ -23,24 +23,24 @@ def advisor(ex_id, version_tree):
 				'array_charArray_singleDim', 'array_charArray_multiDim', 'function_recursion_procedure', 'function_recursion_function', 'function_notRecursion_procedure',
 				'function_notRecursion_function', 'class_inheritance_constructor', 'class_inheritance_noConstructor', 'class_noInheritance_constructor',
 				'class_noInheritance_noConstructor', 'lambda', 'comprehension_list', 'comprehension_set', 'comprehension_dict',
-				'dataStructure_list_construct', 'dataStructure_list_function_append', 'dataStructure_list_function_extend', 'dataStructure_list_function_insert', 
-				'dataStructure_list_function_remove', 'dataStructure_list_function_pop', 'dataStructure_list_function_clear', 'dataStructure_list_function_count', 
-				'dataStructure_list_function_sort', 'dataStructure_list_function_reverse', 'dataStructure_set', 'dataStructure_dict', 'dataStructure_tuple', 
-				'py-str_construct', 'py-str_attrfunc_count', 'py-str_attrfunc_find', 'py-str_attrfunc_join', 'py-str_attrfunc_partition', 
-				'py-str_attrfunc_replace', 'py-str_attrfunc_split', 'py-str_attrfunc_splitlines', 'py-buildin_abs', 'py-buildin_all', 'py-buildin_any', 
-				'py-buildin_ascii', 'py-buildin_bin', 'py-buildin_bool', 'py-buildin_bytearray', 'py-buildin_bytes', 'py-buildin_callable', 
-				'py-buildin_chr', 'py-buildin_classmethod', 'py-buildin_compile', 'py-buildin_complex', 'py-buildin_delattr', 'py-buildin_dict', 
-				'py-buildin_dir', 'py-buildin_divmod', 'py-buildin_enumerate', 'py-buildin_eval', 'py-buildin_exec', 'py-buildin_filter', 
-				'py-buildin_float', 'py-buildin_format', 'py-buildin_frozenset', 'py-buildin_getattr', 'py-buildin_globals', 'py-buildin_hasattr', 
-				'py-buildin_hash', 'py-buildin_help', 'py-buildin_hex', 'py-buildin_id', 'py-buildin_input', 'py-buildin_int', 'py-buildin_isinstance', 
+				'dataStructure_list_construct', 'dataStructure_list_function_append', 'dataStructure_list_function_extend', 'dataStructure_list_function_insert',
+				'dataStructure_list_function_remove', 'dataStructure_list_function_pop', 'dataStructure_list_function_clear', 'dataStructure_list_function_count',
+				'dataStructure_list_function_sort', 'dataStructure_list_function_reverse', 'dataStructure_set', 'dataStructure_dict', 'dataStructure_tuple',
+				'py-str_construct', 'py-str_attrfunc_count', 'py-str_attrfunc_find', 'py-str_attrfunc_join', 'py-str_attrfunc_partition',
+				'py-str_attrfunc_replace', 'py-str_attrfunc_split', 'py-str_attrfunc_splitlines', 'py-buildin_abs', 'py-buildin_all', 'py-buildin_any',
+				'py-buildin_ascii', 'py-buildin_bin', 'py-buildin_bool', 'py-buildin_bytearray', 'py-buildin_bytes', 'py-buildin_callable',
+				'py-buildin_chr', 'py-buildin_classmethod', 'py-buildin_compile', 'py-buildin_complex', 'py-buildin_delattr', 'py-buildin_dict',
+				'py-buildin_dir', 'py-buildin_divmod', 'py-buildin_enumerate', 'py-buildin_eval', 'py-buildin_exec', 'py-buildin_filter',
+				'py-buildin_float', 'py-buildin_format', 'py-buildin_frozenset', 'py-buildin_getattr', 'py-buildin_globals', 'py-buildin_hasattr',
+				'py-buildin_hash', 'py-buildin_help', 'py-buildin_hex', 'py-buildin_id', 'py-buildin_input', 'py-buildin_int', 'py-buildin_isinstance',
 				'py-buildin_issubclass', 'py-buildin_iter', 'py-buildin_len', 'py-buildin_list', 'py-buildin_locals', 'py-buildin_map', 'py-buildin_max',
-				'py-buildin_memoryview', 'py-buildin_min', 'py-buildin_next', 'py-buildin_object', 'py-buildin_oct', 'py-buildin_open', 'py-buildin_ord', 
-				'py-buildin_pow', 'py-buildin_print', 'py-buildin_property', 'py-buildin_range', 'py-buildin_repr', 'py-buildin_reversed', 
-				'py-buildin_round', 'py-buildin_set', 'py-buildin_setattr', 'py-buildin_slice', 'py-buildin_sorted', 'py-buildin_staticmethod', 
-				'py-buildin_str', 'py-buildin_sum', 'py-buildin_super', 'py-buildin_tuple', 'py-buildin_type', 'py-buildin_vars', 'py-buildin_zip', 
-				'py-buildin___import__', 'module_collections_namedtuple()', 'module_collections_deque', 'module_collections_ChainMap', 
-				'module_collections_Counter', 'module_collections_OrderedDict', 'module_collections_defaultdict', 'module_collections_UserDict', 
-				'module_collections_UserList', 'module_collections_UserString', 'module_fileIO_open', 'module_fileIO_close', 'module_fileIO_write', 
+				'py-buildin_memoryview', 'py-buildin_min', 'py-buildin_next', 'py-buildin_object', 'py-buildin_oct', 'py-buildin_open', 'py-buildin_ord',
+				'py-buildin_pow', 'py-buildin_print', 'py-buildin_property', 'py-buildin_range', 'py-buildin_repr', 'py-buildin_reversed',
+				'py-buildin_round', 'py-buildin_set', 'py-buildin_setattr', 'py-buildin_slice', 'py-buildin_sorted', 'py-buildin_staticmethod',
+				'py-buildin_str', 'py-buildin_sum', 'py-buildin_super', 'py-buildin_tuple', 'py-buildin_type', 'py-buildin_vars', 'py-buildin_zip',
+				'py-buildin___import__', 'module_collections_namedtuple()', 'module_collections_deque', 'module_collections_ChainMap',
+				'module_collections_Counter', 'module_collections_OrderedDict', 'module_collections_defaultdict', 'module_collections_UserDict',
+				'module_collections_UserList', 'module_collections_UserString', 'module_fileIO_open', 'module_fileIO_close', 'module_fileIO_write',
 				'module_fileIO_read']
 
 
@@ -175,39 +175,3 @@ def message_depth (flatten_version, flatten_problem):
 		str = str + "\n"
 
 	return str
-
-
-def advisor2(version_tree, problem_tree, total_count):
-
-	lack_limit = 0.5
-	redundance_limit = 0.1
-
-	#lists for storing lacking and redundant elements
-	lack = []
-	redundance = []
-	suggestions = []
-
-	#list of elements for comparison
-	compare_list = ['basicIO_output', 'condition_if_ifOnly', 'condition_if_withElse', 'condition_switch', 'loop_single_for', 'loop_single_while',
-				'loop_nested_forOnly', 'loop_nested_whileOnly', 'loop_nested_mixed', 'array_nonCharArray_singleDim', 'array_nonCharArray_multiDim',
-				'array_charArray_singleDim', 'array_charArray_multiDim', 'function_recursion_procedure', 'function_recursion_function', 'function_notRecursion_procedure',
-				'function_notRecursion_function', 'class_inheritance_constructor', 'class_inheritance_noConstructor', 'class_noInheritance_constructor',
-				'class_noInheritance_noConstructor', 'module_string_length', 'module_string_concat', 'module_string_substr', 'module_string_replace',
-				'module_string_changeType', 'module_fileIO_open', 'module_fileIO_close', 'module_fileIO_write', 'module_fileIO_read', 'module_array_length',
-				'module_array_concat', 'module_array_split', 'module_array_sort', 'module_array_pop', 'module_array_push', 'module_array_find']
-
-	#flatten both trees
-	flatten_version = flatten(version_tree)
-	flatten_problem = flatten(problem_tree)
-
-	#compare all elements in compare_list
-	for i in compare_list:
-		if flatten_problem[i]/total_count >= lack_limit and flatten_version[i] == 0:
-			lack.append(i)
-		elif flatten_problem[i]/total_count <= redundance_limit and flatten_version[i] > 0:
-			redundance.append(i)
-
-
-	suggestions.append(message_lack_redundance(lack, redundance, flatten_problem, total_count))
-	suggestions.append(message_depth(flatten_version, flatten_problem))
-	return suggestions

@@ -144,6 +144,7 @@ div.chat_history_panel {
     width: 100%;
     height: 80%;
     overflow-x: auto;
+    border-radius: 10px;
 }
 
 div.chat_control_panel {
@@ -186,6 +187,7 @@ div.chat_control_panel {
   position: relative;
   float: right;
   top: 50%;
+  border-radius: 10px;
 }
 
 .sender{

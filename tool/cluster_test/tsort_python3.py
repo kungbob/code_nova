@@ -69,22 +69,27 @@ def gaussian_clustering(newdata):
 	plt.axis('tight')
 	plt.show()
 
-df2 = pd.read_csv('program_code.csv')
+df2 = pd.read_csv('program_code_python_only.csv')
 
+df2 = df2[df2.QCode == "TSORT"]
 # print(df2.head())
 # 262 correct code in total
 i = 0
 data_matrix = []
+print(df2.head())
+
 for code in df2.iterrows():
 	# print(code[1][0])
 	i = i + 1
-	version_json = analyser.analyser(code[1][1])
+	print(code)
+	version_json = analyser.analyser(code[1].Solutions)
 	# flatten the data for ease of comparison
 	flatten_json = flatten(version_json)
 	# convert dict to list
 	version_list = list(flatten_json.values())
 	# append list of value into data matrix
 	data_matrix.append(version_list)
+
 
 print(i)
 pca = PCA(n_components = 2)

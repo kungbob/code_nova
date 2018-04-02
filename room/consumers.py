@@ -13,7 +13,7 @@ from tool.find_helper import find_helper
 from tool.compile_code import compile_code
 from tool.analyser import analyser
 from tool.advisor import advisor
-from tool.tree import get_problem_tree,get_version_tree,flatten,add_tree
+from tool.tree import flatten,add_tree
 from tool.exercise_suggestion import exercise_suggestion
 
 from tool.clustering import run_kmeans
@@ -25,6 +25,7 @@ import numpy as np
 import datetime
 import time
 import _thread
+import random
 
 
 CONST_MIN_VERSION = 10
@@ -363,6 +364,12 @@ def editor_save_run(message):
 
     if overall_success:
 
+        student = Student.objects.get(user=message.user)
+
+        # add complete student to exercise
+        room.exercise.complete_student.add(student)
+        room.exercise.save()
+
         data_matrix = []
         version_list = Version.objects.filter(exercise=room.exercise,overall_success=True)
 
@@ -438,7 +445,13 @@ def ask_suggestion(message):
     student = Student.objects.get(user = message.user)
     suggestion_id = exercise_suggestion(student,message["mode"],message["skill"])
 
-    exercise = Exercise.objects.get(pk=suggestion_id)
+    # if there is no suggestion
+    if suggestion_id == -1:
+
+        exercise = random.choice(Exercise.objects.all())
+    else:
+        exercise = Exercise.objects.get(pk=suggestion_id)
+
 
     url = reverse('exercise',kwargs={'exercise_id':exercise.id})
 
