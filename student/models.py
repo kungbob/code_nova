@@ -3,6 +3,8 @@ from user.models import User
 
 from user.constants import Constants
 from django.db.models.signals import post_save
+from tool.tree import get_empty_version_tree
+import json
 
 # Create your models here.
 
@@ -10,7 +12,7 @@ from django.db.models.signals import post_save
 class Student(models.Model):
   user = models.OneToOneField(User,
     on_delete=models.CASCADE,)
-  profile_tree = models.TextField(default="")
+  profile_tree = models.TextField(default=json.dumps(get_empty_version_tree()))
 
   def __str__(self):
       return self.user.email

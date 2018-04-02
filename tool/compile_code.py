@@ -38,8 +38,9 @@ def compile_code(code, exercise):
 				try:
 					sys.argv = test_case["input"]
 					# exec(codeio,{})
-					exec(code)
+					exec(code,globals())
 				except Exception as e:
+
 					traceback.print_exc()
 
 		output = out.getvalue()

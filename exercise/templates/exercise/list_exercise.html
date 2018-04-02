@@ -15,6 +15,42 @@
   <!-- <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button>
   <button class="ask_suggestion_button" type="button" name="button">ask_suggestion</button> -->
 
+
+  <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal_content">
+      <span class="close hide_modal_button">&times;</span>
+      <div id="test_case_modal_container" class="modal_container">
+        <div id="test_case_count"></div>
+
+        <div id="test_case_table_container">
+
+          <table class="table" id="test_case_table" style="width:100%;">
+            <thead>
+              <tr><th scope="col">input</th><th scope="col">expected output</th><th scope="col">actual output</th><th scope="col">success</th><th scope="col">error</th></tr>
+            </thead>
+            <tbody id="test_case_table_body">
+
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+      <div id="advice_modal_container" class="modal_container" style="display:none;">
+
+        <a href="#cluster48">asasdfasdf</a>
+        <div id="cluster_count"></div>
+
+        <div id="piechart" style="width: 100%; height: 50%;"></div>
+        <div id="cluster_list_container"></div>
+
+      </div>
+    </div>
+  </div>
+
+
   <div class="container">
     <h1>Exercise List</h1>
     <div class="row">
@@ -32,6 +68,7 @@
     <button class="ask_suggestion_button" mode="1" type="button" name="button">easy</button>
     <button class="ask_suggestion_button" mode="2" type="button" name="button">medium</button>
     <button class="ask_suggestion_button" mode ="3" type="button" name="button">hard</button>
+    <button class="show_modal_button" type="button" name="button">show modal</button>
   </div>
 
 
@@ -158,6 +195,29 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
          console.log("attr",$(this).attr("mode"));
         ask_suggestion(parseInt($(this).attr("mode")));
     });
+
+    var modal = document.getElementById('myModal');
+
+    $('.show_modal_button').on('click', function() {
+         /* your code here */
+        show_modal();
+    });
+
+    $('.hide_modal_button').on('click', function() {
+         /* your code here */
+        hide_modal();
+    });
+
+
+    function show_modal()
+    {
+      modal.style.display = "block";
+    }
+
+    function hide_modal()
+    {
+      modal.style.display = "none";
+    }
 
 
     function ask_suggestion(mode)
