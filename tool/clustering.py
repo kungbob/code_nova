@@ -196,5 +196,4 @@ def run_ms(data):
 
 	output = {"cluster_list": cluster_list, "label": label, "common_skill": common_feature}
 
-
 	return output
