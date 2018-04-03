@@ -315,23 +315,23 @@ const cluster_template = (index,{cluster_id,data_count,character_skill,lacking,r
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h4 data-toggle="collapse" data-parent="#cluster_list_container" href="#collapse${cluster_id+1}" class="panel-title expand">
+      <h4 data-toggle="collapse" id="cluster${cluster_id}" data-parent="#cluster_list_container" href="#collapse${cluster_id}" class="panel-title expand">
         <div class="right-arrow pull-right">+</div>
         <a href="#">Cluster ${index+1}</a>
       </h4>
     </div>
-    <div id="collapse${cluster_id+1}" class="panel-collapse collapse">
+    <div id="collapse${cluster_id}" class="panel-collapse collapse">
       <div class="panel-body">
         <div class="">
-          ${lacking}
+          Lacking : ${lacking}
         </div>
 
         <div class="">
-          ${redundance}
+          redundance : ${redundance}
         </div>
 
         <div class="">
-          ${character_skill}
+          character_skill : ${character_skill}
         </div>
 
         ${other_skill_list}
@@ -611,6 +611,16 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
 
             $("#cluster_list_container").append(cluster_template(i,data.advice_list[i]));
+
+            if (data.advice_list[i]["cluster_id"] == data.nearest_cluster_id){
+
+              $("#cluster"+data.nearest_cluster_id).append("(nearest_cluster)")
+            }
+
+            if (data.advice_list[i]["cluster_id"] == data.max_cluster_id){
+
+              $("#cluster"+data.nearest_cluster_id).append("(max_cluster)")
+            }
           }
 
           // $("#cluster"+data.max_cluster_id).pre

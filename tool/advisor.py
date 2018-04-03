@@ -1,4 +1,4 @@
-from tool.tree import  flatten, translate
+from tool.tree import  flatten, translate, flatten_self_define
 from tool.analyser import analyser
 from scipy.spatial import distance
 from cluster.models import Cluster
@@ -13,7 +13,7 @@ def advisor(ex_id, version_tree):
 
 
 
-	flatten_tree = flatten(version_tree)
+	flatten_tree = flatten_self_define(version_tree)
 
 	exercise = Exercise.objects.get(pk=ex_id)
 
@@ -26,7 +26,7 @@ def advisor(ex_id, version_tree):
 
 	for version in version_list:
 
-		flatten_json = flatten(json.loads(version.version_tree))
+		flatten_json = flatten_self_define(json.loads(version.version_tree))
 		flatten_list = list(flatten_json.values())
 		data_matrix.append(flatten_list)
 

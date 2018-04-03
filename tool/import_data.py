@@ -8,7 +8,7 @@ from student.models import Student
 from tool.compile_code import compile_code
 from tool.analyser import analyser
 from version.models import Version
-from tool.tree import flatten
+from tool.tree import flatten,flatten_self_define
 from tool.clustering import clustering
 from cluster.models import Cluster
 from exercise.models import Exercise
@@ -87,7 +87,7 @@ def cluster_data():
         if len(version_list) >= 50 :
             for version in version_list:
 
-                flatten_json = flatten(json.loads(version.version_tree))
+                flatten_json = flatten_self_define(json.loads(version.version_tree))
                 flatten_list = list(flatten_json.values())
 
 
