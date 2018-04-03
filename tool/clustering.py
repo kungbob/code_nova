@@ -123,9 +123,9 @@ def clustering(data_matrix):
 	standardized_data = scaler.transform(data_matrix)
 
 	if len(data_matrix) > 100:
-		bandwidth = estimate_bandwidth(standardized_data, quantile=0.2, n_samples = 100)
+		bandwidth = estimate_bandwidth(standardized_data, quantile=0.3, n_samples = 100)
 	else:
-		bandwidth = estimate_bandwidth(standardized_data, quantile=0.2)
+		bandwidth = estimate_bandwidth(standardized_data, quantile=0.3)
 
 	ms = MeanShift(bandwidth=bandwidth, bin_seeding=True).fit(standardized_data)
 
@@ -146,7 +146,7 @@ def clustering(data_matrix):
 		data_list[label[i]].append(data_matrix[i])
 		data_count[label[i]] += 1
 
-	skilltree_structure = list(flatten(get_empty_version_tree()).keys())
+	skilltree_structure = list(flatten_self_define(get_empty_version_tree()).keys())
 	cluster_list = []
 	data_length = len(data_matrix[0])
 

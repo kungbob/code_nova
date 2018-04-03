@@ -77,12 +77,34 @@ def flatten(d, parent_key='', sep='_'):
         	items.append((new_key, v))
     return dict(items)
 
-def flatten_self_define(d, wanted_list='' ,parent_key='', sep='_'):
+def flatten_self_define(d ,parent_key='', sep='_'):
+
+    wanted_list = ['basicIO', 'basicIO_input', 'basicIO_output', 'condition', 'condition_if', 'condition_if_ifOnly', 'condition_if_withElse', 
+            'condition_switch', 'loop', 'loop_single', 'loop_single_for', 'loop_single_while', 'loop_nested', 'array', 'array_nonCharArray', 
+            'array_nonCharArray_singleDim', 'array_nonCharArray_multiDim', 'array_charArray', 'array_charArray_singleDim', 
+            'array_charArray_multiDim', 'function', 'function_recursion', 'function_recursion_procedure', 'function_recursion_function', 
+            'function_notRecursion', 'function_notRecursion_procedure', 'function_notRecursion_function', 'class', 'class_inheritance', 
+            'class_inheritance_constructor', 'class_inheritance_noConstructor', 'class_noInheritance', 'class_noInheritance_constructor', 
+            'class_noInheritance_noConstructor', 'lambda', 'comprehension', 'comprehension_list', 'comprehension_set', 'comprehension_dict', 
+            'dataStructure', 'dataStructure_list', 'dataStructure_list_construct', 'dataStructure_list_function', 'dataStructure_list_function_append', 
+            'dataStructure_list_function_extend', 'dataStructure_list_function_insert', 'dataStructure_list_function_remove', 
+            'dataStructure_list_function_pop', 'dataStructure_list_function_clear', 'dataStructure_list_function_count', 
+            'dataStructure_list_function_sort', 'dataStructure_list_function_reverse', 'dataStructure_set', 'dataStructure_dict', 
+            'dataStructure_tuple', 'py-str', 'py-str_construct', 'py-str_attrfunc', 'py-str_attrfunc_count', 'py-str_attrfunc_find', 
+            'py-str_attrfunc_join', 'py-str_attrfunc_partition', 'py-str_attrfunc_replace', 'py-str_attrfunc_split', 'py-str_attrfunc_splitlines',
+            'py-buildin', 'py-buildin_chr', 'py-buildin_dict', 'py-buildin_dir', 'py-buildin_eval', 'py-buildin_filter', 'py-buildin_float', 
+            'py-buildin_int', 'py-buildin_isinstance', 'py-buildin_iter', 'py-buildin_len', 'py-buildin_list', 
+            'py-buildin_map', 'py-buildin_min', 'py-buildin_pow', 'py-buildin_range', 'py-buildin_set', 
+            'py-buildin_str', 'py-buildin_sum', 'py-buildin_tuple', 'py-buildin_type', 'module', 'module_collections', 
+            'module_collections_namedtuple()', 'module_collections_deque', 'module_collections_ChainMap', 'module_collections_Counter', 
+            'module_collections_OrderedDict', 'module_collections_defaultdict', 'module_collections_UserDict', 'module_collections_UserList', 
+            'module_collections_UserString', 'maxIfDepth', 'maxLoopDepth', 'maxArraySize', 'maxArrayDim']
+
     items = []
     for k, v in d.items():
         new_key = parent_key + sep + k if parent_key else k
         if isinstance(v, collections.MutableMapping):
-            items.extend(flatten_self_define(v, wanted_list, new_key, sep=sep).items())
+            items.extend(flatten_self_define(v, new_key, sep=sep).items())
         else:
             new_key = new_key[:-6]
             if new_key in wanted_list or wanted_list == '':
