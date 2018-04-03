@@ -69,7 +69,7 @@ def exercise(request,exercise_id):
         #
         # print(output_cluster_list)
 
-        # 
+        #
 		# for skill in necessary_skill_list:
 		# 	if flatten_tree[skill] == 0 and skill in compare_list:
 		# 		lacking.append(translate(skill))
