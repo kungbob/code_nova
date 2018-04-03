@@ -52,22 +52,26 @@
   </div>
 
 
-  <div class="container" style="margin-top:10px;">
+  <div class="container-fluid fill" style="height:100%;width:100%;display:flex;">
 
-    <b>Suggestion</b>
-    <button class="ask_suggestion_button btn" mode="1" type="button" name="button">learn new skill</button>
-    <button class="ask_suggestion_button btn" mode ="3" type="button" name="button">reinforce skill</button>
-    <button class="ask_suggestion_button btn" mode="2" type="button" name="button">Learn specific skill</button>
-    <!-- <button class="show_modal_button" type="button" name="button">show modal</button> -->
-    <select class="skill_list" name="skill">
-      {% for skill in translated_version_tree %}
-      <option value="{{skill.skill}}">{{skill.name}}</option>
-      {% endfor%}
+    <div class="column ask_suggestion_button column_1" mode="1">
+        <span class="column_label">Learn New Skill</span>
+    </div>
+    <div class="column ask_suggestion_button column_2" mode="3">
+      <span class="column_label">Reinforce Skill</span>
+    </div>
+    <div class="column column_3">
+        <span class="column_label">Learn Specific Skill</span>
+        <select class="skill_list" name="skill">
+          {% for skill in translated_version_tree %}
+          <option value="{{skill.skill}}">{{skill.name}}</option>
+          {% endfor%}
+        </select>
 
-    </select>
+        <button type="button" class="ask_suggestion_button btn" mode="2" name="button">Search</button>
+    </div>
 
   </div>
-
 
   <div class="container">
     <h1>Exercise List</h1>

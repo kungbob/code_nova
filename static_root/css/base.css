@@ -20,8 +20,9 @@ body {
 .navbar{
   margin-bottom: 0;
   flex-shrink: 0;
-  position: absolute;
+  position: fixed;
   width: 100%;
+  z-index: 20;
 }
 
 .content{

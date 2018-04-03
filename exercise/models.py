@@ -12,7 +12,6 @@ class Exercise(models.Model):
     test_case = models.TextField(default='',blank=True)
     complete_student = models.ManyToManyField(Student,blank=True)
     common_skill = models.TextField(default="[]",blank=True)
-    character_skill = models.TextField(default="[]",blank=True)
 
 
     def __str__(self):

@@ -36,25 +36,24 @@
 
         <div class="">
           Necessary Skill :
-          {% for skill in cluster.necessary_skill%}
-              <button class="btn" type="button" name="button">{{skill}}</button>
 
-          {% endfor %}
+          <div class="">
+            {% for skill in cluster.necessary_skill%}
+                <button class="btn" type="button" name="button" style="margin:3px;">{{skill}}</button>
+
+            {% endfor %}
+          </div>
+
         </div>
 
-        <!-- <div class="">
-          {{cluster.redundant_skill}}
-        </div> -->
-
-        <!-- <div class="">
-          {{cluster.character_skill}}
-        </div> -->
-
         <div class="">
+          Character Skill :
+          <div class="">
+            {% for skill in cluster.character_skill%}
+                <button class="btn" type="button" name="button" style="margin:3px;">{{skill}}</button>
+            {% endfor %}
+          </div>
 
-          {% for skill in cluster.character_skill%}
-              <button class="btn" type="button" name="button">{{skill}}</button>
-          {% endfor %}
         </div>
 
       </div>

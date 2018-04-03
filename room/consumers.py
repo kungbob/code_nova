@@ -13,7 +13,7 @@ from tool.find_helper import find_helper
 from tool.compile_code import compile_code
 from tool.analyser import analyser
 from tool.advisor import advisor
-from tool.tree import flatten,add_tree
+from tool.tree import flatten,add_tree,flatten_self_define
 from tool.exercise_suggestion import exercise_suggestion
 
 from tool.clustering import clustering
@@ -315,7 +315,7 @@ def editor_save(message):
 @catch_client_error
 @channel_session_user
 def editor_save_run(message):
-    
+
     room = get_room_or_error(message["room"], message.user)
     code = message["code"]
 
@@ -384,7 +384,7 @@ def editor_save_run(message):
         if len(version_list) >= CONST_MIN_VERSION :
             for version in version_list:
 
-                flatten_json = flatten(json.loads(version.version_tree))
+                flatten_json = flatten_self_define(json.loads(version.version_tree))
                 flatten_list = list(flatten_json.values())
 
 

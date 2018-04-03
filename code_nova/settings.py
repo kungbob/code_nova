@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'cluster.apps.ClusterConfig',
     'ckeditor',
     'ckeditor_uploader',
-    'course.apps.CourseConfig',
     'channels',
     'room.apps.RoomConfig',
     'django_ace',

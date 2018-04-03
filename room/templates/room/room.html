@@ -35,7 +35,11 @@
     <div id="advice_modal_container" class="modal_container" style="display:none;">
       <div id="cluster_count"></div>
 
-      <div id="piechart" style="width: 100%; height: 50%;"></div>
+      <div class="piechart_container" style="width: 100%; height: 50%;">
+        <div id="piechart" style="height:100%;width:100%;"></div>
+      </div>
+
+
 
         <div class="panel-group" id="cluster_list_container">
 
@@ -166,9 +170,13 @@ function drawChart(advice_list) {
 
 
 
+
   var options = {
-    title: 'Clustering Result'
-  };
+  'title':'Clustering Result',
+  'is3D':true
+}
+
+options.chartArea = {left:0, 'width': '80%', 'height': '80%'}
 
 
   function selectHandler() {
@@ -284,7 +292,7 @@ return "<tr><td scope='row'>"+input+"</td><td>"+expect_output.split("\n").join("
 
 const cluster_template = (index,{cluster_id,data_count,character_skill,lacking,redundance,other_skill}) => {
 
-  var other_skill_list = `<table class="table"><tr><th>skill</th><th>current</th><th>suggestion</th></tr>`;
+  var other_skill_list = `<table class="table"><tr><th>Skill</th><th>Your code</th><th>Suggestion Code</th></tr>`;
 
 
   for (var i in other_skill){
@@ -311,27 +319,54 @@ const cluster_template = (index,{cluster_id,data_count,character_skill,lacking,r
   other_skill_list = other_skill_list + "</table>";
 
 
+  var lacking_list = ``;
+
+  for (var i in lacking) {
+
+    lacking_list = lacking_list + `<button class="btn tag">${lacking[i]}</button>`;
+
+  }
+
+  var redundance_list = ``;
+  for (var i in redundance) {
+    redundance_list = redundance_list + `<button class="btn tag">${redundance[i]}</button>`;
+  }
+
+  var character_skill_list = ``;
+  for (var i in character_skill) {
+    character_skill_list = character_skill_list + `<button class="btn tag">${character_skill[i]}</button>`;
+  }
+
+
   output = `
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h4 data-toggle="collapse" data-parent="#cluster_list_container" href="#collapse${cluster_id+1}" class="panel-title expand">
+      <h4 data-toggle="collapse" id="cluster${cluster_id}" data-parent="#cluster_list_container" href="#collapse${cluster_id}" class="panel-title expand">
         <div class="right-arrow pull-right">+</div>
         <a href="#">Cluster ${index+1}</a>
       </h4>
     </div>
-    <div id="collapse${cluster_id+1}" class="panel-collapse collapse">
+    <div id="collapse${cluster_id}" class="panel-collapse collapse">
       <div class="panel-body">
         <div class="">
-          ${lacking}
+          Lacking :
+          <div class="lacking_list">`+lacking_list+`
+
+          </div>
         </div>
 
         <div class="">
-          ${redundance}
+          redundance :
+          <div class="redundance_list">`+redundance_list+`
+
+          </div>
         </div>
 
         <div class="">
-          ${character_skill}
+        <div class="character_skill_list">`+character_skill_list+`
+
+        </div>
         </div>
 
         ${other_skill_list}
@@ -611,10 +646,21 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
 
             $("#cluster_list_container").append(cluster_template(i,data.advice_list[i]));
+
+            if (data.advice_list[i]["cluster_id"] == data.nearest_cluster_id){
+
+              console.log("some");
+
+              $("#cluster"+data.nearest_cluster_id).append(`<img src="{% static 'image/nearest_cluster.png' %}" data-toggle="tooltip" title="Most Similar Solution" style="height:2em;width:2em;margin:3px;"/>`);
+            }
+
+            if (data.advice_list[i]["cluster_id"] == data.max_cluster_id){
+              console.log("some2");
+              $("#cluster"+data.nearest_cluster_id).append(`<img src="{% static 'image/max_cluster.png' %}" data-toggle="tooltip" title="Most popular Solution" style="height:2em;width:2em;margin:3px;"/>`);
+            }
+
+            $('[data-toggle="tooltip"]').tooltip();
           }
-
-          // $("#cluster"+data.max_cluster_id).pre
-
 
 
           hint_content = "You seems to have very similar skill with the other submission"

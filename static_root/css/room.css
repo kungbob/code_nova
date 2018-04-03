@@ -269,3 +269,8 @@ div.chat_control_panel {
     text-decoration: none;
     cursor: pointer;
 }
+
+.tag{
+
+  margin: 3px;
+}

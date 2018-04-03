@@ -8,24 +8,30 @@
 {% endblock%}
 
 {% block content %}
-<h1>List Room Page content</h1>
-<table class="table table-striped">
-
-  <tr><th class="text-center">owner</th><th class="text-center">exercise</th><th class="text-center">action</th></tr>
-
-  {% for room in rooms %}
-
-  <tr>
-    <td>{{room.owner}}</td>
-    <td>{{room.exercise.title}}</td>
-    <td><a href="{% url 'room' room.id %}"><button type="button" class="btn" name="button">Enter</button></a></td>
-  </tr>
 
 
-  {% endfor %}
+<div class="container-fluid">
+
+  <h1>Room List</h1>
+  <table class="table table-striped">
+
+    <tr><th class="text-center">owner</th><th class="text-center">exercise</th><th class="text-center">action</th></tr>
+
+    {% for room in rooms %}
+
+    <tr>
+      <td>{{room.owner}}</td>
+      <td>{{room.exercise.title}}</td>
+      <td><a href="{% url 'room' room.id %}"><button type="button" class="btn" name="button">Enter</button></a></td>
+    </tr>
 
 
-</table>
+    {% endfor %}
+
+
+  </table>
+</div>
+
 
 
 {% endblock %}

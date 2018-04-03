@@ -13,6 +13,9 @@
 }
 
 
+
+
+
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -56,4 +59,75 @@
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.column{
+
+  background-size: cover;
+  background-position: center;
+  flex: 1 1 ;
+  flex-direction: column;
+  display:flex;
+  justify-content : center;
+  align-items: center;
+
+}
+
+.column_1{
+
+  background: url("../image/learn_new_skill.jpeg");
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  background-color: hsla(0,0%,100%,0.50);
+  background-blend-mode: overlay;
+  background-repeat: no-repeat;
+
+}
+
+.column_2{
+
+  background: url("../image/reinforce_skill.jpeg");
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  background-color: hsla(0,0%,100%,0.50);
+  background-blend-mode: overlay;
+  background-repeat: no-repeat;
+
+}
+
+.column_3{
+
+  background: url("../image/learn_specific_skill.jpeg");
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  background-color: hsla(0,0%,100%,0.50);
+  background-blend-mode: overlay;
+  background-repeat: no-repeat;
+
+}
+
+.column_1:hover {
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+.column_2:hover {
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+.column_label{
+
+  font-family: fantasy;
+  font-size: 2em;
+
+
+}
+
+.skill_list{
+  width: 50%;
+  margin: 10px;
 }
