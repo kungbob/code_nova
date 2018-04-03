@@ -284,23 +284,31 @@ return "<tr><td scope='row'>"+input+"</td><td>"+expect_output.split("\n").join("
 
 const cluster_template = (index,{cluster_id,data_count,character_skill,lacking,redundance,other_skill}) => {
 
-  var other_skill_list = `<div>`;
+  var other_skill_list = `<table class="table"><tr><th>skill</th><th>current</th><th>suggestion</th></tr>`;
 
 
   for (var i in other_skill){
 
   var dumb = `
-      <div>
-        <div>skill_name : ${ other_skill[i]["name"]}</div>
-        <div>current : ${other_skill[i]["current"]}</div>
-        <div>suggestion : ${other_skill[i]["suggestion"]}</div>
-      </div>`;
+  <tr>
+  <td>
+  ${ other_skill[i]["name"]}
+  </td>
+  <td>
+  ${other_skill[i]["current"]}
+  </td>
+  <td>
+  ${other_skill[i]["suggestion"]}
+  </td>
+  </tr>
+
+`;
 
     other_skill_list = other_skill_list + dumb;
   }
 
   // enclosing other_skill list div tag
-  other_skill_list = other_skill_list + "</div>";
+  other_skill_list = other_skill_list + "</table>";
 
 
   output = `
