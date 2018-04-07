@@ -647,6 +647,7 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
             $("#cluster_list_container").append(cluster_template(i,data.advice_list[i]));
 
+
             if (data.advice_list[i]["cluster_id"] == data.nearest_cluster_id){
 
               console.log("some");
