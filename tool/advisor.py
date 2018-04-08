@@ -11,9 +11,11 @@ from sklearn.preprocessing import StandardScaler
 
 def advisor(ex_id, version_tree):
 
+	wanted_list = []
 
-
-	flatten_tree = flatten_self_define(version_tree)
+	flatten_tree = flatten(version_tree)
+	for i in wanted_list:
+		flatten_tree.pop(i, None)
 
 	exercise = Exercise.objects.get(pk=ex_id)
 
@@ -26,17 +28,20 @@ def advisor(ex_id, version_tree):
 
 	for version in version_list:
 
-		flatten_json = flatten_self_define(json.loads(version.version_tree))
+		flatten_json = flatten(json.loads(version.version_tree))
+		for i in wanted_list:
+			flatten_json.pop(i, None)
+
 		flatten_list = list(flatten_json.values())
 		data_matrix.append(flatten_list)
 
 
-		scaler = StandardScaler().fit(data_matrix)
+	scaler = StandardScaler().fit(data_matrix)
 
 
-		standardized_data = scaler.transform(np.array([list(flatten_tree.values())]))
+	standardized_data = scaler.transform(np.array([list(flatten_tree.values())]))
 
-		cluster_list = Cluster.objects.filter(exercise=exercise)
+	cluster_list = Cluster.objects.filter(exercise=exercise)
 
 
 	#list of elements for comparison

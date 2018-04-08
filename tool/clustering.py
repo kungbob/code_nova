@@ -17,6 +17,33 @@ from version.models import Version
 
 def clustering(data_matrix):
 
+	data_matrix_sum = flatten(get_empty_version_tree())
+	unwanted_skill = []
+	data_count = len(data_matrix)
+	
+	other_list = ["maxIfDepth", "maxLoopDepth", "maxArraySize", "maxArrayDim"]
+
+	for data in data_matrix:
+		
+		for skill in data:
+			
+			data_matrix_sum[skill] += data[skill]
+
+	for skill in data_matrix_sum:
+
+		if data_matrix_sum[skill] < data_count*0.05 and data_matrix_sum[skill] not in other_list:
+			unwanted_skill.append(skill)
+
+	for skill in unwanted_skill:
+		for data in data_matrix:
+			data.pop(skill, None)
+
+		data_matrix_sum.pop(skill, None)
+
+
+	for i in range(0, data_count):
+		data_matrix[i] = list(data_matrix[i].values())
+
 	scaler = StandardScaler().fit(data_matrix)
 	standardized_data = scaler.transform(data_matrix)
 
@@ -27,24 +54,22 @@ def clustering(data_matrix):
 
 	ms = MeanShift(bandwidth=bandwidth, bin_seeding=True).fit(standardized_data)
 
-	other_list = ["maxIfDepth", "maxLoopDepth", "maxArraySize", "maxArrayDim"]
-
 	label = ms.labels_
 	center = ms.cluster_centers_
 	cluster_no = len(np.unique(label))
 
-	data_count = []
+	data_count_list = []
 	data_list = []
 	for i in range(0, cluster_no):
 		data_count.append(0)
 		data_list.append([])
 
 
-	for i in range(0,len(data_matrix)):
+	for i in range(0, data_count):
 		data_list[label[i]].append(data_matrix[i])
-		data_count[label[i]] += 1
+		data_count_list[label[i]] += 1
 
-	skilltree_structure = list(flatten_self_define(get_empty_version_tree()).keys())
+	wanted_skill = list(data_matrix_sum.keys())
 	cluster_list = []
 	data_length = len(data_matrix[0])
 
@@ -71,10 +96,10 @@ def clustering(data_matrix):
 				other_count[skill - data_length + 4].append(data[skill])
 
 		for i in range(0, data_length):
-			if skilltree[i] >= data_count[cluster]*0.65 and skilltree_structure[i] not in other_list:
-				necessary_skill.append(skilltree_structure[i])
-			elif skilltree[i] <= data_count[cluster]*0.1 and skilltree_structure[i] not in other_list:
-				redundant_skill.append(skilltree_structure[i])
+			if skilltree[i] >= data_count[cluster]*0.65 and wanted_skill[i] not in other_list:
+				necessary_skill.append(wanted_skill[i])
+			elif skilltree[i] < data_count[cluster]*0.1 and wanted_skill[i] not in other_list:
+				redundant_skill.append(wanted_skill[i])
 
 		other_skill = []
 
@@ -83,7 +108,7 @@ def clustering(data_matrix):
 			mode = max(set(other_count[i]), key=other_count[i].count)
 			other_skill.append({"name": other_list[i], "mode": mode})
 
-		cluster_list.append({"center": center[cluster], "data_count": data_count[cluster], "necessary_skill": necessary_skill,
+		cluster_list.append({"center": center[cluster], "data_count": data_count_list[cluster], "necessary_skill": necessary_skill,
 			"redundant_skill": redundant_skill, "other_skill": other_skill, "character_skill": ""})
 
 
@@ -97,6 +122,6 @@ def clustering(data_matrix):
 			character_skill.remove(common)
 		cluster["character_skill"] = character_skill
 
-	output = {"cluster_list": cluster_list, "label": label, "common_skill": common_feature}
+	output = {"cluster_list": cluster_list, "label": label, "common_skill": common_feature, "wanted_skill": wanted_skill}
 
 	return output
