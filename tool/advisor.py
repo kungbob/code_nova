@@ -14,8 +14,9 @@ def advisor(ex_id, version_tree):
 	wanted_list = []
 
 	flatten_tree = flatten(version_tree)
-	for i in wanted_list:
-		flatten_tree.pop(i, None)
+	for i in flatten_tree:
+		if i not in wanted_list:
+			flatten_tree.pop(i, None)
 
 	exercise = Exercise.objects.get(pk=ex_id)
 
@@ -29,8 +30,9 @@ def advisor(ex_id, version_tree):
 	for version in version_list:
 
 		flatten_json = flatten(json.loads(version.version_tree))
-		for i in wanted_list:
-			flatten_json.pop(i, None)
+		for i in flatten_json:
+			if i not in wanted_list:
+				flatten_json.pop(i, None)
 
 		flatten_list = list(flatten_json.values())
 		data_matrix.append(flatten_list)
