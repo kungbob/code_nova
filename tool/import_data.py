@@ -85,20 +85,12 @@ def cluster_data():
         version_list = Version.objects.filter(exercise=exercise)
 
         if len(version_list) >= 50 :
-            for version in version_list:
-
-                flatten_json = flatten_self_define(json.loads(version.version_tree))
-                flatten_list = list(flatten_json.values())
-
-
-                data_matrix.append(flatten_list)
-
             # remove all old clusters
 
             Cluster.objects.filter(exercise=exercise).delete()
 
             print("doing" + str(exercise))
-            cluster_result = clustering(data_matrix)
+            cluster_result = clustering(version_list)
 
 
             cluster_list = cluster_result["cluster_list"]

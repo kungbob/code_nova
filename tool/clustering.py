@@ -13,20 +13,34 @@ import matplotlib.font_manager
 from sklearn.cluster import KMeans, MeanShift, estimate_bandwidth
 
 from version.models import Version
+import json
 
 
-def clustering(data_matrix):
+def clustering(version_list):
+
+
+	# old data preprocessing
+
+	data_matrix = []
+
+	for version in version_list:
+
+		flatten_json = flatten_self_define(json.loads(version.version_tree))
+		flatten_list = list(flatten_json.values())
+		data_matrix.append(flatten_list)
+
+
 
 	data_matrix_sum = flatten(get_empty_version_tree())
 	unwanted_skill = []
 	data_count = len(data_matrix)
-	
+
 	other_list = ["maxIfDepth", "maxLoopDepth", "maxArraySize", "maxArrayDim"]
 
 	for data in data_matrix:
-		
+
 		for skill in data:
-			
+
 			data_matrix_sum[skill] += data[skill]
 
 	for skill in data_matrix_sum:
@@ -48,9 +62,9 @@ def clustering(data_matrix):
 	standardized_data = scaler.transform(data_matrix)
 
 	if len(data_matrix) > 100:
-		bandwidth = estimate_bandwidth(standardized_data, quantile=0.5, n_samples = 100)
+		bandwidth = estimate_bandwidth(standardized_data, quantile=0.2, n_samples = 100)
 	else:
-		bandwidth = estimate_bandwidth(standardized_data, quantile=0.5)
+		bandwidth = estimate_bandwidth(standardized_data, quantile=0.2)
 
 	ms = MeanShift(bandwidth=bandwidth, bin_seeding=True).fit(standardized_data)
 

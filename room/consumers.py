@@ -382,19 +382,13 @@ def editor_save_run(message):
 
         # will only run when the number of success submission is >= limit
         if len(version_list) >= CONST_MIN_VERSION :
-            for version in version_list:
 
-                flatten_json = flatten_self_define(json.loads(version.version_tree))
-                flatten_list = list(flatten_json.values())
-
-
-                data_matrix.append(flatten_list)
 
             # remove all old clusters
 
             Cluster.objects.filter(exercise=room.exercise).delete()
 
-            cluster_result = clustering(data_matrix)
+            cluster_result = clustering(version_list)
 
             print(cluster_result)
 
