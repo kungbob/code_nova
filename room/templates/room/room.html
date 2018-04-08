@@ -96,21 +96,21 @@
     </div>
 
     <div class="control_panel">
-      <div class="control_panel_button editor_save_button" >
+      <div class="control_panel_button editor_save_button" data-toggle="tooltip" title="Save">
         <img  class="control_panel_button_image" src="{% static 'image/button_save.png' %}" alt="">
       </div>
-      <div class="control_panel_button editor_save_run_button" >
+      <div class="control_panel_button editor_save_run_button" data-toggle="tooltip" title="Save and Run">
         <img  class="control_panel_button_image" src="{% static 'image/button_save_run.png' %}" alt="">
       </div>
 
-      <div class="control_panel_button search_helper_button" >
+      <div class="control_panel_button search_helper_button" data-toggle="tooltip" title="Search Helper">
         <img  class="control_panel_button_image" src="{% static 'image/button_search_helper.png' %}" alt="">
       </div>
-      <div class="control_panel_button ask_advice_button" >
+      <div class="control_panel_button ask_advice_button" data-toggle="tooltip" title="Ask Advice">
         <img  class="control_panel_button_image" src="{% static 'image/button_ask_advice.png' %}" alt="">
       </div>
 
-      <div class="control_panel_button show_result_button" >
+      <div class="control_panel_button show_result_button" data-toggle="tooltip" title="Compile Results">
         <img  class="control_panel_button_image" src="{% static 'image/button_show_result.png' %}" alt="">
       </div>
 
@@ -283,6 +283,34 @@ const advice_template = (content,time) => `
   </div>
 `;
 
+const search_helper_button_template = () => `
+
+<div class="chat">
+  <span class="glyphicon glyphicon-user"> AI Tutor</span>
+  <p>We are sending help request to other students who have completed the exercise with similar approach</p>
+  <span class="time-right"></span>
+</div>
+`;
+
+const save_run_button_template = () => `
+
+<div class="chat">
+  <span class="glyphicon glyphicon-user"> AI Tutor</span>
+  <p>Trying to run your code, it may take some time. . .</p>
+  <span class="time-right"></span>
+</div>
+`;
+
+const save_button_template = () => `
+
+<div class="chat">
+  <span class="glyphicon glyphicon-user"> AI Tutor</span>
+  <p>Your Code is saved</p>
+  <span class="time-right"></span>
+</div>
+`;
+
+
 const test_case_template = ({input,expect_output,output,error,success}) => {
 
 return "<tr><td scope='row'>"+input+"</td><td>"+expect_output.split("\n").join("<br/>")+"</td><td>"+output.split("\n").join("<br/>")+"</td><td>"+success+"</td><td>"+ error.split("\n").join("<br/>") +"</td></tr>"
@@ -443,6 +471,8 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     var ws_path = ws_scheme + '://' + window.location.host + "/room/stream/";
     console.log("Connecting to " + ws_path);
     var socket = new ReconnectingWebSocket(ws_path);
+
+    $('[data-toggle="tooltip"]').tooltip();
 
 
     editor.on("change", function( e ) {
@@ -705,8 +735,6 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
               console.log(hint_content);
             }
 
-
-
           }
 
 
@@ -750,8 +778,13 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
     });
 
 
+
+
     $('.editor_save_button').on('click', function() {
          /* your code here */
+
+        $(".chat_history_panel").append(save_button_template());
+        $(".chat_history_panel").animate({ scrollTop: $(".chat_history_panel").prop("scrollHeight")}, 500);
         editor_save();
     });
 
@@ -769,10 +802,16 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
     $('.search_helper_button').on('click', function() {
          /* your code here */
+
+         $(".chat_history_panel").append(search_helper_button_template());
+         $(".chat_history_panel").animate({ scrollTop: $(".chat_history_panel").prop("scrollHeight")}, 500);
         search_helper();
     });
 
     $('.editor_save_run_button').on('click', function() {
+
+      $(".chat_history_panel").append(save_run_button_template());
+      $(".chat_history_panel").animate({ scrollTop: $(".chat_history_panel").prop("scrollHeight")}, 500);
          /* your code here */
         editor_save_run();
     });

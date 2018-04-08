@@ -18,9 +18,8 @@ import json
 
 def clustering(version_list):
 
-
+	
 	# old data preprocessing
-
 	data_matrix = []
 
 	for version in version_list:
