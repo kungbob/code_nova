@@ -11,9 +11,7 @@ from sklearn.preprocessing import StandardScaler
 
 def advisor(ex_id, version_tree):
 
-	exercise = Exercise.objects.get(pk=ex_id)
-
-	wanted_list = json.loads(exercise.common_skill)
+	wanted_list = []
 
 	unwanted_list = []
 	for i in list(flatten(get_empty_version_tree()).keys()):
