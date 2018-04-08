@@ -1,4 +1,4 @@
-from tool.tree import  flatten, translate, flatten_self_define
+from tool.tree import  flatten, translate, flatten_self_define, get_empty_version_tree
 from tool.analyser import analyser
 from scipy.spatial import distance
 from cluster.models import Cluster
@@ -11,15 +11,18 @@ from sklearn.preprocessing import StandardScaler
 
 def advisor(ex_id, version_tree):
 
-	exercise = Exercise.objects.get(pk=ex_id)
+	wanted_list = []
 
-	wanted_list = json.loads(exercise.common_skill)
+	unwanted_list = []
+	for i in list(flatten(get_empty_version_tree()).keys()):
+		if i not in wanted_list:
+			unwanted_list.append(i)
 
 	flatten_tree = flatten(version_tree)
-	for i in flatten_tree:
-		if i not in wanted_list:
-			flatten_tree.pop(i, None)
+	for i in unwanted_list:
+		flatten_tree.pop(i, None)
 
+	exercise = Exercise.objects.get(pk=ex_id)
 
 
 	# list of all version
@@ -31,9 +34,8 @@ def advisor(ex_id, version_tree):
 	for version in version_list:
 
 		flatten_json = flatten(json.loads(version.version_tree))
-		for i in flatten_json:
-			if i not in wanted_list:
-				flatten_json.pop(i, None)
+		for i in unwanted_list:
+			flatten_json.pop(i, None)
 
 		flatten_list = list(flatten_json.values())
 		data_matrix.append(flatten_list)
