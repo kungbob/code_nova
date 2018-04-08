@@ -24,7 +24,6 @@ def advisor(ex_id, version_tree):
 	for i in unwanted_list:
 		flatten_tree.pop(i, None)
 
-	exercise = Exercise.objects.get(pk=ex_id)
 
 
 	# list of all version
