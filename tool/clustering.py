@@ -25,9 +25,8 @@ def clustering(version_list):
 
 	for version in version_list:
 
-		flatten_json = flatten_self_define(json.loads(version.version_tree))
-		flatten_list = list(flatten_json.values())
-		data_matrix.append(flatten_list)
+		flatten_json = flatten(json.loads(version.version_tree))
+		data_matrix.append(flatten_json)
 
 
 
@@ -136,6 +135,6 @@ def clustering(version_list):
 			character_skill.remove(common)
 		cluster["character_skill"] = character_skill
 
-	output = {"cluster_list": cluster_list, "label": label, "common_skill": common_feature, "wanted_skill": wanted_skill}
+	output = {"cluster_list": cluster_list, "label": label, "common_skill": wanted_skill}
 
 	return output
