@@ -680,14 +680,14 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
 
             if (data.advice_list[i]["cluster_id"] == data.nearest_cluster_id){
 
-              console.log("some");
+              console.log("nearest_cluster",data.nearest_cluster_id);
 
               $("#cluster"+data.nearest_cluster_id).append(`<img src="{% static 'image/nearest_cluster.png' %}" data-toggle="tooltip" title="Most Similar Solution" style="height:2em;width:2em;margin:3px;"/>`);
             }
 
             if (data.advice_list[i]["cluster_id"] == data.max_cluster_id){
-              console.log("some2");
-              $("#cluster"+data.nearest_cluster_id).append(`<img src="{% static 'image/max_cluster.png' %}" data-toggle="tooltip" title="Most popular Solution" style="height:2em;width:2em;margin:3px;"/>`);
+              console.log("max",data.max_cluster_id);
+              $("#cluster"+data.max_cluster_id).append(`<img src="{% static 'image/max_cluster.png' %}" data-toggle="tooltip" title="Most popular Solution" style="height:2em;width:2em;margin:3px;"/>`);
             }
 
             $('[data-toggle="tooltip"]').tooltip();

@@ -15,6 +15,8 @@ def advisor(ex_id, version_tree):
 
 	wanted_list = json.loads(exercise.common_skill)
 
+
+
 	unwanted_list = []
 	for i in list(flatten(get_empty_version_tree()).keys()):
 		if i not in wanted_list:
@@ -97,14 +99,15 @@ def advisor(ex_id, version_tree):
 		character_skill_list = json.loads(cluster.character_skill)
 		other_skill_list = json.loads(cluster.other_skill)
 
-
 		lacking = []
 		redundance = []
 		character = []
 		others = []
 
-		if max_cluster_count < cluster.data_count:
+		if int(max_cluster_count) < int(cluster.data_count):
+			# print("cluster:"+str(cluster.id)+ "count"+str(cluster.data_count))
 			max_cluster_id = cluster.id
+			max_cluster_count = cluster.data_count
 
 		center = cluster.center.split(',')
 		for i in range(0, len(center)):
@@ -114,6 +117,7 @@ def advisor(ex_id, version_tree):
 
 		if nearest_cluster_dis > dist:
 			nearest_cluster_id = cluster.id
+			nearest_cluster_dis = dist
 
 		for skill in necessary_skill_list:
 			if flatten_tree[skill] == 0 and skill in compare_list:

@@ -462,6 +462,8 @@ def ask_advice(message):
     version_tree = analyser(code)
     advice = advisor(room.exercise.id,version_tree)
 
+    print(str(advice))
+
     message.reply_channel.send({
         "text": json.dumps(advice),
     })
