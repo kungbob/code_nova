@@ -15,6 +15,8 @@ def advisor(ex_id, version_tree):
 
 	wanted_list = json.loads(exercise.common_skill)
 
+
+
 	unwanted_list = []
 	for i in list(flatten(get_empty_version_tree()).keys()):
 		if i not in wanted_list:
