@@ -43,7 +43,7 @@ def clustering(version_list):
 
 	for skill in data_matrix_sum:
 
-		if data_matrix_sum[skill] < data_count*0.05 and data_matrix_sum[skill] not in other_list:
+		if data_matrix_sum[skill] == 0 and data_matrix_sum[skill] not in other_list:
 			unwanted_skill.append(skill)
 
 	for skill in unwanted_skill:
