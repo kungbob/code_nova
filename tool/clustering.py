@@ -18,15 +18,14 @@ import json
 
 def clustering(version_list):
 
-	
+
 	# old data preprocessing
 	data_matrix = []
 
 	for version in version_list:
 
-		flatten_json = flatten_self_define(json.loads(version.version_tree))
-		flatten_list = list(flatten_json.values())
-		data_matrix.append(flatten_list)
+		flatten_json = flatten(json.loads(version.version_tree))
+		data_matrix.append(flatten_json)
 
 
 
@@ -74,7 +73,7 @@ def clustering(version_list):
 	data_count_list = []
 	data_list = []
 	for i in range(0, cluster_no):
-		data_count.append(0)
+		data_count_list.append(0)
 		data_list.append([])
 
 
@@ -109,9 +108,9 @@ def clustering(version_list):
 				other_count[skill - data_length + 4].append(data[skill])
 
 		for i in range(0, data_length):
-			if skilltree[i] >= data_count[cluster]*0.65 and wanted_skill[i] not in other_list:
+			if skilltree[i] >= data_count_list[cluster]*0.65 and wanted_skill[i] not in other_list:
 				necessary_skill.append(wanted_skill[i])
-			elif skilltree[i] < data_count[cluster]*0.1 and wanted_skill[i] not in other_list:
+			elif skilltree[i] < data_count_list[cluster]*0.1 and wanted_skill[i] not in other_list:
 				redundant_skill.append(wanted_skill[i])
 
 		other_skill = []
@@ -135,6 +134,6 @@ def clustering(version_list):
 			character_skill.remove(common)
 		cluster["character_skill"] = character_skill
 
-	output = {"cluster_list": cluster_list, "label": label, "common_skill": common_feature, "wanted_skill": wanted_skill}
+	output = {"cluster_list": cluster_list, "label": label, "common_skill": wanted_skill}
 
 	return output

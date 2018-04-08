@@ -14,10 +14,15 @@ def advisor(ex_id, version_tree):
 	wanted_list = []
 
 	flatten_tree = flatten(version_tree)
+
+	exercise = Exercise.objects.get(pk=ex_id)
+
+
+	wanted_list = json.loads(exercise.common_skill)
+
 	for i in wanted_list:
 		flatten_tree.pop(i, None)
 
-	exercise = Exercise.objects.get(pk=ex_id)
 
 
 	# list of all version
