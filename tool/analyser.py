@@ -6,8 +6,8 @@ def analyser(prog):
     def treeAnalyser(tree, parent, attr, ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar):
         # print ("Node Type: %s - %s" % (tree["_type"], str(allVar)))
 
-        if tree["_type"] == None:
-            print ("Leave node is reached.")
+        #if tree["_type"] == None:
+        #    print ("Leave node is reached.")
 
         elif tree["_type"] == "Module":
             for child in tree["body"]: 
@@ -82,7 +82,7 @@ def analyser(prog):
                 vtree["class"]["noInheritance"]["constructor"]["value"] += 1
             else:
                 vtree["class"]["inheritance"]["constructor"]["value"] += 1
-            print (classList)
+            #print (classList)
             functionName = None
 
         elif tree["_type"] == "Return":
