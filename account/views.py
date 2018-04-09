@@ -5,6 +5,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .forms import LoginForm, RegisterForm
 from django.contrib.auth.decorators import login_required
 from user.models import User
+from tool.tree import translate_tree
+from student.models import Student
+import json
 # Create your views here.
 
 def login(request):
@@ -65,3 +68,11 @@ def register_success(request):
 def logout(request):
     auth.logout(request)
     return redirect('index')
+
+def myprofile(request):
+    student = Student.objects.get(user=request.user)
+
+    translated_tree = translate_tree(json.loads(student.profile_tree))
+    print(str(translated_tree))
+
+    return render(request,'account/profile.html',{"student":student})

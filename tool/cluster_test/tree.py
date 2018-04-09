@@ -55,6 +55,8 @@ def add_tree(tree,new_tree):
 
     return tree
 
+
+
 def reduce_tree(tree):
     if type(tree) == int:
         if tree > 0 :

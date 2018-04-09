@@ -4,29 +4,29 @@ import collections
 
 def get_empty_version_tree():
 
-    version_tree = {"basicIO" : {"value" : 0, "input" : {"value" : 0}, "output" : {"value" : 0}}, 
-         "condition" : {"value" : 0, "if" : {"value" : 0, "ifOnly" : {"value" : 0}, "withElse" : {"value" : 0}}, "switch" : {"value" : 0}}, 
-         "loop" : {"value" : 0, "single" : {"value" : 0, "for" : {"value" : 0}, "while" : {"value" : 0}}, 
-                                "nested" : {"value" : 0, "forOnly" : {"value" : 0}, "whileOnly" : {"value" : 0}, "mixed" : {"value" : 0}}}, 
-         "array" : {"value" : 0, "nonCharArray": {"value" : 0, "singleDim": {"value" : 0}, "multiDim": {"value" : 0}}, "charArray": {"value" : 0, "singleDim": {"value" : 0}, "multiDim": {"value" : 0}}}, 
-         "function" : {"value" : 0, "recursion": {"value" : 0, "procedure": {"value" : 0}, "function": {"value" : 0}}, "notRecursion": {"value" : 0, "procedure": {"value" : 0}, "function": {"value" : 0}}}, 
-         "class" : {"value" : 0, "inheritance": {"value" : 0, "constructor": {"value" : 0}, "noConstructor": {"value" : 0}}, "noInheritance": {"value" : 0, "constructor": {"value" : 0}, "noConstructor": {"value" : 0}}}, 
-         "lambda" : {"value" : 0}, 
+    version_tree = {"basicIO" : {"value" : 0, "input" : {"value" : 0}, "output" : {"value" : 0}},
+         "condition" : {"value" : 0, "if" : {"value" : 0, "ifOnly" : {"value" : 0}, "withElse" : {"value" : 0}}, "switch" : {"value" : 0}},
+         "loop" : {"value" : 0, "single" : {"value" : 0, "for" : {"value" : 0}, "while" : {"value" : 0}},
+                                "nested" : {"value" : 0, "forOnly" : {"value" : 0}, "whileOnly" : {"value" : 0}, "mixed" : {"value" : 0}}},
+         "array" : {"value" : 0, "nonCharArray": {"value" : 0, "singleDim": {"value" : 0}, "multiDim": {"value" : 0}}, "charArray": {"value" : 0, "singleDim": {"value" : 0}, "multiDim": {"value" : 0}}},
+         "function" : {"value" : 0, "recursion": {"value" : 0, "procedure": {"value" : 0}, "function": {"value" : 0}}, "notRecursion": {"value" : 0, "procedure": {"value" : 0}, "function": {"value" : 0}}},
+         "class" : {"value" : 0, "inheritance": {"value" : 0, "constructor": {"value" : 0}, "noConstructor": {"value" : 0}}, "noInheritance": {"value" : 0, "constructor": {"value" : 0}, "noConstructor": {"value" : 0}}},
+         "lambda" : {"value" : 0},
          "comprehension" : {"value" : 0, "list" : {"value" : 0}, "set" : {"value" : 0}, "dict" : {"value" : 0}},
-         "dataStructure" : {"value" : 0, "list" : {"value" : 0, "construct" : {"value" : 0}, "function" : {"value" : 0, "append" : {"value" : 0}, "extend" : {"value" : 0}, "insert" : {"value" : 0}, "remove" : {"value" : 0}, "pop" : {"value" : 0}, "clear" : {"value" : 0}, "count" : {"value" : 0}, "sort" : {"value" : 0}, "reverse" : {"value" : 0}}}, 
-                                   "set" : {"value" : 0}, "dict" : {"value" : 0}, "tuple" : {"value" : 0}}, 
+         "dataStructure" : {"value" : 0, "list" : {"value" : 0, "construct" : {"value" : 0}, "function" : {"value" : 0, "append" : {"value" : 0}, "extend" : {"value" : 0}, "insert" : {"value" : 0}, "remove" : {"value" : 0}, "pop" : {"value" : 0}, "clear" : {"value" : 0}, "count" : {"value" : 0}, "sort" : {"value" : 0}, "reverse" : {"value" : 0}}},
+                                   "set" : {"value" : 0}, "dict" : {"value" : 0}, "tuple" : {"value" : 0}},
          "py-str" : {"value" : 0, "construct" : {"value" : 0}, "attrfunc" : {"value" : 0, "count" : {"value" : 0}, "find" : {"value" : 0}, "join" : {"value" : 0}, "partition" : {"value" : 0}, "replace" : {"value" : 0}, "split" : {"value" : 0}, "splitlines" : {"value" : 0}}},
-         "py-buildin": {"value" : 0, "abs" : {"value" : 0}, "all" : {"value" : 0}, "any" : {"value" : 0}, "ascii" : {"value" : 0}, "bin" : {"value" : 0}, "bool" : {"value" : 0}, "bytearray" : {"value" : 0}, "bytes" : {"value" : 0}, "callable" : {"value" : 0}, "chr" : {"value" : 0}, 
-                                     "classmethod" : {"value" : 0}, "compile" : {"value" : 0}, "complex" : {"value" : 0}, "delattr" : {"value" : 0}, "dir" : {"value" : 0}, "divmod" : {"value" : 0}, "enumerate" : {"value" : 0}, "eval" : {"value" : 0}, 
-                                     "exec" : {"value" : 0}, "filter" : {"value" : 0}, "float" : {"value" : 0}, "format" : {"value" : 0}, "frozenset" : {"value" : 0}, "getattr" : {"value" : 0}, "globals" : {"value" : 0}, "hasattr" : {"value" : 0}, "hash" : {"value" : 0}, 
-                                     "help" : {"value" : 0}, "hex" : {"value" : 0}, "id" : {"value" : 0}, "int" : {"value" : 0}, "isinstance" : {"value" : 0}, "issubclass" : {"value" : 0}, "iter" : {"value" : 0}, "len" : {"value" : 0}, 
-                                     "locals" : {"value" : 0}, "map" : {"value" : 0}, "max" : {"value" : 0}, "memoryview" : {"value" : 0}, "min" : {"value" : 0}, "next" : {"value" : 0}, "object" : {"value" : 0}, "oct" : {"value" : 0}, "open" : {"value" : 0}, "ord" : {"value" : 0}, 
-                                     "pow" : {"value" : 0}, "property" : {"value" : 0}, "range" : {"value" : 0}, "repr" : {"value" : 0}, "reversed" : {"value" : 0}, "round" : {"value" : 0}, "setattr" : {"value" : 0}, "slice" : {"value" : 0}, 
+         "py-buildin": {"value" : 0, "abs" : {"value" : 0}, "all" : {"value" : 0}, "any" : {"value" : 0}, "ascii" : {"value" : 0}, "bin" : {"value" : 0}, "bool" : {"value" : 0}, "bytearray" : {"value" : 0}, "bytes" : {"value" : 0}, "callable" : {"value" : 0}, "chr" : {"value" : 0},
+                                     "classmethod" : {"value" : 0}, "compile" : {"value" : 0}, "complex" : {"value" : 0}, "delattr" : {"value" : 0}, "dir" : {"value" : 0}, "divmod" : {"value" : 0}, "enumerate" : {"value" : 0}, "eval" : {"value" : 0},
+                                     "exec" : {"value" : 0}, "filter" : {"value" : 0}, "float" : {"value" : 0}, "format" : {"value" : 0}, "frozenset" : {"value" : 0}, "getattr" : {"value" : 0}, "globals" : {"value" : 0}, "hasattr" : {"value" : 0}, "hash" : {"value" : 0},
+                                     "help" : {"value" : 0}, "hex" : {"value" : 0}, "id" : {"value" : 0}, "int" : {"value" : 0}, "isinstance" : {"value" : 0}, "issubclass" : {"value" : 0}, "iter" : {"value" : 0}, "len" : {"value" : 0},
+                                     "locals" : {"value" : 0}, "map" : {"value" : 0}, "max" : {"value" : 0}, "memoryview" : {"value" : 0}, "min" : {"value" : 0}, "next" : {"value" : 0}, "object" : {"value" : 0}, "oct" : {"value" : 0}, "open" : {"value" : 0}, "ord" : {"value" : 0},
+                                     "pow" : {"value" : 0}, "property" : {"value" : 0}, "range" : {"value" : 0}, "repr" : {"value" : 0}, "reversed" : {"value" : 0}, "round" : {"value" : 0}, "setattr" : {"value" : 0}, "slice" : {"value" : 0},
                                      "staticmethod" : {"value" : 0}, "sum" : {"value" : 0}, "super" : {"value" : 0}, "type" : {"value" : 0}, "vars" : {"value" : 0}, "zip" : {"value" : 0}, "__import__" : {"value" : 0}},
-         "module" : {"value" : 0, "collections": {"value" : 0, "namedtuple()": {"value" : 0}, "deque": {"value" : 0}, "ChainMap": {"value" : 0}, "Counter": {"value" : 0}, "OrderedDict": {"value" : 0}, "defaultdict": {"value" : 0}, "UserDict": {"value" : 0}, "UserList": {"value" : 0}, "UserString": {"value" : 0}}}, 
-         "maxIfDepth" : {"value" : 0}, 
-         "maxLoopDepth" : {"value" : 0}, 
-         "maxArraySize" : {"value" : 0}, 
+         "module" : {"value" : 0, "collections": {"value" : 0, "namedtuple()": {"value" : 0}, "deque": {"value" : 0}, "ChainMap": {"value" : 0}, "Counter": {"value" : 0}, "OrderedDict": {"value" : 0}, "defaultdict": {"value" : 0}, "UserDict": {"value" : 0}, "UserList": {"value" : 0}, "UserString": {"value" : 0}}},
+         "maxIfDepth" : {"value" : 0},
+         "maxLoopDepth" : {"value" : 0},
+         "maxArraySize" : {"value" : 0},
          "maxArrayDim" : {"value" : 0}
     }
 
@@ -45,6 +45,20 @@ def add_tree(tree,new_tree):
     return tree
 
 
+def reduce_tree(tree):
+    if type(tree) == int:
+        if tree > 0 :
+            return 1
+        else:
+            return 0
+
+    for key,value in tree.items():
+        # print("key:"+key+"  value:"+str(value))
+        tree[key] = reduce_tree(tree[key])
+
+    return tree
+
+
 def flatten(d, parent_key='', sep='_'):
     items = []
     for k, v in d.items():
@@ -56,7 +70,15 @@ def flatten(d, parent_key='', sep='_'):
         	items.append((new_key, v))
     return dict(items)
 
+def translate_tree(tree):
 
+    new_tree = dict()
+    for key,value in tree.items():
+        if key == "value":
+            new_tree[key] = tree[key]
+        else:
+            new_tree[translate(key)] = translate_tree(tree[key])
+    return translate_tree
 
 def translate(skill):
     #a dictionary to convert dictionary terms to natural language terms

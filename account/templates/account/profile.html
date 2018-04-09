@@ -1,0 +1,81 @@
+{% extends "code_nova/base.html" %}
+
+{% block title %}Exercise{% endblock %}
+
+{% load static %}
+{% block extra_css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_room.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'jstree/dist/themes/default/style.min.css' %}">
+{% endblock%}
+
+{% block content %}
+
+
+{{student.user.email}}
+
+
+
+<div id="profile_tree">
+
+</div>
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'jstree/dist/jstree.min.js' %}"></script>
+
+  <script type="text/javascript">
+
+
+    var profile_tree_list = []
+
+
+
+    function flatten_json(json,parent) {
+
+      var keys = Object.keys(json)
+
+      console.log("keys", keys);
+
+      for (var i = 0; i < keys.length; i++) {
+        // console.log(json[keys[i]]);
+
+        if (typeof json[keys[i]]["value"] != 'undefined')
+        {
+          profile_tree_list.push({ "id" : parent + keys[i] , "parent":parent, "text" : keys[i] +" : "+ json[keys[i]]["value"] ,"state":{"opened":true}})
+
+          if (keys.length > 1){
+            // arguments.callee(json[keys[i]],keys[i]);
+            flatten_json(json[keys[i]],parent+ keys[i]);
+          }
+
+        }
+
+      }
+
+    }
+
+
+    $(document).ready(function() {
+
+      var profile_tree = JSON.parse('{{ student.profile_tree | safe }}')
+
+
+      flatten_json(profile_tree,"#");
+      //
+      console.log("list",profile_tree_list);
+      //
+
+      $("#profile_tree").jstree({"core":{
+          "data":profile_tree_list
+        }
+      })
+
+
+    });
+
+  </script>
+  {% endblock %}
