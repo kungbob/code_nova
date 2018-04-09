@@ -1,11 +1,12 @@
 import numpy as np # linear algebra
 import pandas as pd
 import matplotlib.pyplot as plt
-import analyser
+import analyser_2 as analyser
 from tree import flatten
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler, Normalizer
-from sklearn.cluster import MeanShift, estimate_bandwidth, DBSCAN, spectral_clustering
+from sklearn.cluster import MeanShift, estimate_bandwidth, DBSCAN, spectral_clustering, FeatureAgglomeration
+from sklearn import random_projection
 from matplotlib.colors import LogNorm
 from itertools import cycle
 from sklearn import mixture
@@ -71,8 +72,11 @@ def gaussian_clustering(newdata):
 
 df2 = pd.read_csv('program_code_python_only.csv')
 
+# print(df2.QCode.unique())
+
 df2 = df2[df2.QCode == "TSORT"]
-# print(df2.head())
+print(df2.head())
+'''
 # 262 correct code in total
 i = 0
 data_matrix = []
@@ -102,6 +106,7 @@ plt.ylabel('x2')
 plt.title('Version tree in 2D after PCA processing')
 plt.show()
 
+
 # Standardization
 scaler = StandardScaler().fit(data_matrix)
 standardized_data_matrix = scaler.transform(data_matrix)
@@ -122,7 +127,7 @@ cluster_shown = []
 for code in df2.iterrows():
 	if labels[j] not in cluster_shown:
 		print("Example of cluster ", labels[j], ":")
-		print(code[1][1])
+		print(code[1].Solutions)
 		cluster_shown.append(labels[j])
 	j = j + 1
 
@@ -138,3 +143,25 @@ for code in df2.iterrows():
 # Cluster 8: quicksort
 # Cluster 9: mergeSort
 # Cluster 10: quicksort
+
+# transformer = random_projection.GaussianRandomProjection()
+#transformer = random_projection.SparseRandomProjection(n_components=2)
+#newData_standard_random = transformer.fit_transform(standardized_data_matrix)
+alog = FeatureAgglomeration()
+alog.fit(standardized_data_matrix)
+newData_standard_random = alog.transform(standardized_data_matrix)
+plt.plot(newData_standard_random[:, 0], newData_standard_random[:, 1], 'o', color = 'blue')
+plt.title('Standarded Version tree in 2D after Gaussian Random processing')
+plt.show()
+
+labels = mean_shift_clustering(newData_standard_random)
+
+j = 0
+cluster_shown = []
+for code in df2.iterrows():
+	if labels[j] not in cluster_shown:
+		print("Example of cluster ", labels[j], ":")
+		print(code[1].Solutions)
+		cluster_shown.append(labels[j])
+	j = j + 1
+'''
