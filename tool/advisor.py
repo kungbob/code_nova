@@ -1,4 +1,4 @@
-from tool.tree import  flatten, translate, flatten_self_define, get_empty_version_tree
+from tool.tree import  flatten, translate, get_empty_version_tree
 from tool.analyser import analyser
 from scipy.spatial import distance
 from cluster.models import Cluster
