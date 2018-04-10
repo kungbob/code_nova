@@ -56,6 +56,21 @@ def add_tree(tree,new_tree):
     return tree
 
 
+
+def reduce_tree(tree):
+    if type(tree) == int:
+        if tree > 0 :
+            return 1
+        else:
+            return 0
+
+    for key,value in tree.items():
+        # print("key:"+key+"  value:"+str(value))
+        tree[key] = reduce_tree(tree[key])
+
+    return tree
+
+
 def flatten(d, parent_key='', sep='_'):
     items = []
     for k, v in d.items():

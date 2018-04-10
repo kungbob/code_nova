@@ -1,6 +1,6 @@
 
 from tool.analyser import analyser
-from tool.tree import flatten, get_empty_version_tree, flatten_self_define
+from tool.tree import flatten, get_empty_version_tree
 from sklearn.decomposition import PCA
 import numpy as np # linear algebra
 import pandas as pd

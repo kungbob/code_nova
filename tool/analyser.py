@@ -9,7 +9,7 @@ def analyser(prog):
         #if tree["_type"] == None:
         #    print ("Leave node is reached.")
 
-        elif tree["_type"] == "Module":
+        if tree["_type"] == "Module":
             for child in tree["body"]: 
                 treeAnalyser(child, tree["_type"], "body", ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
             

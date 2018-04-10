@@ -8,7 +8,7 @@ from student.models import Student
 from tool.compile_code import compile_code
 from tool.analyser import analyser
 from version.models import Version
-from tool.tree import flatten,flatten_self_define
+from tool.tree import flatten
 from tool.clustering import clustering
 from cluster.models import Cluster
 from exercise.models import Exercise

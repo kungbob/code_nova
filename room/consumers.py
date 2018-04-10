@@ -13,7 +13,7 @@ from tool.find_helper import find_helper
 from tool.compile_code import compile_code
 from tool.analyser import analyser
 from tool.advisor import advisor
-from tool.tree import flatten,add_tree,flatten_self_define
+from tool.tree import flatten,add_tree,reduce_tree
 from tool.exercise_suggestion import exercise_suggestion
 
 from tool.clustering import clustering
@@ -374,6 +374,10 @@ def editor_save_run(message):
         student = Student.objects.get(user=message.user)
         profile_tree = json.loads(student.profile_tree)
 
+        # reduce to 0 and 1
+        reduce_version_tree = reduce_tree(version_tree)
+
+        # udpate profile tree
         new_profile_tree = add_tree(profile_tree,version_tree);
 
         student.profile_tree = json.dumps(new_profile_tree)
