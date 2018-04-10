@@ -378,7 +378,7 @@ def editor_save_run(message):
         reduce_version_tree = reduce_tree(version_tree)
 
         # udpate profile tree
-        new_profile_tree = add_tree(profile_tree,version_tree);
+        new_profile_tree = add_tree(profile_tree,reduce_version_tree);
 
         student.profile_tree = json.dumps(new_profile_tree)
 
@@ -463,76 +463,42 @@ def ask_advice(message):
     code = message["code"]
 
 
-    version_tree = analyser(code)
-    advice = advisor(room.exercise.id,version_tree)
-
-    print(str(advice))
-
-    message.reply_channel.send({
-        "text": json.dumps(advice),
-    })
+    # version_tree = analyser(code)
+    # advice = advisor(room.exercise.id,version_tree)
+    #
+    # print(str(advice))
+    #
+    # message.reply_channel.send({
+    #     "text": json.dumps(advice),
+    # })
 
 
     # print(advice)
 
 
-    # try:
-    #     version_tree = analyser(code)
-    #     advice = advisor(room.exercise.id,version_tree)
-    #
-    #     message.reply_channel.send({
-    #         "text": json.dumps(advice),
-    #     })
-    #
-    #
-    # except Exception as e:
-    #     # when version tree can not be generated
-    #
-    #     print(e)
-    #
-    #     output = {
-    #
-    #     "syntax_error": str(e)
-    #
-    #     }
-    #
-    #     message.reply_channel.send({
-    #         "text": json.dumps(output),
-    #     })
+    try:
+        version_tree = analyser(code)
+        advice = advisor(room.exercise.id,version_tree)
+
+        message.reply_channel.send({
+            "text": json.dumps(advice),
+        })
 
 
+    except Exception as e:
+        # when version tree can not be generated
 
+        print(e)
 
+        output = {
 
+        "syntax_error": str(e)
 
+        }
 
-
-
-
-
-
-
-    # try:
-    #     # problem_tree = json.loads(room.exercise.problem_tree)
-    #
-    #     version_tree = analyser(code)
-    #
-    #     # advice = advisor(version_tree,problem_tree,total_count)
-    #
-    #     advice = advisor(room.exercise.id,version_tree)
-    #
-    #     print(advice)
-    #
-    #     # advice_json = {"advice":advice}
-    #     # message.reply_channel.send({
-    #     #     "text": json.dumps(advice_json),
-    #     # })
-    #
-    #
-    # except:
-    #     pass
-
-
+        message.reply_channel.send({
+            "text": json.dumps(output),
+        })
 
 
 @channel_session_user
