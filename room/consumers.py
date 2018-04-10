@@ -13,7 +13,7 @@ from tool.find_helper import find_helper
 from tool.compile_code import compile_code
 from tool.analyser import analyser
 from tool.advisor import advisor
-from tool.tree import flatten,add_tree,reduce_tree
+from tool.tree import flatten,add_tree,reduce_tree,get_compare_list
 from tool.exercise_suggestion import exercise_suggestion
 
 from tool.clustering import clustering

@@ -19,7 +19,7 @@
       </li> -->
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{request.user.email }}</a></li>
+      <li><a href="{% url 'myprofile' %}"><span class="glyphicon glyphicon-user"></span> {{request.user.email }}</a></li>
       <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
     </ul>
   </div>

@@ -61,7 +61,7 @@
 
     $(document).ready(function() {
 
-      var profile_tree = JSON.parse('{{ student.profile_tree | safe }}')
+      var profile_tree = JSON.parse(`{{ student.profile_tree | safe }}`);
 
 
       flatten_json(profile_tree,"#");
