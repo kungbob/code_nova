@@ -123,7 +123,7 @@ def cluster_data():
             exercise.common_skill = json.dumps(common_skill)
             exercise.save()
 
-
+        print("done")
 def delete_data():
     # room_id = 21;
     # remove all version

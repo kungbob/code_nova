@@ -34,16 +34,16 @@
       <div class="item">
         <img src="{% static 'image/slider2.jpg' %}" alt="Chicago" style="width:100%;">
         <div class="carousel-caption caption2">
-          <h3>Los Angeles</h3>
-          <p>LA is always so much fun!</p>
+          <h3>AI analysis</h3>
+          <p>AI tutor will try to give useful advice based on other successful submission</p>
         </div>
       </div>
 
       <div class="item">
         <img src="{% static 'image/slider3.jpg' %}" alt="New york" style="width:100%;">
         <div class="carousel-caption caption3">
-          <h3>Los Angeles</h3>
-          <p>LA is always so much fun!</p>
+          <h3>Having struggle?</h3>
+          <p>Other online learners are happy to help you out throughout your learning</p>
         </div>
       </div>
     </div>
@@ -59,10 +59,17 @@
     </a>
   </div>
 
-  <div class="" style="height:100%;width:100%;background:red;">
 
-  </div>
-  <div class="" style="height:100%;width:100%;background:blue;">
+    <div class="container" style="height:100%;width:100%;">
+    	<div class="row text-center">
+            <div class="col-sm-6 col-sm-offset-3">
+            <h2 style="color:#0fad00;padding-top:40%;margin:20px;">Registering an account on Code Nova and start learning !</h2>
 
-  </div>
+            <p style="font-size:20px;color:#5C5C5C;">Start your own learning on Code Nova with the aid of AI tutor and other learners on the Platform !</p>
+            <a href="{% url 'register' %}" class="btn btn-success">     Register     </a>
+        <br><br>
+            </div>
+
+    	</div>
+    </div>
 {% endblock %}
