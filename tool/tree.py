@@ -156,6 +156,29 @@ def translate(skill):
 
     return conversion_list[skill]
 
-if __name__ == "__main__":
-    tree = flatten(get_empty_version_tree())
-    print(tree)
+def translate2(skill):
+    conversion_list = {'basicIO': "Basic IO", 'input': "Input", 'output': "Output", 'condition': "Condition", 'if': "If", 'ifOnly': "Without Else", 
+                'withElse': "With Else", 'switch': "Switch", 'loop': "Loop", 'single': "Single Loop", 'for': "For Loop", 'while': "While Loop", 
+                'nested': "Nested Loop", 'forOnly': "For Only", 'whileOnly': "While Only", 'mixed': "Mixed", 'array': "Array", 
+                'nonCharArray': "Non-character Array", 'singleDim': "Single Dimension", 'multiDim': "Multi-Dimension", 'charArray': "Character Array", 
+                'function': "Function", 'recursion': "With Recursion", 'procedure': "Procedure", 'notRecursion': "Without Recursion", 
+                'class': "Class", 'inheritance': "With Inheritance", 'constructor': "With Constructor", 'noConstructor': "Without Constructor", 
+                'noInheritance': "Without Inheritance", 'lambda': "Lambda Function", 'comprehension': "Comprehension", 'list': "List", 
+                'set': "Set", 'dict': "Dict", 'dataStructure': "Data Structure", 'append': "Append", 'extend': "Extend", 'insert': "Insert", 
+                'remove': "Remove", 'pop': "Pop", 'clear': "Clear", 'count': "Count", 'sort': "Sort", 'reverse': "Reverse", 'tuple': "Tuple", 
+                'py-str': "String", 'construct': "Construction", 'attrfunc': "Attribution Function", 'count': "Count", 'find': "Find", 
+                'join': "Join", 'partition': "Partition", 'replace': "Replace", 'split': "Split", 'splitlines': "Splitlines", 'py-buildin': "Built-in Function", 
+                'abs': "abs", 'all': "all", 'any': "any", 'ascii': "ascii", 'bin': "bin", 'bool': "bool", 'bytearray': "bytearray", 'bytes': "bytes", 
+                'callable': "callable", 'chr': "chr", 'classmethod': "classmethod", 'compile': "compile", 'complex': "complex", 'delattr': "delattr", 
+                'dir': "dir", 'divmod': "divmod", 'enumerate': "enumerate", 'eval': "eval", 'exec': "exec", 'filter': "filter", 'float': "float", 
+                'format': "format", 'frozenset': "frozenset", 'getattr': "getattr", 'globals': "globals", 'hasattr': "hasattr", 'hash': "hash", 
+                'help': "help", 'hex': "hex", 'id': "id", 'int': "int", 'isinstance': "isinstance", 'issubclass': "issubclass", 'iter': "iter", 
+                'len': "len", 'locals': "locals", 'map': "map", 'max': "max", 'memoryview': "memoryview", 'min': "min", 'next': "next", 'object': "object", 
+                'oct': "oct", 'open': "open", 'ord': "ord", 'pow': "pow", 'property': "property", 'range': "range", 'repr': "repr", 'reversed': "reversed", 
+                'round': "round", 'setattr': "setattr", 'slice': "slice", 'staticmethod': "staticmethod", 'sum': "sum", 'super': "super", 'type': "type", 
+                'vars': "vars", 'zip': "zip", '__import__': "__import__", 'module': "Module", 'collections': "Collections",'namedtuple()': "namedtuple()", 
+                'deque': "Deque", 'ChainMap': "Chain Map", 'Counter': "Counter", 'OrderedDict': "Ordered Dict", 'defaultdict': "Default Dict", 
+                'UserDict': "User Dict", 'UserList': "User List", 'UserString': "User String", "maxIfDepth": "Maximum Depth of If", 
+                "maxLoopDepth": "Maximum Depth of Loop", "maxArraySize": "Largest Array Size", "maxArrayDim": "Largest Array Dimension"}
+
+    return conversion_list[skill]
