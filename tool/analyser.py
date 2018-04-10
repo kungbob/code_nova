@@ -369,11 +369,10 @@ def analyser(prog):
             treeAnalyser(tree["value"], tree["_type"], "value", ifDepth, forDepth, whileDepth, loopList, functionName, funList, classNames, classList, nextAssignedVar, allVar)
 
         elif tree["_type"] == "Name":
+            if tree["id"] == "sorted":
+                vtree["dataStructure"]["list"]["function"]["sort"]["value"] += 1 # assume that sorted() used in list because this is a simplified tree
             if tree["id"] in vtree["py-buildin"] and tree["id"] != "value":
-                if tree["id"] == "sorted":
-                    vtree["dataStructure"]["list"]["function"]["sort"]["value"] += 1 # assume that sorted() used in list because this is a simplified tree
-                else:
-                   vtree["py-buildin"][tree["id"]]["value"] += 1
+                vtree["py-buildin"][tree["id"]]["value"] += 1
 
             if (tree["id"] in allVar):
                 checkModuleFun(allVar[tree["id"]][0])
