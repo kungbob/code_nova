@@ -3,7 +3,7 @@
 {% block extra_css %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="{% static 'font-awesome/css/fontawesome-all.min.css' %}" rel="stylesheet">
 {% endblock%}
 
 <div class="container">
@@ -40,7 +40,7 @@
                   <div class="wrapper">
 
                   <span class="group-btn">
-                      <button class="btn btn-primary btn-md" type="submit" value="Submit">Register <i class="fa fa-sign-in"></i></button>
+                      <button class="btn btn-primary btn-md" type="submit" value="Submit">Register <i class="fa fa-user-plus"></i></button>
                   </span>
                   </div>
               </form>

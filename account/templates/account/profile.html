@@ -11,72 +11,75 @@
 
 {% block content %}
 
-
-{{student.user.email}}
-
-
-
-<div id="profile_tree">
-
+<div class="" style="height:5%;">
+<h4>{{student.user.email}} Profile Tree</h4>
 </div>
 
 
+<div id="profile_tree" style="width:100%; height:150%;">
+
+</div>
 
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'jstree/dist/jstree.min.js' %}"></script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 
   <script type="text/javascript">
 
 
-    var profile_tree_list = []
 
-
-
-    function flatten_json(json,parent) {
+    function flatten_json(json) {
 
       var keys = Object.keys(json)
 
-      console.log("keys", keys);
 
       for (var i = 0; i < keys.length; i++) {
         // console.log(json[keys[i]]);
 
-        if (typeof json[keys[i]]["value"] != 'undefined')
-        {
-          profile_tree_list.push({ "id" : parent + keys[i] , "parent":parent, "text" : keys[i] +" : "+ json[keys[i]]["value"] ,"state":{"opened":true}})
+        profile_tree_list.push(["root_"+keys[i],1,json[keys[i]]]);
 
-          if (keys.length > 1){
-            // arguments.callee(json[keys[i]],keys[i]);
-            flatten_json(json[keys[i]],parent+ keys[i]);
-          }
-
-        }
 
       }
 
     }
+    var profile_tree_list = [ ['Phrases','size','value']];
+
+    var profile_tree = JSON.parse(`{{ flatten_tree | safe }}`);
+
+    console.log(profile_tree);
+
+    //
+    flatten_json(profile_tree);
+
+    console.log(profile_tree_list);
 
 
-    $(document).ready(function() {
 
 
-      var profile_tree = JSON.parse(`{{ translated_tree | safe }}`);
+    google.charts.load('current', {packages:['wordtree']});
+    google.charts.setOnLoadCallback(drawChart);
 
-      
-      flatten_json(profile_tree,"#");
-      //
-      console.log("list",profile_tree_list);
-      //
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable(profile_tree_list);
 
-      $("#profile_tree").jstree({"core":{
-          "data":profile_tree_list
+      var options = {
+        wordtree: {
+          maxFontSize: 14,
+          format: 'implicit',
+          word: 'root',
+          wordSeparator:"_"
         }
-      })
+      };
 
 
-    });
+      var chart = new google.visualization.WordTree(document.getElementById('profile_tree'));
+      chart.draw(data, options);
+    }
+
+
 
   </script>
   {% endblock %}

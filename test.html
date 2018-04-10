@@ -1,81 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>ACE in Action</title>
 
+   <html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {packages:['wordtree']});
+      google.charts.setOnLoadCallback(drawChart);
 
-<style type="text/css" media="screen">
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable(
+          [ ['Phrases','size','value'],
+          ['root_basicIO_input',1,10],['root_basicIO_output',1,10], ['root_condition_if_ifOnly',1,10], ['root_condition_if_withElse',1,10],[ 'root_condition_switch',1,10],[ 'root_loop_single_for',1,10],[ 'root_loop_single_while',1,10],[
+            'root_loop_nested',1,10],[ 'root_array_nonCharArray_singleDim',1,10],[ 'root_array_nonCharArray_multiDim',1,10],[
+            'root_array_charArray_singleDim',1,10],[ 'root_array_charArray_multiDim',1,10],[ 'root_function_recursion_procedure',1,10],[ 'root_function_recursion_function',1,10],[ 'root_function_notRecursion_procedure',1,10],[
+            'root_function_notRecursion_function',1,10],[ 'root_class_inheritance_constructor',1,10],[ 'root_class_inheritance_noConstructor',1,10],[ 'root_class_noInheritance_constructor',1,10],[
+            'root_class_noInheritance_noConstructor',1,10],[ 'lambda',1,10],[ 'comprehension_list',1,10],[ 'comprehension_set',1,10],[ 'comprehension_dict',1,10],[
+            'root_dataStructure_list_construct',1,10],[ 'root_dataStructure_list_function_append',1,10],[ 'root_dataStructure_list_function_extend',1,10],[ 'root_dataStructure_list_function_insert',1,10],[
+            'root_dataStructure_list_function_remove',1,10],[ 'root_dataStructure_list_function_pop',1,10],[ 'root_dataStructure_list_function_clear',1,10],[ 'root_dataStructure_list_function_count',1,10],[
+            'root_dataStructure_list_function_sort',1,10],[ 'root_dataStructure_list_function_reverse',1,10],[ 'root_dataStructure_set',1,10],[ 'root_dataStructure_dict',1,10],[ 'root_dataStructure_tuple',1,10],[
+            'root_py-str_construct',1,10],[ 'root_py-str_attrfunc_count',1,10],[ 'root_py-str_attrfunc_find',1,10],[ 'root_py-str_attrfunc_join',1,10],[ 'root_py-str_attrfunc_partition',1,10],[
+            'root_py-str_attrfunc_replace',1,10],[ 'root_py-str_attrfunc_split',1,10],[ 'root_py-str_attrfunc_splitlines',1,10],[ 'root_py-buildin_abs',1,10],[ 'root_py-buildin_all',1,10],[ 'root_py-buildin_any',1,10],[
+            'root_py-buildin_ascii',1,10],[ 'root_py-buildin_bin',1,10],[ 'root_py-buildin_bool',1,10],[ 'root_py-buildin_bytearray',1,10],[ 'root_py-buildin_bytes',1,10],[ 'root_py-buildin_callable',1,10],[
+            'root_py-buildin_chr',1,10],[ 'root_py-buildin_classmethod',1,10],[ 'root_py-buildin_compile',1,10],[ 'root_py-buildin_complex',1,10],[ 'root_py-buildin_delattr',1,10],[
+            'root_py-buildin_dir',1,10],[ 'root_py-buildin_divmod',1,10],[ 'root_py-buildin_enumerate',1,10],[ 'root_py-buildin_eval',1,10],[ 'root_py-buildin_exec',1,10],[ 'root_py-buildin_filter',1,10],[
+            'root_py-buildin_float',1,10],[ 'root_py-buildin_format',1,10],[ 'root_py-buildin_frozenset',1,10],[ 'root_py-buildin_getattr',1,10],[ 'root_py-buildin_globals',1,10],[ 'root_py-buildin_hasattr',1,10],[
+            'root_py-buildin_hash',1,10],[ 'root_py-buildin_help',1,10],[ 'root_py-buildin_hex',1,10],[ 'root_py-buildin_id',1,10],[ 'root_py-buildin_int',1,10],[ 'root_py-buildin_isinstance',1,10],[
+            'root_py-buildin_issubclass',1,10],[ 'root_py-buildin_iter',1,10],[ 'root_py-buildin_len',1,10],[ 'root_py-buildin_locals',1,10],[ 'root_py-buildin_map',1,10],[ 'root_py-buildin_max',1,10],[
+            'root_py-buildin_memoryview',1,10],[ 'root_py-buildin_min',1,10],[ 'root_py-buildin_next',1,10],[ 'root_py-buildin_object',1,10],[ 'root_py-buildin_oct',1,10],[ 'root_py-buildin_open',1,10],[ 'root_py-buildin_ord',1,10],[
+            'root_py-buildin_pow',1,10],[ 'root_py-buildin_property',1,10],[ 'root_py-buildin_range',1,10],[ 'root_py-buildin_repr',1,10],[ 'root_py-buildin_reversed',1,10],[
+            'root_py-buildin_round',1,10],[ 'root_py-buildin_setattr',1,10],[ 'root_py-buildin_slice',1,10],[ 'root_py-buildin_staticmethod',1,10],['root_py-buildin_sum',1,10],[ 'root_py-buildin_super',1,10],[ 'root_py-buildin_type',1,10],[ 'root_py-buildin_vars',1,10],[ 'root_py-buildin_zip',1,10],[
+            'root_py-buildin___import__',1,10],[ 'root_module_collections_namedtuple()',1,10],[ 'root_module_collections_deque',1,10],[ 'root_module_collections_ChainMap',1,10],[
+            'root_module_collections_Counter',1,10],[ 'root_module_collections_OrderedDict',1,10],[ 'root_module_collections_defaultdict',1,10],[ 'root_module_collections_UserDict',1,10],[
+            'root_module_collections_UserList',1,10],[ 'root_module_collections_UserString',1,10],
 
-    * {
-        box-sizing: border-box;
-    }
+          ]
+        );
 
-    html{
-      height: 100%;
-    }
+        var options = {
+          wordtree: {
+            maxFontSize: 14,
+            format: 'implicit',
+            word: 'root',
+            wordSeparator:"_"
+          }
+        };
 
-    body {
-        margin: 0;
-        height: 100%;
-        width: 100%;
-    }
-
-    /* Create three equal columns that floats next to each other */
-    .column {
-        float: left;
-        width: 33.33%;
-        height: 100%;
-        padding: 10px;
-        /* height: 300px; /* Should be removed. Only for demonstration */ */
-    }
-
-    /* Clear floats after the columns */
-
-    .row{
-
-      height: 100%
-
-    }
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-
-    /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-    /* @media (max-width: 600px) {
-        .column {
-            width: 100%;
-        }
-    } */
-
-
-
-</style>
-
-</head>
-<body>
-  <div class="row">
-    <div class="column" id="material" style="background-color:#aaa;">
-      <h2>Column 1</h2>
-      <p>Some text..</p>
-    </div>
-    <div id="editor" class="column">function foo(items) {
-        var x = "All this is syntax highlighted";
-        return x;
-    }</div>
-    <div class="column" id="" style="background-color:#ccc;">
-      <h2>Column 3</h2>
-      <p>Some text..</p>
-    </div>
-  </div>
-
-
-<script src="static_root/ace-builds-master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/javascript");
-</script>
-</body>
+        var chart = new google.visualization.WordTree(document.getElementById('wordtree_basic'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body style="width: 100%; height: 100%;">
+    <div id="wordtree_basic" style="width: 10000px;"></div>
+  </body>
 </html>
