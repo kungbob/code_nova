@@ -119,7 +119,8 @@ def clustering(version_list):
 		for i in range(0, len(other_list)):
 			mode = max(set(other_count[i]), key=other_count[i].count)
 			other_skill.append({"name": other_list[i], "mode": mode})
-
+			
+		redundant_skill.extend(unwanted_skill)
 		cluster_list.append({"center": center[cluster], "data_count": data_count_list[cluster], "necessary_skill": necessary_skill,
 			"redundant_skill": redundant_skill, "other_skill": other_skill, "character_skill": ""})
 
