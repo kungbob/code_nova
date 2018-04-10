@@ -113,8 +113,9 @@ def clustering(version_list):
 				necessary_skill_dict[wanted_skill[i]] = skilltree[i]
 			elif skilltree[i] < data_count_list[cluster]*0.1 and wanted_skill[i] not in other_list:
 				redundant_skill.append(wanted_skill[i])
-
-		necessary_skill_dict = dict(reversed(sorted(necessary_skill_dict.items(), key=operator.itemgetter(1))))
+				
+		if data_count_list[cluster] > 5:
+			necessary_skill_dict = dict(reversed(sorted(necessary_skill_dict.items(), key=operator.itemgetter(1))))
 		
 		necessary_skill = list(necessary_skill_dict.keys())
 				
