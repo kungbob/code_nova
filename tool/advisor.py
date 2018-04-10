@@ -26,8 +26,8 @@ def advisor(ex_id, version_tree):
 	for i in unwanted_list:
 		flatten_tree.pop(i, None)
 
-
-
+	original_tree = flatten(version_tree)
+	
 	# list of all version
 	version_list = Version.objects.filter(exercise=exercise)
 
@@ -124,7 +124,7 @@ def advisor(ex_id, version_tree):
 				lacking.append(translate(skill))
 
 		for skill in redundant_skill_list:
-			if flatten_tree[skill] > 0 and skill in compare_list:
+			if original_tree[skill] > 0 and skill in compare_list:
 				redundance.append(translate(skill))
 
 		for skill in character_skill_list:
