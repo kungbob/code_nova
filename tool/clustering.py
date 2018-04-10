@@ -61,7 +61,7 @@ def clustering(version_list):
 	standardized_data = scaler.transform(data_matrix)
 
 	if len(data_matrix) > 100:
-		bandwidth = estimate_bandwidth(standardized_data, quantile=0.9, n_samples = 100)
+		bandwidth = estimate_bandwidth(standardized_data, quantile=0.6, n_samples = 100)
 	else:
 		bandwidth = estimate_bandwidth(standardized_data, quantile=0.6)
 
