@@ -1,5 +1,19 @@
-<h1>Login Page</h1>
 
-<a href="{% url 'register' %}">Register account</a>
+{% extends "code_nova/base.html" %}
+
+{% block title %}Exercise{% endblock %}
+
+{% load static %}
+
+
+{% block content %}
+
+<!--
+<h1>Login Page</h1> -->
+
+
 
 {% include "account/login_form.html" %}
+
+
+{% endblock%}

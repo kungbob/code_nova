@@ -72,7 +72,7 @@ def logout(request):
 def myprofile(request):
     student = Student.objects.get(user=request.user)
 
-    # translated_tree = translate_tree(json.loads(student.profile_tree))
-    # print(str(translated_tree))
+    translated_tree = translate_tree(json.loads(student.profile_tree))
+    # print(translated_tree)
 
-    return render(request,'account/profile.html',{"student":student})
+    return render(request,'account/profile.html',{"student":student, "translated_tree":json.dumps(translated_tree)})

@@ -25,9 +25,9 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.Form):
     email = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput())
-    password2 = forms.CharField(widget=forms.PasswordInput())
-    acc_type = forms.ChoiceField(choices=Constants.ACC_TYPE_CHOICES)
+    password = forms.CharField(widget=forms.PasswordInput(),label="password")
+    password2 = forms.CharField(widget=forms.PasswordInput(),label="confirm_password")
+    acc_type = forms.ChoiceField(choices=Constants.ACC_TYPE_CHOICES,label="account_type")
 
     def clean(self):
         cleaned_data = super(RegisterForm,self).clean()
@@ -43,9 +43,11 @@ class RegisterForm(forms.Form):
         if users.exists():
             self.add_error('email','email is used!')
 
-
-        if len(my_password) < 6:
+        if not my_password :
             self.add_error('password','password must be 6 character long!')
+        else:
+            if len(my_password) < 6:
+                self.add_error('password','password must be 6 character long!')
 
-        if not my_password == my_password2:
-            self.add_error('password2','password not the same !')
+            if not my_password == my_password2:
+                self.add_error('password2','password not the same !')

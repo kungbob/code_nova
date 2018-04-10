@@ -463,32 +463,41 @@ def ask_advice(message):
     code = message["code"]
 
 
-    version_tree = analyser(code)
-    advice = advisor(room.exercise.id,version_tree)
-
-    print(str(advice))
-
-    message.reply_channel.send({
-        "text": json.dumps(advice),
-    })
+    # version_tree = analyser(code)
+    # advice = advisor(room.exercise.id,version_tree)
+    #
+    # print(str(advice))
+    #
+    # message.reply_channel.send({
+    #     "text": json.dumps(advice),
+    # })
 
 
     # print(advice)
 
 
-    # try:
-    #     version_tree = analyser(code)
-    #     advice = advisor(room.exercise.id,version_tree)
-    #     print(advice)
-    #
-    #     message.reply_channel.send({
-    #         "text": json.dumps(advice),
-    #     })
-    #
-    #
-    # except Exception as e:
-    #     # when version tree can not be generated
-    #     print(e)
+    try:
+        version_tree = analyser(code)
+        advice = advisor(room.exercise.id,version_tree)
+
+        message.reply_channel.send({
+            "text": json.dumps(advice),
+        })
+
+
+    except Exception as e:
+        # when version tree can not be generated
+
+        output = {
+
+        "syntax_error": str(e)
+
+        }
+
+        message.reply_channel.send({
+            "text": json.dumps(output),
+        })
+        # print(str(e))
 
 
 

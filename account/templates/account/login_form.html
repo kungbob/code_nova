@@ -1,5 +1,53 @@
-<form action="{% url 'login' %}" method="post">
-    {% csrf_token %}
-    {{ login_form.as_p }}
-    <input type="submit" value="Submit" />
-</form>
+
+
+
+
+
+{%  load static%}
+{% block extra_css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock%}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-5 col-md-3">
+            <div class="form-login">
+              <h4>Login</h4>
+
+
+              <form action="{% url 'login' %}" method="post">
+                  {% csrf_token %}
+                  {% for field in login_form %}
+
+                    {% if field.name == 'password' %}
+                    <input type="password" id="{{ field.id_for_label }}" name="{{ field.name }}" class="form-control input-sm chat-input" placeholder="{{ field.label }}" />
+                    <br>
+                    {% else %}
+                    <input type="text" id="{{ field.id_for_label }}" name="{{ field.name }}" class="form-control input-sm chat-input" placeholder="{{ field.label }}" />
+                    <br>
+                    {% endif %}
+                    {{ field.errors }}
+
+                    {% if field.help_text %}
+                    <p class="help">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                  {% endfor %}
+
+                  <div class="wrapper">
+
+                    <span class="group-btn">
+                      <a href="{% url 'register' %}" class="btn btn-primary btn-md">Register <i class="fa fa-sign-in"></i></a>
+                    </span>
+
+                  <span class="group-btn">
+                      <button class="btn btn-primary btn-md" type="submit" value="Submit">Login <i class="fa fa-sign-in"></i></button>
+                  </span>
+                  </div>
+              </form>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -255,6 +255,16 @@ const save_run_template = ({overall_success,total_test_case,passed_test_case}) =
 
 }
 
+
+const syntax_error_template = ({ syntax_error }) => `
+
+<div class="chat">
+  <span class="glyphicon glyphicon-user"> AI Tutor</span>
+  <p>It seems there is a syntax error in your code</p>
+  <p>${syntax_error}</p>
+</div>
+`;
+
 const lacking_template = (skill_name) => {
 
 return `You seems to lack skill [${skill_name}]`;
@@ -527,7 +537,11 @@ const help_template = ({ room_id,help_seeker,exercise_title }) => `
         // Handle errors
         if (data.error) {
             alert(data.error);
-            return;
+            // return;
+        }
+        if (data.syntax_error){
+
+          $(".chat_history_panel").append(syntax_error_template(data));
         }
 
 
