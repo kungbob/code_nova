@@ -14,6 +14,7 @@ from sklearn.cluster import KMeans, MeanShift, estimate_bandwidth
 
 from version.models import Version
 import json
+import operator
 
 
 def clustering(version_list):
@@ -92,7 +93,7 @@ def clustering(version_list):
 		for i in range(0, data_length):
 			skilltree.append(0)
 
-		necessary_skill = []
+		necessary_skill_dict = {}
 		redundant_skill = []
 		other_count = []
 
@@ -109,10 +110,14 @@ def clustering(version_list):
 
 		for i in range(0, data_length):
 			if skilltree[i] >= data_count_list[cluster]*0.65 and wanted_skill[i] not in other_list:
-				necessary_skill.append(wanted_skill[i])
+				necessary_skill_dict[wanted_skill[i]] = skilltree[i]
 			elif skilltree[i] < data_count_list[cluster]*0.1 and wanted_skill[i] not in other_list:
 				redundant_skill.append(wanted_skill[i])
 
+		necessary_skill_dict = dict(reversed(sorted(necessary_skill_dict.items(), key=operator.itemgetter(1))))
+		
+		necessary_skill = list(necessary_skill_dict.keys())
+				
 		other_skill = []
 
 
