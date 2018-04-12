@@ -55,18 +55,40 @@ def import_data():
         # Problem_name = row.QCode
         # UserID = row.UserID
         # Solution_text = row.Solutions
-        exercise = Exercise.objects.get(title=row.QCode)
 
-        version = Version()
-        version.room = room_list[row.QCode]
-        version.exercise = exercise
-        version.code = row.Solutions
-        # version.result = compile_code(row.Solutions)
-        version.version_tree = json.dumps(analyser(row.Solutions))
-        version.overall_success = True
-        version.save()
-        #
-        # print(Problem_name, UserID, Solution_text)
+        try:
+            exercise = Exercise.objects.get(title=row.QCode)
+
+
+
+            version = Version()
+            version.room = room_list[row.QCode]
+            version.exercise = exercise
+            version.code = row.Solutions
+            # version.result = compile_code(row.Solutions)
+            version.version_tree = json.dumps(analyser(row.Solutions))
+            version.overall_success = True
+            version.save()
+            #
+            # print(Problem_name, UserID, Solution_text)
+
+        except Exercise.DoesNotExist:
+            # exercise = None
+            print("can't find")
+
+
+
+    print("done")
+
+    exercise_lst = Exercise.objects.all()
+
+    for exercise in exercise_lst:
+        version_list = Version.objects.filter(exercise=exercise).all()
+        if len(version_list) <= 50:
+            print("dleteing :"+str(exercise.title))
+            exercise.delete()
+
+
 
 def cluster_data():
 
@@ -79,54 +101,61 @@ def cluster_data():
     for question_code in list(df2.QCode.unique()):
 
 
-        exercise = Exercise.objects.get(title=question_code)
 
-        data_matrix = []
-        version_list = Version.objects.filter(exercise=exercise)
+        try:
+            exercise = Exercise.objects.get(title=question_code)
 
-        if len(version_list) >= 50 :
-            # remove all old clusters
+            data_matrix = []
+            version_list = Version.objects.filter(exercise=exercise)
 
-            Cluster.objects.filter(exercise=exercise).delete()
+            if len(version_list) >= 50 :
+                # remove all old clusters
 
-            print("doing" + str(exercise))
-            cluster_result = clustering(version_list)
+                Cluster.objects.filter(exercise=exercise).delete()
 
-
-            cluster_list = cluster_result["cluster_list"]
-            label = cluster_result["label"]
-            common_skill = cluster_result["common_skill"]
-
-            cluster_object_list = []
+                print("doing" + str(exercise))
+                cluster_result = clustering(version_list)
 
 
-            # create new cluster
-            for cluster in cluster_list:
-                new_cluster = Cluster()
-                new_cluster.exercise = exercise
-                # print(cluster["necessary_skill"])
-                new_cluster.necessary_skill = json.dumps(cluster["necessary_skill"])
-                new_cluster.redundant_skill = json.dumps(cluster["redundant_skill"])
-                new_cluster.center = ','.join(map(str, cluster["center"].tolist()))
-                new_cluster.data_count = cluster["data_count"]
-                new_cluster.character_skill = json.dumps(cluster["character_skill"])
-                new_cluster.other_skill = json.dumps(cluster["other_skill"])
-                new_cluster.save()
-                cluster_object_list.append(new_cluster)
+                cluster_list = cluster_result["cluster_list"]
+                label = cluster_result["label"]
+                common_skill = cluster_result["common_skill"]
 
-            for i in range(0,len(label)):
-                cluster = cluster_object_list[label[i]]
-                version_list[i].cluster = cluster
-                version_list[i].save()
+                cluster_object_list = []
 
 
-            exercise.common_skill = json.dumps(common_skill)
-            exercise.save()
+                # create new cluster
+                for cluster in cluster_list:
+                    new_cluster = Cluster()
+                    new_cluster.exercise = exercise
+                    # print(cluster["necessary_skill"])
+                    new_cluster.necessary_skill = json.dumps(cluster["necessary_skill"])
+                    new_cluster.redundant_skill = json.dumps(cluster["redundant_skill"])
+                    new_cluster.center = ','.join(map(str, cluster["center"].tolist()))
+                    new_cluster.data_count = cluster["data_count"]
+                    new_cluster.character_skill = json.dumps(cluster["character_skill"])
+                    new_cluster.other_skill = json.dumps(cluster["other_skill"])
+                    new_cluster.save()
+                    cluster_object_list.append(new_cluster)
 
-        print("done")
+                for i in range(0,len(label)):
+                    cluster = cluster_object_list[label[i]]
+                    version_list[i].cluster = cluster
+                    version_list[i].save()
+
+
+                exercise.common_skill = json.dumps(common_skill)
+                exercise.save()
+
+        except Exercise.DoesNotExist:
+            print("cannot find")
+
+
 def delete_data():
     # room_id = 21;
     # remove all version
+
+
 
     path = os.path.join(BASE_DIR,'tool\program_code_python_only.csv')
     df2 = pd.read_csv(path)
@@ -135,4 +164,8 @@ def delete_data():
     print(list(df2.QCode.unique()))
 
     for question_code in list(df2.QCode.unique()):
+
+
         Exercise.objects.filter(title=question_code).delete()
+
+            # go = None
