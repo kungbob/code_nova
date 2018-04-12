@@ -58,9 +58,17 @@ def find_helper(code,seeker,current_exercise):
 		# print(my_json)
 		# Compare value of two students' abilities
 		dictance_dict = dict()
+		priority_dict = dict()
 		for helper in student_list:
 			if seeker.id == helper.id:
 				continue
+			elif helper.id in current_exercise.complete_student:
+				helper_profile_json = json.loads(helper.profile_tree)
+				helper_profile_json_flatten = flatten(helper_profile_json)
+				helper_ability_dict = jsontocompare(helper_profile_json_flatten, compare_list)
+				helper_ability_list = list(helper_ability_dict.values())
+				distance = euclidean(seeker_ability_list, helper_ability_list)
+				priority_dict[helper.id] = distance
 			else:
 				helper_profile_json = json.loads(helper.profile_tree)
 				helper_profile_json_flatten = flatten(helper_profile_json)
@@ -69,7 +77,9 @@ def find_helper(code,seeker,current_exercise):
 				distance = euclidean(seeker_ability_list, helper_ability_list)
 				dictance_dict[helper.id] = distance
 		sorted_distance = sorted(dictance_dict.items(), key=operator.itemgetter(1))
-		call_list = call(sorted_distance, 10)
+		priority_sorted_distance = sorted(priority_dict.items(), key=operator.itemgetter(1))
+		merged_sorted_distance = priority_sorted_distance + sorted_distance
+		call_list = call(merged_sorted_distance, 10)
 		return call_list
 	except Exception as e:
 		cluster_list = Cluster.objects.filter(exercise=current_exercise)
@@ -106,11 +116,19 @@ def find_helper(code,seeker,current_exercise):
 		# print(my_json)
 		# Compare value of two students' abilities
 		dictance_dict = dict()
+		priority_dict = dict()
 		for helper in student_list:
 
 			# check if the helper is seeker himself and helper is online or not
 			if seeker.id == helper.id or helper.user.reply_channel == "":
 				continue
+			elif helper.id in current_exercise.complete_student:
+				helper_profile_json = json.loads(helper.profile_tree)
+				helper_profile_json_flatten = flatten(helper_profile_json)
+				helper_ability_dict = jsontocompare(helper_profile_json_flatten, compare_list)
+				helper_ability_list = list(helper_ability_dict.values())
+				distance = euclidean(seeker_ability_list, helper_ability_list)
+				priority_dict[helper.id] = distance
 			else:
 				helper_profile_json = json.loads(helper.profile_tree)
 				helper_profile_json_flatten = flatten(helper_profile_json)
@@ -119,6 +137,8 @@ def find_helper(code,seeker,current_exercise):
 				distance = euclidean(seeker_ability_list, helper_ability_list)
 				dictance_dict[helper.id] = distance
 		sorted_distance = sorted(dictance_dict.items(), key=operator.itemgetter(1))
+		priority_sorted_distance = sorted(priority_dict.items(), key=operator.itemgetter(1))
+		merged_sorted_distance = priority_sorted_distance + sorted_distance
 		call_list = call(sorted_distance, 10)
 		return call_list
 
