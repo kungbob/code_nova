@@ -8,7 +8,7 @@ from user.models import User
 import json
 from tool.tree import flatten,get_compare_list
 
-def exercise_suggestion(seeker, mode,skill):
+def exercise_suggestion(seeker, mode, skill):
 
     seeker_profile = seeker.profile_tree
 
@@ -20,13 +20,16 @@ def exercise_suggestion(seeker, mode,skill):
     learn_question_id_dict = dict((el, []) for el in thingtocompare)
     reinforce_question_id_dict = dict((el, []) for el in thingtocompare)
     seeker_ability_dict = jsontocompare(seeker_profile_json_flatten, thingtocompare)
-
-
-    print(str(seeker_ability_dict))
+    seeker_true_dict = dict((k, v) for k, v in seeker_ability_dict.items() if v != 0)
+    seeker_true_list = seeker_true_dict.keys()
+    print(str(seeker_true_dict))
 
     dictance_dict = dict()
 
     exercise_list = Exercise.objects.all()
+
+    # Covered in subset
+    subset_problem_list = []
 
     # complete_count = exercise.complete_student.count()
     # print("Complete:", complete_count)
@@ -41,17 +44,17 @@ def exercise_suggestion(seeker, mode,skill):
         if seeker in exercise.complete_student.all():
             continue
         else:
-
             exercise_problem = json.loads(exercise.common_skill)
 
             exercise_problem = [x for x in exercise_problem if x in thingtocompare]
 
-
             # exercise_problem_json_flatten = flatten(exercise_problem_json)
             # exercise_problem_dict = jsontocompare(exercise_problem_json_flatten, thingtocompare)
 
+            different_skill, same_skill = diff(seeker_true_dict.keys(), exercise_problem)
 
-            different_skill, same_skill = diff(seeker_ability_dict.keys(), exercise_problem)
+            if set(seeker_true_list) >= set(exercise_problem):
+                subset_problem_list.append(exercise.id)
 
             print("----different--")
             print(str(different_skill))
@@ -64,12 +67,9 @@ def exercise_suggestion(seeker, mode,skill):
             for same in same_skill:
                 reinforce_question_id_dict[same].append(exercise.id)
 
-
-
     print(str(learn_question_id_dict))
     print("-----")
     print(str(reinforce_question_id_dict))
-
 
     if mode == 1:
 
@@ -98,6 +98,11 @@ def exercise_suggestion(seeker, mode,skill):
 
         # will not choose skill that has empty list
         skill_list = [x for x in reinforce_question_id_dict.keys() if reinforce_question_id_dict[x] != []]
+
+        # If there is problem which skill is subset of student
+        if subset_problem_list != []:
+            return random.choice(subset_problem_list)
+
 
         # all skill it a new skill, so no old skill to reinforce
         if skill_list == []:
