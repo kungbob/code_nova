@@ -322,6 +322,10 @@ def editor_save_run(message):
     # run the code with test cases of the exercise
     result = compile_code(code,room.exercise)
 
+    # result2 = compile_code2(code,room.exercise)
+    #
+    # print(str(result))
+
 
     if result["overall_success"] == True:
 

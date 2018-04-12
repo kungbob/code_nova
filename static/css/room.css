@@ -1,6 +1,11 @@
 /* Create three equal columns that floats next to each other */
 
-
+table {
+  table-layout: fixed;
+}
+table td {
+  word-wrap: break-word;
+}
 
 .chat_history_panel::-webkit-scrollbar {
 
@@ -113,6 +118,8 @@
 
 
 #material_column{
+
+  overflow-y: scroll;
 
   flex:0 0 30%;
   padding: 10px;

@@ -7,6 +7,7 @@ from cluster.models import Cluster
 from django.shortcuts import redirect
 from tool.import_data import import_data,delete_data,cluster_data
 from tool.tree import get_empty_version_tree,flatten,translate,get_compare_list
+
 import json
 # Create your views here.
 
