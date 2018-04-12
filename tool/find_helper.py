@@ -62,7 +62,7 @@ def find_helper(code,seeker,current_exercise):
 		for helper in student_list:
 			if seeker.id == helper.id:
 				continue
-			elif helper.id in current_exercise.complete_student:
+			elif helper in current_exercise.complete_student.all():
 				helper_profile_json = json.loads(helper.profile_tree)
 				helper_profile_json_flatten = flatten(helper_profile_json)
 				helper_ability_dict = jsontocompare(helper_profile_json_flatten, compare_list)
@@ -122,7 +122,7 @@ def find_helper(code,seeker,current_exercise):
 			# check if the helper is seeker himself and helper is online or not
 			if seeker.id == helper.id or helper.user.reply_channel == "":
 				continue
-			elif helper.id in current_exercise.complete_student:
+			elif helper in current_exercise.complete_student.all():
 				helper_profile_json = json.loads(helper.profile_tree)
 				helper_profile_json_flatten = flatten(helper_profile_json)
 				helper_ability_dict = jsontocompare(helper_profile_json_flatten, compare_list)

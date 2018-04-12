@@ -111,18 +111,25 @@ def start_exercise(request,exercise_id):
     except Exception as e:
         raise
 
-    room = Room()
-    room.exercise = Exercise.objects.get(pk=exercise_id)
-    owner = Student.objects.get(user=request.user)
-    room.owner = owner
-    room.code = room.exercise.template
-    room.save()
 
-    room.particpant.add(owner)
-    room.author.add(owner)
-    room.save()
+    if request.user.is_authenticated :
 
-    return redirect('room',room_id=room.id)
+        room = Room()
+        room.exercise = Exercise.objects.get(pk=exercise_id)
+        owner = Student.objects.get(user=request.user)
+        room.owner = owner
+        room.code = room.exercise.template
+        room.save()
+
+        room.particpant.add(owner)
+        room.author.add(owner)
+        room.save()
+
+        return redirect('room',room_id=room.id)
+
+    else:
+        return redirect('register')
+
 
     # return render(request,'exercise/start_exercise.html',{'room':room})
 
