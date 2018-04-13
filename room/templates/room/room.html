@@ -329,7 +329,7 @@ const test_case_template = ({input,expect_output,output,error,success}) => {
 
 
 
-return "<tr><td>"+input.split("\n").join(",")+"</td><td>"+expect_output.split("\n").join("<br/>")+"</td><td>"+output.split("\n").join("<br/>")+"</td><td>"+success+"</td><td>"+ error.split("\n").join("<br/>") +"</td></tr>"
+return "<tr><td>"+input.split("\n").join("<br/>")+"</td><td>"+expect_output.split("\n").join("<br/>")+"</td><td>"+output.split("\n").join("<br/>")+"</td><td>"+success+"</td><td>"+ error.split("\n").join("<br/>") +"</td></tr>"
 
 }
 
@@ -407,10 +407,6 @@ const cluster_template = (index,{cluster_id,data_count,character_skill,lacking,r
           </div>
         </div>
 
-        <div class="">
-        <div class="character_skill_list">`+character_skill_list+`
-
-        </div>
         </div>
 
         ${other_skill_list}
