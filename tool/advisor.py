@@ -109,8 +109,6 @@ def advisor(ex_id, version_tree):
 
 		for skill in other_skill_list:
 			if flatten_tree[skill["name"]] != skill["mode"] and (skill["name"] != "MaxArraySize" or skill["mode"] >= 5):
-				others.append({"name": translate(skill["name"]), "current": flatten_tree[skill["name"]], "suggestion": skill["mode"]})
-
 
 		advice_list.append({"cluster_id": cluster.id,"data_count":cluster.data_count,"character_skill":character,"lacking": lacking, "redundance": redundance, "other_skill": others})
 
